@@ -39,7 +39,7 @@ Every page should be generated with 'HAA_Response' class object as follows:
 .. code-block:: php
 
     <?php
-    $response = HAA_Response\:\:getInstance();  // 'HAA_Response' class instance.
+    $response = HAA_Response::getInstance();  // 'HAA_Response' class instance.
     $header = $response->getHeader();
     $header->addFile('filename', 'js');         // Add a Javascript file to page.
     $header->addFile('filename', 'css');        // Add a Stylesheet to page.
