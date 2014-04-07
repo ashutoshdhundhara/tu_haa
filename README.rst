@@ -49,7 +49,7 @@ Every page should be generated with 'HAA_Response' class object as follows:
 
     $response->addHTML($html_output);           // 'Content' added to page.
     $response->response();                      // Generates page with 'Content'
-                                                // sandwiched between predefined 'Header' and 'Footer'.
+                                                // with predefined 'Header' and 'Footer'.
     ?>
 
 
