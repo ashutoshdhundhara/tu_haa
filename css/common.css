@@ -1,0 +1,123 @@
+body {
+    font-family: sans-serif;
+    min-width: 1000px;
+    min-height: 600px;
+}
+
+header {
+    width: 100%;
+}
+/**
+ * Contains styles which are required by all pages.
+ */
+
+header h1 {
+    font-size: 250%;
+    font-weight: bolder;
+    text-align: center;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+}
+
+header table {
+    width: 100%;
+    table-layout: fixed;
+    box-shadow: rgba(0,0,0,0.5) 0 5px 10px;
+}
+
+.green_grad {
+    background: -webkit-linear-gradient(top,#99CCCC, #77AAAA);
+    background:    -moz-linear-gradient(top,#99CCCC, #77AAAA);
+    background:     -ms-linear-gradient(top,#99CCCC, #77AAAA);
+    background:      -o-linear-gradient(top,#99CCCC, #77AAAA);
+    background:         linear-gradient(top,#99CCCC, #77AAAA);
+}
+
+.gray_grad {
+    background: -webkit-linear-gradient(top,#f6f7f9, #E5E6E7);
+    background:    -moz-linear-gradient(top,#f6f7f9, #E5E6E7);
+    background:     -ms-linear-gradient(top,#f6f7f9, #E5E6E7);
+    background:      -o-linear-gradient(top,#f6f7f9, #E5E6E7);
+    background:         linear-gradient(top,#f6f7f9, #E5E6E7);
+}
+
+header tr {
+    height: 120px;
+}
+
+header td {
+    color: white;
+    overflow: hidden;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.td_small {
+    width: 20%;
+}
+
+.td_big {
+    width: 60%;
+}
+
+.body_area {
+    display: table;
+    width: 100%;
+    height: 500px;
+}
+
+.body_content {
+    display: table-cell;
+    width: 100%;
+    vertical-align: middle;
+}
+
+.box {
+    margin: 0 auto;
+    padding: 2em;
+    border-radius: 5px;
+    box-shadow: rgba(0,0,0,0.5) 0 12px 20px;
+}
+
+.haa_tooltip {
+    padding: 5px;
+    position: absolute;
+    z-index: 9999;
+    max-width: 300px;
+    -webkit-box-shadow: 0 0 5px #aaa;
+    box-shadow: 0 0 5px #aaa;
+    font-size: 0.7em;
+    background: #FFE0E0
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+caption {
+    font-weight: bold;
+}
+
+.submitBtn {
+    background-color: #99CCCC;
+    border-radius: 3px;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    width: 50%;
+    height: 2em;
+    cursor: pointer;
+}
+
+.submitBtn:active {
+    background-color: #99CCCC;
+    border-radius: 3px;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.0);
+    width: 50%;
+    height: 2em;
+    position: relative;
+    top: 2px;
+    left: 2px;
+}

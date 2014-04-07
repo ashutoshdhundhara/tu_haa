@@ -1,0 +1,16 @@
+/**
+ * Styles for login page.
+ */
+
+.login_form {
+    width: 300px;
+    text-align: center;
+}
+
+.login_form table {
+    margin: 0 auto;
+}
+
+.login_form td {
+    padding: 0.5em;
+}
