@@ -1,3 +1,7 @@
+/**
+ * Contains styles which are required by all pages.
+ */
+
 body {
     font-family: sans-serif;
     min-width: 1000px;
@@ -7,9 +11,6 @@ body {
 header {
     width: 100%;
 }
-/**
- * Contains styles which are required by all pages.
- */
 
 header h1 {
     font-size: 250%;
