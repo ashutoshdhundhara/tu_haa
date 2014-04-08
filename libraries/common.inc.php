@@ -31,5 +31,13 @@ require_once 'libraries/Response.class.php';
  * Contains functions common to all scripts.
  */
 require_once 'libraries/core.lib.php';
+/**
+ * Main interface class for all database interactions.
+ */
+require_once 'libraries/DatabaseInterface.class.php';
+/**
+ * Global DBI class instance.
+ */
+$GLOBALS['dbi'] = new HAA_DatabaseInterface();
 
 ?>
