@@ -2,6 +2,11 @@
  * Contains functions and variables common to all Javascripts.
  */
 
+$(document).ready(function () {
+    $('select, input:file, input:button').uniform();
+    $('[title]').tooltip(tooltip_defaults);
+});
+
 /**
  * Default options for tooltip widget.
  */

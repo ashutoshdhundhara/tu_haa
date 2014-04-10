@@ -9,8 +9,6 @@
  */
 $(document).ready(function () {
     HAA_setFocus();
-    $( "[title]" ).tooltip(tooltip_defaults);
-
     // Validate form on submit.
     $('form').bind("submit", function (event) {
         var isValid = true;

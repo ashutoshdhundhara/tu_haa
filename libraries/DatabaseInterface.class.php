@@ -60,12 +60,12 @@ class HAA_DatabaseInterface
      * Runs a query and returns result.
      *
      * @param string $query Query to be run
-     * @param resource $link Connection object
      *
      * @return resource $result Mysqli result object
      */
-    public function executeQuery($query, $link = $GLOBALS['db_link'])
+    public function executeQuery($query)
     {
+        $link = $GLOBALS['db_link'];
         if (empty($link)) {
             return false;
         }
@@ -108,12 +108,12 @@ class HAA_DatabaseInterface
      *
      * @param string $id User ID
      * @param string $password Password
-     * @param resource $link Database link
      *
      * @return bool
      */
-    public function verifyUser($id, $password, $link = $GLOBALS['db_link'])
+    public function verifyUser($id, $password)
     {
+        $link = $GLOBALS['db_link'];
         if (empty($link)) {
             return false;
         }

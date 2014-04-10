@@ -122,3 +122,7 @@ caption {
     top: 2px;
     left: 2px;
 }
+
+.ui-autocomplete {
+    font-size: 0.6em;
+}

@@ -70,6 +70,7 @@ class HAA_Header
         $default_scripts = array(
             'jquery/jquery-1.10.2.min.js'
             , 'jquery/jquery-ui.min.js'
+            , 'jquery/jquery-uniform.js'
             , 'common.js'
             );
         foreach ($default_scripts as $key => $filename) {
