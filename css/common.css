@@ -1,9 +1,35 @@
 /**
  * Contains styles which are required by all pages.
  */
+@font-face {
+  font-family: 'Exo 2';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Exo 2 Light'), local('Exo2-Light'), url('fonts/exo_300.woff') format('woff');
+}
+@font-face {
+  font-family: 'Exo 2';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Exo 2'), local('Exo2-Regular'), url('fonts/exo_400.woff') format('woff');
+}
+@font-face {
+  font-family: 'Exo 2';
+  font-style: normal;
+  font-weight: 800;
+  src: local('Exo 2 Extra Bold'), local('Exo2-ExtraBold'), url('fonts/exo_800.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Exo 2';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Exo 2 Semi Bold'), local('Exo2-SemiBold'), url('fonts/exo_600.woff') format('woff');
+}
 
 body {
-    font-family: sans-serif;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 300;
     min-width: 1000px;
     min-height: 600px;
 }
@@ -14,7 +40,7 @@ header {
 
 header h1 {
     font-size: 250%;
-    font-weight: bolder;
+    font-weight: 800;
     text-align: center;
     text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
 }
@@ -63,13 +89,16 @@ header td {
 .body_area {
     display: table;
     width: 100%;
-    height: 500px;
+    min-height: 500px;
+    table-layout: fixed;
 }
 
 .body_content {
     display: table-cell;
     width: 100%;
     vertical-align: middle;
+    padding-top: 5em;
+    padding-bottom: 5em;
 }
 
 .box {
@@ -92,7 +121,6 @@ header td {
 
 a {
     text-decoration: none;
-    color: black;
 }
 
 a:hover {
@@ -100,29 +128,72 @@ a:hover {
 }
 
 caption {
-    font-weight: bold;
+    font-weight: 400;
+    font-size: 1.2em;
 }
 
-.submitBtn {
-    background-color: #99CCCC;
-    border-radius: 3px;
-    box-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-    width: 50%;
-    height: 2em;
+strong {
+    font-weight: 800;
+}
+
+footer {
+    color: white;
+    text-align: center;
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    line-height: 1.6em;
+    margin-bottom: 1em;
+    box-shadow: rgba(0,0,0,0.5) 0 5px 10px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
+}
+
+footer a {
+    color: white;
+    font-weight: 600;
+    display: inline-block;
+}
+
+footer ul {
+    margin: 0 auto;
+    list-style-type: none;
+}
+
+footer li {
+    display: inline-block;
+}
+
+.haa_notification {
+    background: rgba(0,0,0,0);
     cursor: pointer;
+    top: 10em;
+    position: fixed;
+    margin-top: 0;
+    margin-right: auto;
+    margin-bottom: 0;
+    margin-left: auto;
+    width: 400px;
+    z-index: 1100;
+    /*text-align: center;*/
+    display: inline;
+    left: 0;
+    right: 0;
+    box-shadow: 0 5px 90px #222;
+    -moz-box-shadow: 0 5px 90px #222;
+    -webkit-box-shadow: 0 5px 90px #222;
 }
 
-.submitBtn:active {
-    background-color: #99CCCC;
-    border-radius: 3px;
-    box-shadow: 1px 1px 2px rgba(0,0,0,0.0);
-    width: 50%;
-    height: 2em;
-    position: relative;
-    top: 2px;
-    left: 2px;
+.required {
+    /*Empty class just as a marker for required fields*/
 }
 
-.ui-autocomplete {
-    font-size: 0.6em;
+.separator {
+    width: 2em;
+}
+
+.ui-autocomplete, .ui-datepicker {
+    font-size: 0.7em;
+}
+
+.ui-datepicker {
+    display: none;
 }
