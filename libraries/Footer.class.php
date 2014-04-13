@@ -44,7 +44,19 @@ class HAA_Footer
     {
         $retval = '';
         if ($this->_isEnabled) {
-            $retval .= '</div></div></body></html>';
+            $retval .= '</div></div>'
+                . '<footer class="green_grad">'
+                . '<ul>'
+                . '<li><a href="#">Rules & Regulations</a></li>'
+                . '<li class="separator">|</li>'
+                . '<li><a href="#">Report Issue</a></li>'
+                . '<li class="separator">|</li>'
+                . '<li><a href="#">Contact Us</a></li>'
+                . '<li class="separator">|</li>'
+                . '<li><a href="#">Developers</a></li>'
+                . '</ul>'
+                . '</footer>'
+                . '</body></html>';
         }
 
         return $retval;

@@ -71,6 +71,7 @@ class HAA_Header
             'jquery/jquery-1.10.2.min.js'
             , 'jquery/jquery-ui.min.js'
             , 'jquery/jquery-uniform.js'
+            , 'jquery/jquery.maskedinput.min.js'
             , 'common.js'
             );
         foreach ($default_scripts as $key => $filename) {
@@ -262,7 +263,7 @@ class HAA_Header
     {
         $retval = '';
         $retval .= '<header class="green_grad"><table><tr>'
-            . '<td class="td_small"><img height="80" width="250" src="img/jlogo.png" alt="Hostel-J Logo"/></td>'
+            . '<td class="td_small"><img height="80" width="100" src="img/jlogo.png" alt="Hostel-J Logo"/></td>'
             . '<td class="td_big"><h1>Hostel-J, Thapar University</h1></td>'
             . '<td class="td_small"><img height="100" width="160" src="img/tulogo.png" alt="Thapar Logo"/></td>'
             . '</tr></table></header>';

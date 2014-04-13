@@ -10,8 +10,9 @@
 $(document).ready(function () {
     HAA_setFocus();
     // Validate form on submit.
-    $('form').bind("submit", function (event) {
+    $('.login_form').bind("submit", function (event) {
         var isValid = true;
+        $('[title]').tooltip("option", "disabled", false);
         if ($('#input_username').val().length === 0) {
             isValid = false;
             $('#input_username').tooltip('open');

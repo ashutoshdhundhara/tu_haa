@@ -119,7 +119,7 @@ class HAA_DatabaseInterface
         }
 
         $query = 'SELECT groupID FROM GROUP_ID '
-            . 'WHERE groupID=? AND password=? '
+            . 'WHERE groupID = ? AND password = ? '
             . 'LIMIT 1';
         // Prepare statement.
         $stmt = $link->prepare($query);

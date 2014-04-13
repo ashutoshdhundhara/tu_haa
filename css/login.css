@@ -7,6 +7,11 @@
     text-align: center;
 }
 
+.login_form a {
+    font-weight: 600;
+    color: black;
+}
+
 .login_form table {
     margin: 0 auto;
 }

@@ -7,5 +7,37 @@
 }
 
 .register_form {
+    width: 700px;
+    margin: 0 auto;
+}
+
+.register_form a {
+    font-weight: 600;
+    color: black;
+}
+
+.register_form table {
+    table-layout: fixed;
+    margin: 0 auto;
     width: 600px;
+}
+
+.register_form td {
+    padding: 0.4em;
+    vertical-align: middle;
+}
+
+input[type='text'], select, textarea {
+    width: 250px;
+}
+
+textarea {
+    height: 5em;
+    max-width: 320px;
+    max-height: 100px;
+}
+
+.selector, .uploader {
+    width: 260px;
+    cursor: pointer;
 }
