@@ -189,7 +189,6 @@ class HAA_Response
     private function _getAjaxResponse()
     {
         $this->disable();
-        // $this->_JSON['message'] = $this->_getHtmlResponse();
         $this->_JSON['success'] = $this->_isSuccess;
         /*Set the Content-Type header to JSON so that jQuery parses the
         response correctly.*/

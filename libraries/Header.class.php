@@ -80,6 +80,7 @@ class HAA_Header
 
         $default_stylesheets = array(
             'reset.css'
+            , 'jquery-ui-1.10.4.custom.min.css'
             , 'absolution.css'
             , 'common.css'
             );

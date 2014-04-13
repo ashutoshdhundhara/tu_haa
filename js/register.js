@@ -47,16 +47,48 @@ $(document).ready(function () {
         // Submit the form when everything is fine.
         if (isValid) {
             var form_data = $(this).serialize();
-            alert(form_data);
             $.ajax({
                 type: 'POST',
                 url: 'register.php',
                 data: form_data,
-                success: function () {
+                success: function (response) {
+                    // Variable that holds the response dialog.
+                    var $response_dialog = null;
+                    // Dialog title.
+                    var dialog_title = 'Hostel-J User Registration';
+                    // Dialog Button options.
+                    var buttonOptions = {};
+                    // 'OK' button action.
+                    buttonOptions['OK'] = function () {
+                        $(this).dialog('close');
+                    };
 
+                    if (response.success) {
+                        // Dialog content.
+                        var dialog_content = '<div>' + response.message + '</div>';
+                        $response_dialog = $(dialog_content).dialog({
+                            minWidth: 340,
+                            modal: true,
+                            title: dialog_title,
+                            buttons: buttonOptions,
+                            open: function () {
+                                // Focus the "OK" button after opening the dialog
+                                $(this).closest('.ui-dialog')
+                                    .find('.ui-dialog-buttonpane button:first')
+                                    .focus();
+                            },
+                            close: function () {
+                                $(this).remove();
+                            }
+                        });
+                    }
                 },
                 error: function () {
-
+                    var $error = HAA_showNotification(
+                        'Could not contact Server ! ' +
+                        'Please check your Network Settings.'
+                        , 'error'
+                    );
                 }
             });
         }

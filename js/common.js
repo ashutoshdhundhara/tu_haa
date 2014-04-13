@@ -3,7 +3,8 @@
  */
 
 $(document).ready(function () {
-    $("input:file, select, input:text").uniform();
+    $("input:file, select").uniform();
+    $('input:submit').addClass('submit_button green_grad');
     $('[title]').tooltip(tooltip_defaults);
     $('.datefield').datepicker(datepicker_defaults);
     $('.datefield').mask(date_format);

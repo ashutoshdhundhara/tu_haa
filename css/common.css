@@ -163,7 +163,6 @@ footer li {
 }
 
 .haa_notification {
-    background: rgba(0,0,0,0);
     cursor: pointer;
     top: 10em;
     position: fixed;
@@ -171,7 +170,7 @@ footer li {
     margin-right: auto;
     margin-bottom: 0;
     margin-left: auto;
-    width: 400px;
+    width: 420px;
     z-index: 1100;
     /*text-align: center;*/
     display: inline;
@@ -180,6 +179,31 @@ footer li {
     box-shadow: 0 5px 90px #222;
     -moz-box-shadow: 0 5px 90px #222;
     -webkit-box-shadow: 0 5px 90px #222;
+}
+
+.submit_button {
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.7);
+    border: 1px solid #99CCCC;
+    background-color: #99CCCC;
+    border-radius: 3px;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    height: 2em;
+    width: 8em;
+    cursor: pointer;
+}
+
+.submit_button:active {
+    color: white;
+    position: relative;
+    background-color: #99CCCC;
+    top: 2px;
+    left: 2px;
+    border: 1px solid #99CCCC;
+    border-radius: 3px;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.0);
+    height: 2em;
+    cursor: pointer;
 }
 
 .required {
@@ -196,4 +220,8 @@ footer li {
 
 .ui-datepicker {
     display: none;
+}
+
+.ui-dialog {
+    font-size: 0.8em;
 }

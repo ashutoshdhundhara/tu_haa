@@ -11,6 +11,7 @@
 function HAA_getHtmlRegisterForm()
 {
     $retval = '<form method="POST" action="register.php"'
+        . ' enctype="multipart/form-data"'
         . ' class="register_form gray_grad box">'
         . '<input type="hidden" name="ajax_request" value="true">'
         . '<table>'
