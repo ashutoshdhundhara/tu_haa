@@ -31,13 +31,14 @@ var datepicker_defaults = {
     numberOfMonths: 1,
     showButtonPanel: false,
     changeMonth: true,
-    changeYear: true
+    changeYear: true,
+    dateFormat: 'yy-mm-dd'
 };
 
 /**
  * Default date format.
  */
-var date_format = '99/99/9999';
+var date_format = '9999-99-99';
 
 /**
  * Default Mobile number format.
