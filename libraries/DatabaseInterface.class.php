@@ -10,7 +10,7 @@ if (! defined('TU_HAA')) {
 /**
  * Include all DB constants.
  */
-include_once 'libraries/dbConstants.php';
+require_once 'libraries/dbConstants.php';
 
 /**
  * Class that manages all db interactions.
@@ -18,40 +18,35 @@ include_once 'libraries/dbConstants.php';
 class HAA_DatabaseInterface
 {
     /**
-     * Constructor
+     * Constructor creates a new connection.
      */
     public function __construct()
     {
-        if (! defined('dbHost')) {
-            define('dbHost', 'localhost');
-        }
-        if (! defined('dbUser')) {
-            define('dbUser', 'root');
-        }
-        if (! defined('dbPass')) {
-            define('dbPass', '');
-        }
-        if (! defined('dbName')) {
-            define('dbName', 'HostelJ');
-        }
-
         $GLOBALS['db_link'] = $this->connect(dbHost, dbUser, dbPass, dbName);
     }
 
     /**
      * Connects to database.
      *
-     * @param string $dbHost Hostename
+     * @param string $dbHost Hostname
      * @param string $dbUser Username
      * @param string $dbPass Password
      * @param string $dbName Database name
      *
-     * @return resource $link connection object
+     * @return resource $link PDO object
      */
     public function connect($dbHost, $dbUser, $dbPass, $dbName)
     {
-        $link = mysqli_connect($dbHost, $dbUser, $dbPass, $dbName) or
-            die('Failed to connect to Database');
+        // Database engine (vendor specific).
+        $engine = 'mysql';
+        $connection_string = $engine
+            . ':host=' . $dbHost
+            . ';dbname=' . $dbName;
+        try {
+            $link = new PDO($connection_string, $dbUser, $dbPass);
+        } catch (PDOException $excp) {
+            die($excp->getMessage());
+        }
 
         return $link;
     }
@@ -60,47 +55,24 @@ class HAA_DatabaseInterface
      * Runs a query and returns result.
      *
      * @param string $query Query to be run
-     *
-     * @return resource $result Mysqli result object
+     * @param array $param Array containing parameter-value pairs
+     * @return resource $result PDO statement
      */
-    public function executeQuery($query)
+    public function executeQuery($query, $params = array())
     {
         $link = $GLOBALS['db_link'];
         if (empty($link)) {
             return false;
         }
+        // Prepare statement.
+        $stmt = $link->prepare($query);
 
-        $result = mysqli_query($link, $query);
+        // Execute statement.
+        $stmt->execute($params);
+        // Fetch result.
+        $result = $stmt;
 
         return $result;
-    }
-
-    /**
-     * Returns row in form of array from $result.
-     *
-     * @param resource $result Mysql result object
-     *
-     * @return array $row Row array
-     */
-    public function fetchRow($result)
-    {
-        $row = mysqli_fetch_array($result);
-
-        return $row;
-    }
-
-    /**
-     * Counts number of rows in $result.
-     *
-     * @param resource $result Mysql result object
-     *
-     * @return int $num Number of rows.
-     */
-    public function countRows($result)
-    {
-        $num = mysqli_num_rows($result);
-
-        return $num;
     }
 
     /**
@@ -118,13 +90,14 @@ class HAA_DatabaseInterface
             return false;
         }
 
-        $query = 'SELECT groupID FROM GROUP_ID '
-            . 'WHERE groupID = ? AND password = ? '
-            . 'LIMIT 1';
+        $query = 'SELECT group_id FROM ' . tblGroupId . ' '
+            . 'WHERE groupID = :group_id AND password = :password '
+            . ' LIMIT 1';
         // Prepare statement.
         $stmt = $link->prepare($query);
-        // Bind only integers and string parameters.
-        $stmt->bind_param('is', $id, $password);
+        // Bind string parameters.
+        $stmt->bindParam(':group_id', $id, PDO::PARAM_STR);
+        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
         $stmt->execute();
 
         if($stmt->fetch()) {
