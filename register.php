@@ -8,13 +8,27 @@
  */
 require_once 'libraries/common.inc.php';
 require_once 'libraries/register.lib.php';
+require_once 'libraries/swiftmailer/lib/swift_required.php';
 
 // If Form is submitted, process it.
-if (isset($_REQUEST['agreement'])) {
+if ((isset($_REQUEST['agreement']) && $_REQUEST['agreement'] == 'on')
+    && (isset($_REQUEST['submit']) && $_REQUEST['submit'] == 'Register')) {
     $response = HAA_Response::getInstance();
-    $response->addJSON('message', 'Hello');
+
+    // Parse and save form data.
+    $save = HAA_saveStudentRecord($_REQUEST);
+
+    if ($save) {
+        $response->addJSON('message', $GLOBALS['message']);
+        $response->addJSON('save', true);
+    } else {
+        $response->addJSON('save', false);
+        $response->addJSON('message'
+            , HAA_generateErrorMessage($GLOBALS['error'])
+        );
+    }
     $response->response();
-    exit();
+    exit;
 }
 
 // Display User Registration form.

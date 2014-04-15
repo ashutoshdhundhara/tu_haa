@@ -14,6 +14,7 @@ function HAA_getHtmlRegisterForm()
         . ' enctype="multipart/form-data"'
         . ' class="register_form gray_grad box">'
         . '<input type="hidden" name="ajax_request" value="true">'
+        . '<input type="hidden" name="MAX_FILE_SIZE" value="2097152">'
         . '<table>'
         . '<caption>Registration Form</caption>'
         . '<tr>'
@@ -23,12 +24,12 @@ function HAA_getHtmlRegisterForm()
         . '</tr>'
         . '<tr>'
         . '<td><label for="input_name">Name<sup class="req">*</sup> :</label></td>'
-        . '<td><input type="text" class="required" id="input_name" name="name"'
+        . '<td><input type="text" class="required" id="input_name" name="full_name"'
         . ' title="Please provide your Full Name"></td>'
         . '</tr>'
         . '<td><label for="input_photo">Photo<sup class="req">*</sup> :</label></td>'
-        . '<td><input type="file" class="required" id="input_photo" name="photo"'
-        . ' title="Please provide your latest Passport size photograph"></td>'
+        . '<td><input type="file" class="required" id="input_photo" name="photo" accept="image/*"'
+        . ' title="Please provide your latest Passport size photograph (< 2MB)"></td>'
         . '</tr>'
         . '<tr>'
         . '<td><label for="input_class">Class<sup class="req">*</sup> :</label></td>'
@@ -46,7 +47,7 @@ function HAA_getHtmlRegisterForm()
         . '<tr>'
         . '<td><label for="input_dob">Date Of Birth<sup class="req">*</sup> :</label></td>'
         . '<td><input type="text" id="input_dob" class="datefield required" name="dob"'
-        . ' title="Please provide your Date Of Birth"></td>'
+        . ' title="Please provide your Date Of Birth (YYYY-MM-DD)"></td>'
         . '</tr>'
         . '<tr>'
         . '<td><label for="input_category">Category<sup class="req">*</sup> :</label></td>'
@@ -54,11 +55,11 @@ function HAA_getHtmlRegisterForm()
         . '</tr>'
         . '<tr>'
         . '<td><label for="input_blood">Blood Group<sup class="req">*</sup> :</label></td>'
-        . '<td>' . HAA_getHtmlSelectBlood() . '</td>'
+        . '<td>' . HAA_getHtmlSelectBloodGroup() . '</td>'
         . '</tr>'
         . '<tr>'
         . '<td><label for="input_stud_mob">Student Mobile<sup class="req">*</sup> :</label></td>'
-        . '<td><input type="text" id="input_stud_mob" class="mobilefield required" name="stud_mob"'
+        . '<td><input type="text" id="input_stud_mob" class="mobilefield required" name="student_mobile"'
         . ' title="Please provide your Mobile number"></td>'
         . '</tr>'
         . '<tr>'
@@ -100,6 +101,10 @@ function HAA_getHtmlRegisterForm()
         . '<td><label for="input_landline">Landline :</label></td>'
         . '<td><input type="text" id="input_landline" name="landline"'
         . ' title="Please provide your Home Landline number"></td>'
+        . '</tr>'
+        . '<tr>'
+        . '<td><label for="input_type">Want room as<sup class="req">*</sup> :</label></td>'
+        . '<td>' . HAA_getHtmlSelectRoomType() . '</td>'
         . '</tr>'
         . '<tr>'
         . '<td colspan="2"><input type="checkbox" id="input_agreement" name="agreement">'
@@ -182,7 +187,7 @@ function HAA_getHtmlSelectCategory()
  *
  * @return string $retval Select box
  */
-function HAA_getHtmlSelectBlood()
+function HAA_getHtmlSelectBloodGroup()
 {
     $retval = '<select name="blood_group" class="required" id="input_blood"'
         .' title="Please provide your Blood Group">'
@@ -198,5 +203,470 @@ function HAA_getHtmlSelectBlood()
         . '</select>';
 
     return $retval;
+}
+
+/**
+ * Generates Html for Select room type list box.
+ *
+ * @return string $retval Select box
+ */
+function HAA_getHtmlSelectRoomType()
+{
+    $retval = '<select name="room_type" class="required" id="input_type"'
+        .' title="Please select whether you want to take room as an Individual or as a part of a Group">'
+        . '<option>...</option>'
+        . '<option value="individual">an Individual</option>'
+        . '<option value="group">a part of a Group</option>'
+        . '</select>';
+
+    return $retval;
+}
+
+/**
+ * Parses received form data.
+ *
+ * @param array Array of variable-value pair.
+ *
+ * @return bool|array Returns array if everything fine else 'false'
+ */
+function HAA_parseFormData($form_data)
+{
+    // Array containing parsed form parameters.
+    $form_params = array();
+    // List of valid column names.
+    $column_whitelist = array(
+        'roll_no'
+        , 'full_name'
+        , 'class'
+        , 'branch'
+        , 'current_year'
+        , 'dob'
+        , 'category'
+        , 'blood_group'
+        , 'student_mobile'
+        , 'email'
+        , 'father_name'
+        , 'father_mobile'
+        , 'mother_name'
+        , 'mother_mobile'
+        , 'landline'
+    );
+
+    // Name of corresponding fields.
+    $fields = array(
+        'roll_no' => 'Roll No'
+        , 'full_name' => 'Full Name'
+        , 'class' => 'Class'
+        , 'branch' => 'Branch'
+        , 'current_year' => 'Current Year'
+        , 'dob' => 'Date Of Birth'
+        , 'category' => 'Category'
+        , 'blood_group' => 'Blood Group'
+        , 'student_mobile' => 'Student Mobile'
+        , 'email' => 'Email'
+        , 'father_name' => 'Father Name'
+        , 'father_mobile' => 'Father Mobile'
+        , 'mother_name' => 'Mother Name'
+        , 'mother_mobile' => 'Mother Mobile'
+        , 'permanent_address' => 'Permanent Address'
+        , 'alternate_address' => 'Alternate Address'
+        , 'landline' => 'Landline'
+    );
+
+    // List of columns to be validated for alphabets only.
+    $names = array(
+        'full_name'
+        , 'class'
+        , 'branch'
+        , 'category'
+        , 'father_name'
+        , 'mother_name'
+    );
+    //List of columns to be validated for mobile number.
+    $mobile_numbers = array(
+        'student_mobile'
+        , 'father_mobile'
+        , 'mother_mobile'
+    );
+    // List of columns to be validated for email.
+    $emails = array(
+        'email'
+    );
+    //List of columns to be validated for Blood Group.
+    $blood_groups = array(
+        'blood_group'
+    );
+    //List of columns to be validated for integers only.
+    $integers = array(
+        'roll_no'
+        , 'current_year'
+        , 'landline'
+    );
+    // List of columns to validated for dates.
+    $dates = array(
+        'dob'
+    );
+
+    // If landline, mother_mobile empty, then they need not to be validated.
+    if (empty($form_data['landline'])) {
+        unset($column_whitelist[array_search('landline', $column_whitelist)]);
+        $form_params[':landline'] = '';
+    }
+    if (empty($form_data['mother_mobile'])) {
+        unset($column_whitelist[array_search('mother_mobile', $column_whitelist)]);
+        $form_params[':mother_mobile'] = '';
+    }
+
+    // Push addresses, as they need not to be validated.
+    $form_params[':permanent_address'] = $_REQUEST['permanent_address'];
+    $form_params[':alternate_address'] = $_REQUEST['alternate_address'];
+
+    $i=0;
+    foreach ($form_data as $column => $value) {
+        if (! empty($column) && in_array($column, $column_whitelist)) {
+            if (in_array($column, $names)) {
+                if (! HAA_validateValue($value, 'name')) {
+                    HAA_inValidField($fields[$column]);
+                } else {
+                    $form_params[':' . $column] = $value;
+                }
+            } elseif (in_array($column, $mobile_numbers)) {
+                if (! HAA_validateValue($value, 'mobile')) {
+                    HAA_inValidField($fields[$column]);
+                } else {
+                    $form_params[':' . $column] = $value;
+                }
+            } elseif (in_array($column, $emails)) {
+                if (! HAA_validateValue($value, 'email')) {
+                    HAA_inValidField($fields[$column]);
+                } else {
+                    $form_params[':' . $column] = $value;
+                }
+            } elseif (in_array($column, $blood_groups)) {
+                if (! HAA_validateValue($value, 'blood_group')) {
+                    HAA_inValidField($fields[$column]);
+                } else {
+                    $form_params[':' . $column] = $value;
+                }
+            } elseif (in_array($column, $integers)) {
+                if (! HAA_validateValue($value, 'integer')) {
+                    HAA_inValidField($fields[$column]);
+                } else {
+                    $form_params[':' . $column] = $value;
+                }
+            } elseif (in_array($column, $dates)) {
+                if (! HAA_validateValue($value, 'date')) {
+                    HAA_inValidField($fields[$column]);
+                } else {
+                    $form_params[':' . $column] = $value;
+                }
+            } else {
+                // Nothing
+            }
+
+            // Remove matched element from white list.
+            unset($column_whitelist[$i++]);
+        }
+    }
+
+    // Validate uploaded photo.
+    $photo = HAA_validatePhoto($form_params[':roll_no']);
+    if ($photo == false) {
+        return false;
+    }
+
+    // Add photo to form_params
+    $form_params[':photo'] = $photo;
+
+    // If $column_whitelist still contains any value, then form was incomplete.
+    if (count($column_whitelist) > 0) {
+        $GLOBALS['error'] = array();
+        array_push($GLOBALS['error'],
+            'Form submitted with incomplete data.'
+        );
+        return false;
+    }
+
+    // If faced any error.
+    if (! empty($GLOBALS['error'])) {
+        return false;
+    }
+
+    return $form_params;
+}
+
+/**
+ * Saves user information into database.
+ *
+ * @param array Form parameters.
+ * @return bool Success or failure
+ */
+function HAA_saveStudentRecord($form_params)
+{
+    // Parse form data.
+    $parsed_form_data = HAA_parseFormData($form_params);
+
+    if (is_array($parsed_form_data) && $parsed_form_data != false) {
+
+        // Check if record already exists.
+        if (HAA_isExists($parsed_form_data[':roll_no'])) {
+            HAA_gotError(
+                $parsed_form_data[':full_name'] . '(' . $parsed_form_data[':roll_no'] . ')'
+                . ' is already registered. In case of any discrepency, please immediately'
+                . ' contact administration.'
+            );
+            return false;
+        }
+        // Check if student is eligible for hostel or not.
+        if (! HAA_isEligible($parsed_form_data[':roll_no'])) {
+            HAA_gotError(
+                $parsed_form_data[':full_name'] . '(' . $parsed_form_data[':roll_no'] . ')'
+                . ' has not been allotted Hostel-J. Check your Web Kiosk.'
+            );
+            return false;
+        }
+
+        // Generate Unique ID.
+        $unique_id = HAA_generateUniqueId();
+        if (! $unique_id) {
+            return false;
+        }
+
+        // Add newly generated unique ID to $parsed_form_data.
+        $parsed_form_data[':unique_id'] = $unique_id;
+
+        $sql_query = 'INSERT INTO `' . dbName . '`.`' . tblStudent . '`'
+            . ' (`unique_id`, `roll_no`, `full_name`, `class`, `branch`, `current_year`'
+            . ', `dob`, `category`, `blood_group`, `student_mobile`, `email`'
+            . ', `father_name`, `father_mobile`, `mother_name`, `mother_mobile`'
+            . ', `permanent_address`, `alternate_address`, `landline`, `photo`) '
+            . 'VALUES (:unique_id'
+            . ', :roll_no'
+            . ', UPPER(TRIM(:full_name))'
+            . ', :class'
+            . ', UPPER(TRIM(:branch))'
+            . ', :current_year'
+            . ', :dob'
+            . ', :category'
+            . ', :blood_group'
+            . ', :student_mobile'
+            . ', TRIM(:email)'
+            . ', UPPER(TRIM(:father_name))'
+            . ', :father_mobile'
+            . ', UPPER(TRIM(:mother_name))'
+            . ', :mother_mobile'
+            . ', TRIM(:permanent_address)'
+            . ', TRIM(:alternate_address)'
+            . ', :landline'
+            . ', :photo'
+            .')';
+
+        // Execute the query.
+        $insert_query = $GLOBALS['dbi']->executeQuery($sql_query, $parsed_form_data);
+
+        // If fails to insert record.
+        if (! $insert_query) {
+            HAA_gotError(
+                'Failed to save record.'
+            );
+            return false;
+        }
+
+        // If user wants individual room, create his login ID.
+
+        // Send an email.
+        $to = array($parsed_form_data[':email'] => $parsed_form_data[':full_name']);
+        $from = array(smtpFromEmail => smtpFromName);
+        $subject = 'Hostel-J Registraion';
+        $message = 'Dear' . $parsed_form_data[':full_name'] .'\n\n'
+            . '\tYour Personal details have been successfully received.\n'
+            . '\tYour Unique ID is :' . $parsed_form_data[':unique_id'] . '\n\n\n'
+            . 'Regards,\n'
+            . smtpFromName . ', Hostel-J\n'
+            . 'Thapar University';
+        $mail = HAA_sendMail($subject, $to, $from, $message);
+
+        // Create a success message.
+        $success_msg = '<div class="success">'
+            . '<h1>CONGRATULATIONS !</h1>'
+            . '<div>Successfully received the details of :</div>'
+            . '<div class="blue" style="text-align: center;">'
+            . '<p>' . $parsed_form_data[':full_name'] . '</p>'
+            . '<p>' . $parsed_form_data[':roll_no'] . '</p>'
+            . '</div>'
+            . '<p>This is your Unique ID : <span class="blue">'
+            . $parsed_form_data[':unique_id'] . '</span><br>'
+            . '<strong>Please note it down at a safe place.</strong><br>'
+            . '<strong>It will be required during the Group Creation process.</strong></p>'
+            . ($mail == false) ? ('')
+                : ('<p>An email has also been sent to : <span class="blue">'
+                    . $parsed_form_data[':email'] . '</span><br>')
+            . '</div>';
+        $GLOBALS['message'] = $success_msg;
+
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Generates a Unique ID.
+ *
+ * @return string $unique_id Unique ID.
+ */
+function HAA_generateUniqueId() {
+
+    // SQL query to check if unique id already exists.
+    $sql_query = 'SELECT unique_id FROM ' . tblStudent . ' '
+        . 'WHERE unique_id = :unique_id';
+    $unique_id = '';
+
+    do {
+        $unique_id = (string) mt_rand(1000,9999);
+        $temp_result = $GLOBALS['dbi']->executeQuery(
+            $sql_query, array(':unique_id' => $unique_id)
+        );
+
+        if (! $temp_result->fetch()) {
+            break;
+        }
+    }
+    while(true);
+
+    return $unique_id;
+}
+
+/**
+ * Checks if student has been allocated hostel or not.
+ *
+ * @param string $roll_no Student's roll number.
+ * @return bool Allocated or not
+ */
+function HAA_isEligible($roll_no)
+{
+    // Query to check if student is eligible for hostel or not.
+    $sql_query = 'SELECT roll_number FROM ' . tblEligibleStudents .' '
+        . 'WHERE roll_no = :roll_no';
+
+    // Execute query.
+    $temp_result = $GLOBALS['dbi']->executeQuery(
+        $sql_query, array(':roll_no' => $roll_no)
+    );
+
+    if (! $temp_result->fetch()) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Checks if record already exists.
+ *
+ * @param string $roll_no
+ * @return bool True|False
+ */
+function HAA_isExists($roll_no)
+{
+    // Query to check if record alredy exists.
+    $sql_query = 'SELECT roll_no FROM ' . tblStudent . ' '
+        . 'WHERE roll_no = :roll_no';
+
+    // Execute query.
+    $temp_result = $GLOBALS['dbi']->executeQuery(
+        $sql_query, array(':roll_no' => $roll_no)
+    );
+
+    if ($temp_result->fetch()) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Validates uploaded photo.
+ *
+ * @param string $roll_no Roll number of student for file naming.
+ * @return bool|string If valid, returns filename else false
+ */
+function HAA_validatePhoto($roll_no)
+{
+    // Undefined | Multiple Files | $_FILES Corruption Attack
+    // If this request falls under any of them, treat it invalid.
+    if (! isset($_FILES['photo']['error'])
+        || is_array($_FILES['photo']['error'])
+    ) {
+        HAA_gotError(
+            'Invalid Photo uploaded.'
+        );
+        return false;
+    }
+
+    // Check $_FILES['photo']['error'] value for type of error.
+    $err_msg = '';
+    switch ($_FILES['photo']['error']) {
+        case UPLOAD_ERR_OK:
+            break;
+        case UPLOAD_ERR_NO_FILE:
+            $err_msg = 'No photo sent.';
+            break;
+        case UPLOAD_ERR_INI_SIZE:
+        case UPLOAD_ERR_FORM_SIZE:
+            $err_msg = 'Image file size limit execeeded.';
+            break;
+        default:
+            $err_msg = 'Something went wrong with photo.';
+            break;
+    }
+
+    if (!empty($err_msg)) {
+        HAA_gotError(
+            $err_msg
+        );
+        return false;
+    }
+
+    // Checking file size. (< 2MB)
+    if ($_FILES['photo']['size'] > 2097152) {
+        HAA_gotError(
+            'Image file size limit execeeded.'
+        );
+        return false;
+    }
+
+    // DO NOT TRUST $_FILES['photo']['mime'] VALUE !!
+    // Check MIME Type by yourself.
+    $finfo = new finfo(FILEINFO_MIME_TYPE);
+    if (false === $ext = array_search(
+        $finfo->file($_FILES['photo']['tmp_name']),
+        array(
+            'jpg' => 'image/jpeg',
+            'png' => 'image/png',
+            'bmp' => 'image/bmp',
+        ),
+        true
+    )) {
+        HAA_gotError(
+            'Invalid image format.'
+        );
+        return false;
+    }
+
+    // Give unique name.
+    $filename = './student_photos/' . $roll_no . '.' . $ext;
+    // Save uploaded file.
+    if (!move_uploaded_file(
+        $_FILES['photo']['tmp_name'],
+        $filename
+    )) {
+        HAA_gotError(
+            'Failed to save photo.'
+        );
+        return false;
+    }
+
+    return $filename;
 }
 ?>
