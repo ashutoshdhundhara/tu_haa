@@ -142,7 +142,6 @@ footer {
     padding-top: 0.8em;
     padding-bottom: 0.8em;
     line-height: 1.6em;
-    margin-bottom: 1em;
     box-shadow: rgba(0,0,0,0.5) 0 5px 10px;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
 }
@@ -212,6 +211,29 @@ footer li {
 
 .separator {
     width: 2em;
+}
+
+.blue {
+    color: #2951CC;
+    font-weight: 800;
+}
+
+.shadow {
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
+}
+
+.success {
+    border: 1px solid gray;
+    border-radius: 5px;
+    line-height: 1.6em;
+    padding: 0.5em;
+}
+
+.success h1 {
+    color: #33BB3A;
+    font-weight: 800;
+    text-align: center;
 }
 
 .ui-autocomplete, .ui-datepicker {
