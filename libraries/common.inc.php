@@ -39,5 +39,13 @@ require_once 'libraries/DatabaseInterface.class.php';
  * Global DBI class instance.
  */
 $GLOBALS['dbi'] = new HAA_DatabaseInterface();
+/**
+ * Global array to store errors
+ */
+$GLOBALS['error'] = array();
+/**
+ * Global array to store success messages.
+ */
+$GLOBALS['message'] = array();
 
 ?>
