@@ -11,8 +11,7 @@ require_once 'libraries/register.lib.php';
 require_once 'libraries/swiftmailer/lib/swift_required.php';
 
 // If Form is submitted, process it.
-if ((isset($_REQUEST['agreement']) && $_REQUEST['agreement'] == 'on')
-    && (isset($_REQUEST['submit']) && $_REQUEST['submit'] == 'Register')) {
+if (isset($_REQUEST['agreement'])) {
     $response = HAA_Response::getInstance();
 
     // Parse and save form data.
