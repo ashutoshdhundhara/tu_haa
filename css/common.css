@@ -223,17 +223,32 @@ footer li {
     text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
 }
 
-.success {
+.response_dialog {
     border: 1px solid gray;
     border-radius: 5px;
     line-height: 1.6em;
     padding: 0.5em;
 }
 
+.success {
+    /*Success message styling*/
+}
+
 .success h1 {
     color: #33BB3A;
     font-weight: 800;
     text-align: center;
+}
+
+.error h1 {
+    color: #DA1616;
+    font-weight: 800;
+    text-align: center;
+}
+
+.error ul {
+    list-style-type: disc;
+    list-style-position: inside;
 }
 
 .ui-autocomplete, .ui-datepicker {
