@@ -381,9 +381,7 @@ function HAA_parseFormData($form_data)
     // If $column_whitelist still contains any value, then form was incomplete.
     if (count($column_whitelist) > 0) {
         $GLOBALS['error'] = array();
-        array_push($GLOBALS['error'],
-            'Form submitted with incomplete data.'
-        );
+        HAA_gotError('Form submitted with incomplete data.');
         return false;
     }
 
@@ -487,7 +485,7 @@ function HAA_saveStudentRecord($form_params)
         $mail = HAA_sendMail($subject, $to, $from, $message);
 
         // Create a success message.
-        $success_msg = '<div class="success">'
+        $success_msg = '<div class="response_dialog success">'
             . '<h1>CONGRATULATIONS !</h1>'
             . '<div>Successfully received the details of :</div>'
             . '<div class="blue" style="text-align: center;">'
