@@ -94,7 +94,11 @@ function HAA_submitForm($form)
             var buttonOptions = {};
             // 'OK' button action.
             buttonOptions['OK'] = function () {
-                $(this).dialog('close');
+                if (response.save) {
+                    window.location.replace('http://onlinehostelj.in');
+                } else {
+                    $(this).dialog('close');
+                }
             };
 
             if (response.success) {
@@ -120,6 +124,9 @@ function HAA_submitForm($form)
                             .focus();
                     },
                     close: function () {
+                        if (response.save) {
+                            window.location.replace('http://onlinehostelj.in');
+                        }
                         $(this).remove();
                     }
                 });
