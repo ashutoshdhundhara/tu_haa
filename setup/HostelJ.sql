@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `admin_id` (
 
 CREATE TABLE IF NOT EXISTS `eligible_students` (
   `roll_no` varchar(12) NOT NULL,
-  `full_name` int(50) NOT NULL
+  `full_name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains list of students eligible for Hostel-J.';
 
 -- --------------------------------------------------------
