@@ -80,7 +80,7 @@ function HAA_generateErrorMessage($messages)
 {
     $retval = '<div class="response_dialog error">';
     $retval .= '<h1>ERROR</h1>';
-    $retval .= '<p>Following error(s) occurred : </p>';
+    $retval .= '<strong>Following error(s) occurred : </strong>';
     $retval .= '<ul>';
     foreach ($messages as $message) {
         $retval .= '<li>' . $message . '</li>';
@@ -104,26 +104,164 @@ function HAA_sendMail($subject, $recepient, $sender, $message)
     // Load mail constants.
     require_once 'libraries/mailConstants.php';
 
-     // Create a Transport for sending mail.
-    $transport = Swift_SmtpTransport::newInstance(smtpServer, smtpPort);
-    // Set Username.
-    $transport->setUsername(smtpUsername);
-    // Set Password.
-    $transport->setPassword(smtpPassword);
+    try {
+         // Create a Transport for sending mail.
+        $transport = Swift_SmtpTransport::newInstance(smtpServer, smtpPort);
+        // Set Username.
+        $transport->setUsername(smtpUsername);
+        // Set Password.
+        $transport->setPassword(smtpPassword);
 
-    // Create a SwiftMailer instance.
-    $mailer = Swift_Message::newInstance($transport);
+        // Create a SwiftMailer instance.
+        $mailer = Swift_Message::newInstance($transport);
 
-    // Create message instance with subject.
-    $mail = Swift_Message::newInstance($subject);
-    // Set recepients.
-    $mail->setTo($recepient);
-    // Set sender.
-    $mail->setFrom($sender);
-    // Set message body.
-    $mail->setBody($message);
+        // Create message instance with subject.
+        $mail = Swift_Message::newInstance($subject);
+        // Set recepients.
+        $mail->setTo($recepient);
+        // Set sender.
+        $mail->setFrom($sender);
+        // Set message body.
+        $mail->setBody($message);
 
-    // Send message.
-    return $mailer->send($mail);
+        // Send message.
+        return $mailer->send($mail);
+    } catch (Exception $excp) {
+        return false;
+    }
+}
+
+/**
+ * Inserts record into `tblStudent`.
+ *
+ * @param array $params Query parameters
+ * @return PDO object
+ */
+function HAA_insertStudentRecord($params)
+{
+    // Create SQL query.
+    $sql_query = 'INSERT INTO `' . dbName . '`.`' . tblStudent . '`'
+        . ' (`unique_id`, `roll_no`, `full_name`, `class`, `branch`, `current_year`'
+        . ', `dob`, `category`, `blood_group`, `student_mobile`, `email`'
+        . ', `father_name`, `father_mobile`, `mother_name`, `mother_mobile`'
+        . ', `permanent_address`, `alternate_address`, `landline`, `photo`) '
+        . 'VALUES (:unique_id'
+        . ', :roll_no'
+        . ', UPPER(TRIM(:full_name))'
+        . ', :class'
+        . ', UPPER(TRIM(:branch))'
+        . ', :current_year'
+        . ', :dob'
+        . ', :category'
+        . ', :blood_group'
+        . ', :student_mobile'
+        . ', TRIM(:email)'
+        . ', UPPER(TRIM(:father_name))'
+        . ', :father_mobile'
+        . ', UPPER(TRIM(:mother_name))'
+        . ', :mother_mobile'
+        . ', TRIM(:permanent_address)'
+        . ', TRIM(:alternate_address)'
+        . ', :landline'
+        . ', :photo'
+        .')';
+
+    // Execute the query.
+    $result = $GLOBALS['dbi']->executeQuery($sql_query, $params);
+
+    return $result;
+}
+
+/**
+ * Deletes a record from `tblStudent`.
+ *
+ * @param string $roll_no Roll number
+ * @return PDO object
+ */
+function HAA_deleteStudentRecord($roll_no)
+{
+    // Create SQL query.
+    $sql_query = 'DELETE FROM `' . dbName . '`.`' . tblStudent . '`'
+        . ' WHERE roll_no = :roll_no';
+
+    $result = $GLOBALS['dbi']->executeQuery($sql_query,
+        array(':roll_no' => $roll_no));
+
+    return $result;
+}
+
+/**
+ * Generates a Unique ID.
+ *
+ * @return string $unique_id Unique ID.
+ */
+function HAA_generateUniqueId() {
+
+    // SQL query to check if unique id already exists.
+    $sql_query = 'SELECT unique_id FROM ' . tblStudent . ' '
+        . 'WHERE unique_id = :unique_id';
+    $unique_id = '';
+
+    do {
+        $unique_id = (string) mt_rand(1000,9999);
+        $temp_result = $GLOBALS['dbi']->executeQuery(
+            $sql_query, array(':unique_id' => $unique_id)
+        );
+
+        if (! $temp_result->fetch()) {
+            break;
+        }
+    }
+    while(true);
+
+    return $unique_id;
+}
+
+/**
+ * Checks if student has been allocated hostel or not.
+ *
+ * @param string $roll_no Student's roll number.
+ * @return bool Allocated or not
+ */
+function HAA_isEligible($roll_no)
+{
+    // Query to check if student is eligible for hostel or not.
+    $sql_query = 'SELECT roll_no FROM ' . tblEligibleStudents .' '
+        . 'WHERE roll_no = :roll_no';
+
+    // Execute query.
+    $temp_result = $GLOBALS['dbi']->executeQuery(
+        $sql_query, array(':roll_no' => $roll_no)
+    );
+
+    if (! $temp_result->fetch()) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Checks if record already exists.
+ *
+ * @param string $roll_no
+ * @return bool True|False
+ */
+function HAA_isStudentRecordExists($roll_no)
+{
+    // Query to check if record alredy exists.
+    $sql_query = 'SELECT roll_no FROM ' . tblStudent . ' '
+        . 'WHERE roll_no = :roll_no';
+
+    // Execute query.
+    $temp_result = $GLOBALS['dbi']->executeQuery(
+        $sql_query, array(':roll_no' => $roll_no)
+    );
+
+    if ($temp_result->fetch()) {
+        return true;
+    }
+
+    return false;
 }
 ?>

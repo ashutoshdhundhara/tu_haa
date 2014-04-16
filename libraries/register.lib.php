@@ -407,10 +407,10 @@ function HAA_saveStudentRecord($form_params)
     if (is_array($parsed_form_data) && $parsed_form_data != false) {
 
         // Check if record already exists.
-        if (HAA_isExists($parsed_form_data[':roll_no'])) {
-            HAA_gotError(
-                $parsed_form_data[':full_name'] . '(' . $parsed_form_data[':roll_no'] . ')'
-                . ' is already registered. In case of any discrepency, please immediately'
+        if (HAA_isStudentRecordExists($parsed_form_data[':roll_no'])) {
+            HAA_gotError( '<span class="blue">'
+                . $parsed_form_data[':full_name'] . '(' . $parsed_form_data[':roll_no'] . ')'
+                . '</span> is already registered. In case of any discrepency, please immediately'
                 . ' contact administration.'
             );
             return false;
@@ -433,39 +433,28 @@ function HAA_saveStudentRecord($form_params)
         // Add newly generated unique ID to $parsed_form_data.
         $parsed_form_data[':unique_id'] = $unique_id;
 
-        $sql_query = 'INSERT INTO `' . dbName . '`.`' . tblStudent . '`'
-            . ' (`unique_id`, `roll_no`, `full_name`, `class`, `branch`, `current_year`'
-            . ', `dob`, `category`, `blood_group`, `student_mobile`, `email`'
-            . ', `father_name`, `father_mobile`, `mother_name`, `mother_mobile`'
-            . ', `permanent_address`, `alternate_address`, `landline`, `photo`) '
-            . 'VALUES (:unique_id'
-            . ', :roll_no'
-            . ', UPPER(TRIM(:full_name))'
-            . ', :class'
-            . ', UPPER(TRIM(:branch))'
-            . ', :current_year'
-            . ', :dob'
-            . ', :category'
-            . ', :blood_group'
-            . ', :student_mobile'
-            . ', TRIM(:email)'
-            . ', UPPER(TRIM(:father_name))'
-            . ', :father_mobile'
-            . ', UPPER(TRIM(:mother_name))'
-            . ', :mother_mobile'
-            . ', TRIM(:permanent_address)'
-            . ', TRIM(:alternate_address)'
-            . ', :landline'
-            . ', :photo'
-            .')';
-
-        // Execute the query.
-        $insert_query = $GLOBALS['dbi']->executeQuery($sql_query, $parsed_form_data);
+        // Insert student record.
+        $result = HAA_insertStudentRecord($parsed_form_data);
 
         // If fails to insert record.
-        if (! $insert_query) {
+        if (! $result) {
             HAA_gotError(
                 'Failed to save record.'
+            );
+            return false;
+        }
+
+        // Save uploaded photo.
+        if (! move_uploaded_file(
+            $_FILES['photo']['tmp_name'],
+            $parsed_form_data[':photo']
+        )) {
+            // If failed to save photo, then remove the newly saved DB record.
+            if (HAA_isStudentRecordExists($parsed_form_data[':roll_no'])) {
+                HAA_deleteStudentRecord($parsed_form_data[':roll_no']);
+            }
+            HAA_gotError(
+                'Failed to save photo. Please retry.'
             );
             return false;
         }
@@ -483,6 +472,9 @@ function HAA_saveStudentRecord($form_params)
             . smtpFromName . ', Hostel-J\n'
             . 'Thapar University';
         $mail = HAA_sendMail($subject, $to, $from, $message);
+        $mail_message = ($mail == false) ? ('')
+            : ('<p>An email has also been sent to : <span class="blue">'
+                . $parsed_form_data[':email'] . '</span><br>');
 
         // Create a success message.
         $success_msg = '<div class="response_dialog success">'
@@ -496,9 +488,7 @@ function HAA_saveStudentRecord($form_params)
             . $parsed_form_data[':unique_id'] . '</span><br>'
             . '<strong>Please note it down at a safe place.</strong><br>'
             . '<strong>It will be required during the Group Creation process.</strong></p>'
-            . ($mail == false) ? ('')
-                : ('<p>An email has also been sent to : <span class="blue">'
-                    . $parsed_form_data[':email'] . '</span><br>')
+            . $mail_message
             . '</div>';
         $GLOBALS['message'] = $success_msg;
 
@@ -506,81 +496,6 @@ function HAA_saveStudentRecord($form_params)
     } else {
         return false;
     }
-}
-
-/**
- * Generates a Unique ID.
- *
- * @return string $unique_id Unique ID.
- */
-function HAA_generateUniqueId() {
-
-    // SQL query to check if unique id already exists.
-    $sql_query = 'SELECT unique_id FROM ' . tblStudent . ' '
-        . 'WHERE unique_id = :unique_id';
-    $unique_id = '';
-
-    do {
-        $unique_id = (string) mt_rand(1000,9999);
-        $temp_result = $GLOBALS['dbi']->executeQuery(
-            $sql_query, array(':unique_id' => $unique_id)
-        );
-
-        if (! $temp_result->fetch()) {
-            break;
-        }
-    }
-    while(true);
-
-    return $unique_id;
-}
-
-/**
- * Checks if student has been allocated hostel or not.
- *
- * @param string $roll_no Student's roll number.
- * @return bool Allocated or not
- */
-function HAA_isEligible($roll_no)
-{
-    // Query to check if student is eligible for hostel or not.
-    $sql_query = 'SELECT roll_number FROM ' . tblEligibleStudents .' '
-        . 'WHERE roll_no = :roll_no';
-
-    // Execute query.
-    $temp_result = $GLOBALS['dbi']->executeQuery(
-        $sql_query, array(':roll_no' => $roll_no)
-    );
-
-    if (! $temp_result->fetch()) {
-        return false;
-    }
-
-    return true;
-}
-
-/**
- * Checks if record already exists.
- *
- * @param string $roll_no
- * @return bool True|False
- */
-function HAA_isExists($roll_no)
-{
-    // Query to check if record alredy exists.
-    $sql_query = 'SELECT roll_no FROM ' . tblStudent . ' '
-        . 'WHERE roll_no = :roll_no';
-
-    // Execute query.
-    $temp_result = $GLOBALS['dbi']->executeQuery(
-        $sql_query, array(':roll_no' => $roll_no)
-    );
-
-    if ($temp_result->fetch()) {
-        return true;
-    }
-
-    return false;
 }
 
 /**
@@ -654,16 +569,6 @@ function HAA_validatePhoto($roll_no)
 
     // Give unique name.
     $filename = './student_photos/' . $roll_no . '.' . $ext;
-    // Save uploaded file.
-    if (!move_uploaded_file(
-        $_FILES['photo']['tmp_name'],
-        $filename
-    )) {
-        HAA_gotError(
-            'Failed to save photo.'
-        );
-        return false;
-    }
 
     return $filename;
 }
