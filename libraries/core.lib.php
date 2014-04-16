@@ -78,10 +78,14 @@ function HAA_gotError($message)
  */
 function HAA_generateErrorMessage($messages)
 {
-    $retval = '<ul class="error_list">';
+    $retval = '<div class="response_dialog error">';
+    $retval .= '<h1>ERROR</h1>';
+    $retval .= '<p>Following error(s) occurred : </p>';
+    $retval .= '<ul>';
     foreach ($messages as $message) {
         $retval .= '<li>' . $message . '</li>';
     }
+    $retval .= '</ul></div>';
 
     return $retval;
 }
