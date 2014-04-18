@@ -1,0 +1,6 @@
+# Directory for 'Photo' uploads.
+/student_photos/
+
+# Configuration files.
+/libraries/dbConstants.php
+/libraries/mailConstants.php
