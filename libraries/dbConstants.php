@@ -7,28 +7,28 @@
  * Define global constants for database connection.
  */
 // Define DB server.
-define('dbHost', '');
+define('dbHost', 'localhost');
 // Define DB Username.
-define('dbUser', '');
+define('dbUser', 'root');
 // Define DB Password.
-define('dbPass', '');
+define('dbPass', 'logMein');
 // Define DB Name.
-define('dbName', '');
+define('dbName', 'HostelJ');
 
 /**
  * Define constants for databse tables.
  */
 //Define table for storing Student details.
-define('tblStudent', '');
+define('tblStudent', 'student_details');
 //Define table for storing Group details.
-define('tblGroup', '');
+define('tblGroup', 'group_details');
 //Define table for storing Group credentials.
-define('tblGroupId', '');
+define('tblGroupId', 'group_id');
 // Define table for storing Eligible students.
-define('tblEligibleStudents', '');
+define('tblEligibleStudents', 'eligible_students');
 // Define table for storing Rooms details.
-define('tblRoom', '');
+define('tblRoom', 'room_info');
 // Define table for Admin credentials.
-define('tblAdmin', '');
+define('tblAdmin', 'admin_id');
 
 ?>
