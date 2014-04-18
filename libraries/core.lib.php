@@ -102,7 +102,7 @@ function HAA_generateErrorMessage($messages)
 function HAA_sendMail($subject, $recepient, $sender, $message)
 {
     // Load mail constants.
-    require_once 'libraries/mailConstants.php';
+    require_once 'libraries/mailConstants.inc.php';
 
     try {
          // Create a Transport for sending mail.

@@ -2,5 +2,5 @@
 /student_photos/
 
 # Configuration files.
-/libraries/dbConstants.php
-/libraries/mailConstants.php
+/libraries/dbConstants.inc.php
+/libraries/mailConstants.inc.php

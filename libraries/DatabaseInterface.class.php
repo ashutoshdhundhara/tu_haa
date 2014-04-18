@@ -10,7 +10,7 @@ if (! defined('TU_HAA')) {
 /**
  * Include all DB constants.
  */
-require_once 'libraries/dbConstants.php';
+require_once 'libraries/dbConstants.inc.php';
 
 /**
  * Class that manages all db interactions.
