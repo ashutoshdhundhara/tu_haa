@@ -1,0 +1,15 @@
+/**
+ * Styles required for Group creation page.
+ */
+
+.group_form {
+    width: 600px;
+    margin: 0 auto;
+}
+
+.group_form table {
+    table-layout: fixed;
+    margin: 0 auto;
+    width: 500px;
+    min-height: 150px;
+}
