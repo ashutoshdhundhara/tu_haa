@@ -255,6 +255,10 @@ footer li {
     color: #DA2626;
 }
 
+.hide {
+    display: none;
+}
+
 .ui-autocomplete, .ui-datepicker {
     font-size: 0.7em;
 }
