@@ -262,3 +262,22 @@ footer li {
 .ui-dialog {
     font-size: 0.8em;
 }
+
+.req {
+    color: #DA2626;
+}
+
+input[type='text'], select, textarea {
+    width: 250px;
+}
+
+textarea {
+    height: 5em;
+    max-width: 320px;
+    max-height: 100px;
+}
+
+.selector, .uploader {
+    width: 260px;
+    cursor: pointer;
+}
