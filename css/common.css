@@ -251,6 +251,10 @@ footer li {
     list-style-position: inside;
 }
 
+.req {
+    color: #DA2626;
+}
+
 .ui-autocomplete, .ui-datepicker {
     font-size: 0.7em;
 }
