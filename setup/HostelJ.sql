@@ -60,7 +60,10 @@ CREATE TABLE IF NOT EXISTS `group_id` (
 --
 
 CREATE TABLE IF NOT EXISTS `rooms_info` (
-  `room_no` varchar(10) NOT NULL,
+  `wing` char(1) NOT NULL,
+  `floor` char(1) NOT NULL,
+  `cluster` char(1) NOT NULL,
+  `room_no` varchar(2) NOT NULL,
   `room_status` varchar(20) NOT NULL DEFAULT 'AVAILABLE',
   `group_id` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains details about Hostel Rooms.';
@@ -125,7 +128,7 @@ ALTER TABLE `group_id`
 -- Indexes for table `rooms_info`
 --
 ALTER TABLE `rooms_info`
- ADD PRIMARY KEY (`room_no`);
+ ADD PRIMARY KEY (`wing`,`floor`,`cluster`,`room_no`);
 
 --
 -- Indexes for table `student_details`
