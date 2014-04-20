@@ -26,13 +26,25 @@ function HAA_validateValue($value, $type)
             $regEx = '/^[0-9]+$/';
             break;
         case 'blood_group':
-            $regEx = '/^[ABO][AB]{0,1}[\+\-]$/';
+            $regEx = '/^[ABO][\+\-]$|^[A][B][\+\-]$/';
             break;
         case 'email':
             $regEx = '/^[a-zA-Z][a-z0-9]*[\_\.]{0,1}[a-z0-9]+[\@][a-z0-9]+[\.][a-z]+[\.]{0,1}[a-z]+$/';
             break;
         case 'date':
             $regEx = '/^[0-9]{4}[\-][0-9]{2}[\-][0-9]{2}$/';
+            break;
+        case 'password':
+            $regEx = '/^[a-zA-Z0-9\@\_$\.\-]{8,}$/';
+            break;
+        case 'wing':
+            $regEx = '/^[wWeE]$/';
+            break;
+        case 'cluster':
+            $regEx = '/^[a-fA-F]$/';
+            break;
+        case 'room_no':
+            $regEx = '/^[0-9]$|^[1][10]$/';
             break;
     }
 
