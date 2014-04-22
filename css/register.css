@@ -23,7 +23,7 @@
     vertical-align: middle;
 }
 
-input[type='text'], select, textarea {
+input[type='text'], input[type='password'], select, textarea {
     width: 250px;
 }
 

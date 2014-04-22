@@ -151,5 +151,23 @@ function HAA_submitForm($form)
  */
 function HAA_togglePasswordFields($target)
 {
-
+     var $pass = $('<tr class="password_fields">' +
+        '<td colspan="2">Choose Password:</td></tr>' +
+        '<tr class="password_fields"><td colspan="2"><strong>Note: ' +
+        'Login ID will be provided after the registration</strong></td></tr>' +
+        '<tr class="password_fields">'+
+        '<td><label for="input_password">Password:</td>' +
+        '<td><input id="input_password" type="password" name="password"' +
+        ' title="Please provide your password. Password must be atleast 8 characters long. ' +
+        'Password can include only following special symbols: @,$,_,-,."></td></tr>' +
+        '<tr class="password_fields"><td><label for="input_confirm_password">Confirm Password</td>'+
+        '<td><input id="input_confirm_password" type="password" name="confirm_password"' +
+        ' title="Please confirm your password"></td></tr>');
+    if ($target.val() !== '...' && $target.val() !== 'group') {
+        $target.parent().parent().parent().after($pass);
+        $('#input_password, #input_confirm_password').tooltip(tooltip_defaults);
+    }
+    else {
+        $('.password_fields').remove();
+    }
 }
