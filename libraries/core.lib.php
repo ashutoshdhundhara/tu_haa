@@ -3,6 +3,10 @@
  * Contains functions which are common to all php scripts.
  */
 
+if (! defined('TU_HAA')) {
+    exit;
+}
+
 /**
  * Validates a value to corresponding type i.e. name,date etc.
  *
@@ -35,7 +39,7 @@ function HAA_validateValue($value, $type)
             $regEx = '/^[0-9]{4}[\-][0-9]{2}[\-][0-9]{2}$/';
             break;
         case 'password':
-            $regEx = '/^[a-zA-Z0-9\@\_$\.\-]{8,}$/';
+            $regEx = '/^[a-zA-Z0-9\~\!\@\#\$\%\^\&\*]{8,}$/';
             break;
         case 'wing':
             $regEx = '/^[wWeE]$/';

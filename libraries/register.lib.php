@@ -3,6 +3,10 @@
  * Functions required for User registration page.
  */
 
+if (! defined('TU_HAA')) {
+    exit;
+}
+
 /**
  * Generates Html for User registration form.
  *
