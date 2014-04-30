@@ -67,6 +67,36 @@ header table {
     background:         linear-gradient(top,#f6f7f9, #E5E6E7);
 }
 
+.button_grad {
+    background: rgb(255,255,255); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(229,229,229,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+}
+
+.button_grad:hover {
+    background: rgb(238,238,238); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(238,238,238,1) 0%, rgba(204,204,204,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(204,204,204,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
+}
+
+.button_grad:active {
+    position: relative;
+    left: 2px;
+    top: 2px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0);
+}
+
 header tr {
     height: 120px;
 }
@@ -130,6 +160,8 @@ a:hover {
 caption {
     font-weight: 400;
     font-size: 1.2em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 strong {
@@ -218,6 +250,11 @@ footer li {
     font-weight: 800;
 }
 
+.red {
+    color: #DA1616;
+    font-weight: 800;
+}
+
 .shadow {
     color: white;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
@@ -228,6 +265,7 @@ footer li {
     border-radius: 5px;
     line-height: 1.6em;
     padding: 0.5em;
+    min-height: 150px;
 }
 
 .success {
@@ -267,6 +305,14 @@ footer li {
     display: none;
 }
 
-.ui-dialog {
+.ui-dialog, .ui-tabs-nav {
     font-size: 0.8em;
+}
+
+.ui-dialog {
+    box-shadow: rgba(0,0,0,0.5) 0 12px 20px;
+}
+
+.ui-widget-overlay {
+    background: rgba(0,0,0,1);
 }
