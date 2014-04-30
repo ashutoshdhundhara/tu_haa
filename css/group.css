@@ -11,5 +11,13 @@
     table-layout: fixed;
     margin: 0 auto;
     width: 500px;
-    min-height: 150px;
+    /*min-height: 150px;*/
+}
+
+.group_form tr {
+    height: 25px;
+}
+
+#members_table {
+    text-align: center;
 }

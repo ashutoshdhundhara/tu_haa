@@ -3,6 +3,10 @@
  * Functions required for Group creation page.
  */
 
+if (! defined('TU_HAA')) {
+    exit;
+}
+
 /**
  * Generate Html for create group form.
  *
@@ -12,7 +16,9 @@ function HAA_getHtmlGroupForm()
 {
     $retval = '';
     $retval .= '<form method="POST" action="group.php" class="gray_grad box group_form">'
-        . '<table class="password_table">'
+        . '<input type="hidden" name="create_group" value="true">'
+        . '<input type="hidden" name="ajax_request" value="true">'
+        . '<table id="password_table">'
         . '<caption>Create Group</caption>'
         . '<tr>'
         . '<td><label for="input_size">Number of members<sup class="req">*</sup> :</label></td>'
