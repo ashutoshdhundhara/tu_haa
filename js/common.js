@@ -5,7 +5,7 @@
 $(document).ready(function () {
     $("input:file, select").uniform();
     $('input:submit').addClass('submit_button green_grad');
-    $('[title]').tooltip(tooltip_defaults);
+    $('[title]').tooltip(tooltip_right);
     $('.datefield').datepicker(datepicker_defaults);
     $('.datefield').mask(date_format);
     $('.mobilefield').mask(mobile_format);
@@ -14,10 +14,18 @@ $(document).ready(function () {
 /**
  * Default options for tooltip widget.
  */
-var tooltip_defaults = {
+var tooltip_right = {
     position: {
       my: 'left center',
       at: 'right center'
+    },
+    disabled: false,
+    tooltipClass: 'haa_tooltip'
+};
+var tooltip_left = {
+    position: {
+      my: 'right center',
+      at: 'left center'
     },
     disabled: false,
     tooltipClass: 'haa_tooltip'
@@ -49,6 +57,11 @@ var mobile_format = '+99-9999999999';
  * Default roll number format.
  */
 var roll_no_format = '999999999';
+
+/**
+ * Default unique ID format.
+ */
+var unique_id_format = '9999';
 
 /**
  * Display notification message.
@@ -115,4 +128,166 @@ function HAA_showNotification(message, type)
     }
 
     return $notification;
+}
+
+function HAA_validateFields()
+{
+    var isValid = true;
+
+    // Get all required fields.
+    $('.required').each(function () {
+        if ($(this).val() === '' || $(this).val() === '...') {
+            // Set focus to first empty required field.
+            if (isValid) {
+                $(this).focus();
+            }
+            isValid = false;
+            $(this).tooltip('open');
+        }
+    });
+
+    return isValid;
+}
+
+/**
+ * Shows password fields in case of Room as an Individual.
+ *
+ * @param jQuery Object $target Element after which fields to be inserted
+ * @return void
+ */
+function HAA_togglePasswordFields($target)
+{
+    if ($target.val() !== '...' && $target.val() !== 'group') {
+        if ($('.password_fields').length === 0) {
+            var $password_fields = $('<tr class="password_fields">' +
+            '<td colspan="2">Choose Password:</td>' +
+            '</tr>' +
+            '<tr class="password_fields">' +
+            '<td colspan="2"><strong>' +
+            'Login ID will be System generated</strong></td>' +
+            '</tr>' +
+            '<tr class="password_fields">'+
+            '<td><label for="input_password">Password<sup class="req">*</sup> :</td>' +
+            '<td><input id="input_password" type="password" name="password"' +
+            ' title="Please choose a password. Password must be atleast 8 characters long."' +
+            ' class="required"></td>' +
+            '</tr>' +
+            '<tr class="password_fields">' +
+            '<td><label for="input_confirm">Confirm Password<sup class="req">*</sup> :</td>' +
+            '<td><input id="input_confirm" type="password" name="confirm_password"' +
+            ' title="Please confirm your password." class="required"></td>' +
+            '</tr>');
+            $target.closest('tr').after($password_fields);
+            $('#input_password, #input_confirm').tooltip(tooltip_right);
+        }
+    }
+    else {
+        $('.password_fields').remove();
+    }
+}
+
+/**
+ * Submits form using Ajax and displays response in a dialog.
+ *
+ * @param jQuery Object $form Form to be submitted
+ * @param string enctype Enctype: multipart or normal
+ * @return void
+ */
+function HAA_submitForm($form)
+{
+    var form_data = new FormData($($form)[0]);
+    $.ajax({
+        type: 'POST',
+        url: $form.attr('action'),
+        data: form_data,
+        cache: false,
+        dataType: 'json',
+        processData: false, // Don't process the files
+        contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+        success: function (response) {
+            // Display a dialog containing response. --START--
+            // Variable that holds the response dialog.
+            var $response_dialog = null;
+            // Dialog title.
+            var dialog_title = 'Hostel-J';
+            // Dialog Button options.
+            var buttonOptions = {};
+            // 'OK' button action.
+            buttonOptions['OK'] = function () {
+                if (response.save) {
+                    window.location.replace('http://onlinehostelj.in');
+                } else {
+                    document.body.style.overflow = "visible";
+                    $(this).dialog('close');
+                }
+            };
+
+            if (response.success) {
+                // Dialog content.
+                var dialog_content = '<div class="dialog_content">' +
+                    response.message + '</div>';
+
+                // Create dialog.
+                $response_dialog = $(dialog_content).dialog({
+                    minWidth: 525,
+                    minHeight: 250,
+                    modal: true,
+                    title: dialog_title,
+                    resizable: true,
+                    draggable: false,
+                    buttons: buttonOptions,
+                    open: function () {
+                        document.body.style.overflow = "hidden";
+                        $('.ui-dialog-titlebar').addClass('green_grad shadow');
+                        $('.ui-dialog, .ui-dialog-buttonpane').addClass('gray_grad');
+                        // Focus the "OK" button after opening the dialog
+                        $(this).closest('.ui-dialog')
+                            .find('.ui-dialog-buttonpane button:first')
+                            .focus();
+                    },
+                    close: function () {
+                        if (response.save) {
+                            window.location.replace('http://onlinehostelj.in');
+                        }
+                        document.body.style.overflow = "visible";
+                        $(this).remove();
+                    }
+                });
+            }
+            // Display a dialog containing response. --ENDS--
+        },
+        error: function () {
+            var $error = HAA_showNotification(
+                'Could not contact Server ! ' +
+                'Please check your Network Settings.'
+                , 'error'
+            );
+        }
+    });
+}
+
+/**
+ * Validates password fields.
+ */
+function HAA_validatePasswords()
+{
+    var isValid = true;
+
+    if ($('#input_password').val() !== $('#input_confirm').val()) {
+        HAA_showNotification(
+            'Passwords donot match.', 'error'
+        );
+        isValid = false;
+    }
+    if ($('#input_password').val().length < 8) {
+        HAA_showNotification(
+            'Password must be atleast 8 characters long.', 'error'
+        );
+        isValid = false;
+    }
+    if (! isValid) {
+        $('#input_password').focus();
+    }
+
+    return isValid;
 }
