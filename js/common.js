@@ -12,6 +12,14 @@ $(document).ready(function () {
 });
 
 /**
+ * Options for reCaptcha widget.
+ * @type {Object}
+ */
+var RecaptchaOptions = {
+    theme : 'white'
+ };
+
+/**
  * Default options for tooltip widget.
  */
 var tooltip_right = {

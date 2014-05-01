@@ -31,4 +31,11 @@ define('tblRoom', '');
 // Define table for Admin credentials.
 define('tblAdmin', '');
 
+/**
+ * reCaptcha constants.
+ */
+// reCaptcha Public key.
+define('captchaPublicKey', '');
+// reCaptcha Private key.
+define('captchaPrivateKey', '');
 ?>

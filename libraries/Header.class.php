@@ -268,8 +268,28 @@ class HAA_Header
             . '<td class="td_big"><h1>Hostel-J, Thapar University</h1></td>'
             . '<td class="td_small"><img height="100" width="160" src="img/tulogo.png" alt="Thapar Logo"/></td>'
             . '</tr></table></header>';
+        $retval .= $this->_getLoginDetails();
         $retval .= '<div class="body_area">';
         $retval .= '<div class="body_content">';
+
+        return $retval;
+    }
+
+    /**
+     * Returns Login details box, if available
+     *
+     * @return string Login box
+     */
+    private function _getLoginDetails()
+    {
+        $retval = '';
+        if (isset($_SESSION['login_id'])) {
+            $retval .= '<div class="login_details">'
+                . 'Login ID : '
+                . '<strong> ' . $_SESSION['login_id'] . ' </strong>'
+                . '<a href="logout.php" class="blue"> Logout</a>'
+                . '</div>';
+        }
 
         return $retval;
     }

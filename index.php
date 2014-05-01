@@ -7,6 +7,12 @@
  * Get all required libraries.
  */
 require_once 'libraries/common.inc.php';
+require_once 'libraries/recaptcha/recaptchalib.php';
+
+// Start a secure session.
+HAA_secureSession();
+// Redirect user to correct page.
+HAA_pageCheck();
 
 $response = HAA_Response::getInstance();
 $header = $response->getHeader();
@@ -14,6 +20,35 @@ $header->addFile('login.js', 'js');
 $header->addFile('login.css', 'css');
 $header->setTitle('');
 $html_output = '';
+$login_error = '';
+$recaptcha = '';
+
+// If to show captcha error message.
+if (isset($_GET['captcha_error']) && $_GET['captcha_error'] == true) {
+    $login_error = '<tr>'
+        . '<td colspan="2" class="red">'
+        . 'Entered captcha is invalid.'
+        . '</td>'
+        . '</tr>';
+}
+
+// If to show login error message.
+if (isset($_GET['login_error']) && $_GET['login_error'] == true) {
+    $login_error = '<tr>'
+        . '<td colspan="2" class="red">'
+        . 'Invalid Login ID or Password.'
+        . '</td>'
+        . '</tr>';
+}
+
+// If to show Captcha.
+if (isset($_SESSION['show_captcha'])) {
+    $recaptcha = '<tr>'
+        . '<td colspan="2">'
+        . recaptcha_get_html(captchaPublicKey)
+        . '</td>'
+        . '</tr>';
+}
 
 // Build login form. --START--
 $html_output .= '<form id="login_form" class="login_form gray_grad box"'
@@ -21,6 +56,7 @@ $html_output .= '<form id="login_form" class="login_form gray_grad box"'
     . '<table>'
     . '<caption>LOGIN</caption>'
     . '<tbody>'
+    . $login_error
     . '<tr><td><label for="input_username">Login ID:</label></td>'
     . '<td>'
     . '<input type="text" name="haa_username" id="input_username"'
@@ -31,6 +67,7 @@ $html_output .= '<form id="login_form" class="login_form gray_grad box"'
     . '<input type="password" name="haa_password" id="input_password"'
     . ' title="Please provide your password">'
     . '</td></tr>'
+    . $recaptcha
     . '<tr><td colspan="2">'
     . '<input class="submitBtn" type="submit" name="submit" value="Login">'
     . '</td></tr>'

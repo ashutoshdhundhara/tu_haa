@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 /**
  * Common stuff required by all scripts.
  * MUST be included in every script.
@@ -35,6 +37,10 @@ require_once 'libraries/core.lib.php';
  * Main interface class for all database interactions.
  */
 require_once 'libraries/DatabaseInterface.class.php';
+/**
+ * Library for all authentication and authorization tasks.
+ */
+require_once 'libraries/security.lib.php';
 /**
  * Global DBI class instance.
  */

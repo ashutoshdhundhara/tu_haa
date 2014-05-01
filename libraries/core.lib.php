@@ -280,4 +280,31 @@ function HAA_isStudentRecordExists($roll_no)
 
     return false;
 }
+
+/**
+ * Redirects to a page.
+ * @param string $location Location
+ */
+function HAA_redirectTo($location)
+{
+    // List of valid pages.
+    $page_whitelist = array(
+        'map.php'
+        , 'register.php'
+        , 'allot.php'
+        , 'group.php'
+        , 'index.php'
+    );
+    // Get page name.
+    $page = explode('?', $location);
+    if (is_array($page)) {
+        $page = $page[0];
+    }
+    // If page is valid.
+    if (in_array($page, $page_whitelist)) {
+        // Redirect to page.
+        header('Location: ' . $location);
+        exit;
+    }
+}
 ?>
