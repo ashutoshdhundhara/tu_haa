@@ -297,6 +297,11 @@ footer li {
     display: none;
 }
 
+.login_details {
+    margin-top: 0.4em;
+    text-align: right;
+}
+
 .ui-autocomplete, .ui-datepicker {
     font-size: 0.7em;
 }
