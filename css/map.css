@@ -1,0 +1,146 @@
+/**
+ * Contains styles for Hostel Map page.
+ */
+
+.wing_tabs {
+    width: 900px;
+    margin: 0 auto;
+    border: 0px solid rgba(0,0,0,0);
+    min-height: 500px;
+}
+
+.wing_tabs ul {
+    list-style-type: none;
+    width: 100%;
+    margin-bottom: 2%;
+    font-size: 0.7em;
+}
+
+.wing_tabs li {
+    display: inline-block;
+    margin: 3px;
+}
+
+.wing_tabs a {
+    width: 9em;
+    display: inline-block;
+    text-align: center;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.wing_tabs a:hover {
+    text-decoration: none;
+}
+
+.update_time {
+    font-size: 0.6em;
+    margin-bottom: 2em;
+}
+
+.side_bar {
+    position: fixed;
+    bottom: 30%;
+    right: -1em;
+    padding: 1em;
+    width: 12em;
+    text-align: center;
+    border-radius: 12px;
+    z-index: 200;
+}
+
+.north {
+    position: absolute;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+}
+
+.cluster_map {
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin: 0 auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.cluster_map td {
+    height: 60px;
+    width: 60px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.room_available, .room_not_available, .room_selected {
+    border: 1px solid black;
+}
+
+.room_available, .room_selected {
+    cursor: pointer;
+}
+
+.room_not_available {
+    background-color: #999999;
+}
+
+.room_blocked, .room_not_available {
+    cursor: not-allowed;
+}
+
+.guide {
+    list-style-type: none;
+    list-style-position: inside;
+    margin-top: 1.5em;
+    width: 100%;
+    text-align: center;
+}
+
+.guide li {
+    display: inline-block;
+    line-height: 1em;
+    width: 10em;
+}
+
+.guide span {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    border: 1px solid black;
+    margin-right: 0.5em;
+}
+
+.selected_rooms_list {
+    font-family: monospace;
+    list-style-type: decimal-leading-zero;
+    list-style-position: inside;
+    margin: 0 auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    width: 55%;
+}
+
+.selected_rooms_list li {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+}
+
+.selected_rooms_list span {
+    display: table-cell;
+    vertical-align: middle;
+    float: right;
+    width: 1em;
+    height: 1em;
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+    background-color: gray;
+    border-radius: 100%;
+    font-size: 1em;
+    padding-bottom: 0.1em;
+}
+
+.selected_rooms_list span:hover {
+    background-color: #545454;
+}
