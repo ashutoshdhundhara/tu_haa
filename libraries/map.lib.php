@@ -26,7 +26,7 @@ function HAA_getHtmlHostelMap($selectable = true)
         . '</ul>'
         . '</div>';
     if ($selectable) {
-        $group_size = '11';
+        $group_size = $_SESSION['group_size'];
         $retval .= HAA_getHtmlSideBar($group_size);
     }
     return $retval;
