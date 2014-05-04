@@ -3,7 +3,13 @@
  */
 
 $(document).ready(function () {
-    $('#wing_tabs').tabs();
+    $('#wing_tabs').tabs({
+        select: function(event, ui) {
+            if ($.data(ui.tab, 'load.tabs')) {
+                $(ui.panel).html("Loading...");
+            }
+        }
+    });
     $('.ui-tabs-nav').addClass('green_grad');
 
     // Bind 'click' event on Cluster anchors.
