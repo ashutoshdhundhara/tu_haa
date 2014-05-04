@@ -50,6 +50,10 @@ function HAA_getHtmlSideBar($group_size = '0')
         . '<ul class="selected_rooms_list" id="selected_rooms_list">'
         . '</ul>'
         . '<form id="rooms_form" action="allot.php" method="POST">'
+        . '<input type="hidden" name="ajax_request" value="true">'
+        . '<input type="hidden" name="rooms_selected" value="true">'
+        . '<input type="hidden" name="group_id" value="'
+        . $_SESSION['login_id'] . '">'
         . '</form>'
         . '</div>';
     // Set JS variable for group size.
