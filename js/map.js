@@ -27,6 +27,12 @@ $(document).ready(function () {
     $('body').on('click', '.selected_rooms_list span',function () {
         HAA_deSelectRoom($(this).attr('data-room'));
     });
+    // Submit Rooms choices.
+    $('#rooms_form').bind('submit', function (event) {
+        event.preventDefault();
+        $(".ui-dialog-content").dialog("close");
+        HAA_submitRoomChoices($(this));
+    });
 });
 
 /**
@@ -232,4 +238,85 @@ function HAA_removeAll()
         var index = marked_rooms.length -1;
         HAA_deSelectRoom(marked_rooms[index]);
     }
+}
+
+/**
+ * Submits room choices using Ajax and displays response in a dialog.
+ *
+ * @param jQuery Object $form Form to be submitted
+ * @return void
+ */
+function HAA_submitRoomChoices($form)
+{
+    var form_data = new FormData($($form)[0]);
+    $.ajax({
+        type: 'POST',
+        url: $form.attr('action'),
+        data: form_data,
+        cache: false,
+        dataType: 'json',
+        processData: false, // Don't process the files
+        contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+        success: function (response) {
+            // Display a dialog containing response. --START--
+            // Variable that holds the response dialog.
+            var $response_dialog = null;
+            // Dialog title.
+            var dialog_title = 'Hostel-J';
+            // Dialog Button options.
+            var buttonOptions = {};
+            // 'OK' button action.
+            buttonOptions['OK'] = function () {
+                if (response.not_logged_in || response.book_success) {
+                    window.location.replace('http://onlinehostelj.in');
+                } else {
+                    document.body.style.overflow = "visible";
+                    $(this).dialog('close');
+                }
+            };
+
+            if (response.success) {
+                // Dialog content.
+                var dialog_content = '<div class="dialog_content">' +
+                    response.message + '</div>';
+
+                // Create dialog.
+                $response_dialog = $(dialog_content).dialog({
+                    minWidth: 525,
+                    minHeight: 250,
+                    modal: true,
+                    title: dialog_title,
+                    resizable: true,
+                    draggable: false,
+                    buttons: buttonOptions,
+                    open: function () {
+                        document.body.style.overflow = "hidden";
+                        $('.ui-dialog-titlebar').addClass('green_grad shadow');
+                        $('.ui-dialog, .ui-dialog-buttonpane').addClass('gray_grad');
+                        // Focus the "OK" button after opening the dialog
+                        $(this).closest('.ui-dialog')
+                            .find('.ui-dialog-buttonpane button:first')
+                            .focus();
+                    },
+                    close: function () {
+                        if (response.not_logged_in || response.book_success) {
+                            window.location.replace('http://onlinehostelj.in');
+                        } else {
+                            HAA_removeAll();
+                        }
+                        document.body.style.overflow = "visible";
+                        $(this).remove();
+                    }
+                });
+            }
+            // Display a dialog containing response. --ENDS--
+        },
+        error: function () {
+            var $error = HAA_showNotification(
+                'Could not contact Server ! ' +
+                'Please check your Network Settings.'
+                , 'error'
+            );
+        }
+    });
 }
