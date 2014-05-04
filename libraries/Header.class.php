@@ -68,9 +68,7 @@ class HAA_Header
     private function _addDefaultFiles()
     {
         $default_scripts = array(
-            'jquery/jquery-1.10.2.min.js'
-            , 'jquery/jquery-ui.min.js'
-            , 'jquery/jquery-uniform.js'
+            'jquery/jquery-uniform.js'
             , 'jquery/jquery.maskedinput.min.js'
             , 'common.js'
             );
@@ -80,7 +78,6 @@ class HAA_Header
 
         $default_stylesheets = array(
             'reset.css'
-            , 'jquery-ui-1.10.4.custom.min.css'
             , 'absolution.css'
             , 'common.css'
             );
@@ -174,14 +171,16 @@ class HAA_Header
         $retval = '<link rel="icon" href="favicon.ico" '
             . 'type="image/x-icon" />'
             . '<link rel="shortcut icon" href="favicon.ico" '
-            . 'type="image/x-icon" />';
+            . 'type="image/x-icon" />'
+            . '<link rel="stylesheet" '
+            . 'href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />';
         // Stylesheets
         $separator = '&stylesheets[]=';
         $url = 'css/get_stylesheets.php'
             . '?stylesheets[]='
             . implode($separator, $this->_stylesheets);
         $link = sprintf(
-            '<link rel="stylesheet" type="text/css" href="%s" />',
+            '<link rel="stylesheet" type="text/css" href="%s" >',
             htmlspecialchars($url)
         );
 
@@ -225,12 +224,16 @@ class HAA_Header
      */
     private function _getScriptTag()
     {
+        $script_tag = '<script type="text/javascript" '
+            . 'src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>';
+        $script_tag .= '<script type="text/javascript" '
+            . 'src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>';
         $separator = '&scripts[]=';
         $url = 'js/get_scripts.php'
             . '?scripts[]='
             . implode($separator, $this->_scripts);
 
-        $script_tag = sprintf(
+        $script_tag .= sprintf(
             '<script type="text/javascript" src="%s"></script>',
             htmlspecialchars($url)
         );
@@ -264,9 +267,13 @@ class HAA_Header
     {
         $retval = '';
         $retval .= '<header class="green_grad"><table><tr>'
-            . '<td class="td_small"><img height="80" width="100" src="img/jlogo.png" alt="Hostel-J Logo"/></td>'
+            . '<td class="td_small"><a href="index.php">'
+            . '<img height="80" width="100" src="img/jlogo.png" alt="Hostel-J Logo"/>'
+            . '</a></td>'
             . '<td class="td_big"><h1>Hostel-J, Thapar University</h1></td>'
-            . '<td class="td_small"><img height="100" width="160" src="img/tulogo.png" alt="Thapar Logo"/></td>'
+            . '<td class="td_small"><a href="http://thapar.edu" target="_BLANK">'
+            . '<img height="100" width="160" src="img/tulogo.png" alt="Thapar Logo"/>'
+            . '</a></td>'
             . '</tr></table></header>';
         $retval .= $this->_getLoginDetails();
         $retval .= '<div class="body_area">';
