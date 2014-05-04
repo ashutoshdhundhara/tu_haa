@@ -302,6 +302,17 @@ footer li {
     text-align: right;
 }
 
+th {
+    font-weight: 800;
+}
+
+.uniform_field {
+    border-radius: 3px;
+    border: 1px solid #ababab;
+    background: #f6f6f6;
+    box-shadow: inset 0 -10px 15px rgba(0, 0, 0, 0.1);
+}
+
 .ui-autocomplete, .ui-datepicker {
     font-size: 0.7em;
 }
