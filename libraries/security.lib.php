@@ -163,7 +163,7 @@ function HAA_pageCheck()
             }
             break;
         default:
-            HAA_redirectTo('login.php');
+            //HAA_redirectTo('login.php');
             break;
     }
 }
