@@ -39,6 +39,11 @@ $(document).ready(function () {
         $(".ui-dialog-content").dialog("close");
         HAA_submitRoomChoices($(this));
     });
+    // Run HAA_updateWingMap() repeatedly
+    update_interval = setInterval(function () {
+        var wing = $('.ui-tabs-active').attr('data-wing');
+        HAA_updateWingMap(wing);
+    }, 8000);
 });
 
 /**
@@ -46,6 +51,11 @@ $(document).ready(function () {
  * @type {Array}
  */
 var marked_rooms = Array();
+
+/**
+ * Variable to store update timer.
+ */
+var update_interval = null;
 
 /**
  * Displays Cluster map
@@ -323,6 +333,52 @@ function HAA_submitRoomChoices($form)
                 'Please check your Network Settings.'
                 , 'error'
             );
+        }
+    });
+}
+
+/**
+ * Updates each cluster's 'Vacant rooms' count.
+ * @param {string} wing_name Wing name 'E' or 'W'
+ * @return void
+ */
+function HAA_updateWingMap(wing_name)
+{
+    // URL for update map.
+    var map_url = 'map.php';
+    // Fetch the latest data.
+    $.ajax({
+        type: 'GET',
+        url: map_url,
+        data: {
+            ajax_request: 'true',
+            update_map: 'true',
+            wing: wing_name
+        },
+        cache: false,
+        dataType: 'json',
+        success: function (response) {
+            if (response.success) {
+                if (response.cluster_data) {
+                    // Update each cluster's vacant room count.
+                    $.each(JSON.parse(response.cluster_data), function (i, obj) {
+                        if (obj.vacant_rooms == 0) {
+                            // If vacant rooms = 0, then display it in red.
+                            $('#' + obj.cluster).attr('class', 'red');
+                        } else {
+                            $('#' + obj.cluster).attr('class', 'blue');
+                        }
+                        $('#' + obj.cluster).text(obj.vacant_rooms);
+                    });
+                    // Update 'Last update' time.
+                    $('.update_time').find('span').text(response.update_time);
+                } else {
+                    clearInterval(update_interval);
+                }
+            }
+        },
+        error: function () {
+            // Nothing.
         }
     });
 }

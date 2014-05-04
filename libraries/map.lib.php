@@ -17,10 +17,10 @@ function HAA_getHtmlHostelMap($selectable = true)
 {
     $retval = '<div id="wing_tabs" class="wing_tabs gray_grad box">'
         . '<ul>'
-        . '<li>'
+        . '<li data-wing="E">'
         . '<a href="map.php?wing_map=true&wing=E">East Wing</a>'
         . '</li>'
-        . '<li>'
+        . '<li data-wing="W">'
         . '<a href="map.php?wing_map=true&wing=W">West Wing</a>'
         . '</li>'
         . '</ul>'
@@ -80,7 +80,7 @@ function HAA_getHtmlWingMap($wing = 'E')
     $retval = '<div class="wing_map">'
         . '<div class="update_time">'
         . '<strong>Last Update : </strong>'
-        . '<span id="update_time">' . date('F j, Y, g:i:s a', time()) . '</span>'
+        . '<span>' . date('F j, Y, g:i:s a', time()) . '</span>'
         . '</div>';
     $retval .= '<ul><li class="red">LEVEL 1:</li>';
     // Variable to keep track of previous floor number.

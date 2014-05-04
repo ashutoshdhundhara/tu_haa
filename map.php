@@ -30,6 +30,32 @@ if (isset($_REQUEST['wing_map']) && $_REQUEST['wing_map'] == true
     exit;
 }
 
+// If there is an Ajax request to update wing map.
+if (isset($_REQUEST['update_map']) && $_REQUEST['update_map'] == true
+    && isset($_REQUEST['wing'])) {
+    $response = HAA_Response::getInstance();
+    // Validate wing name.
+    if (! HAA_validateValue($_REQUEST['wing'], 'wing')
+        || ! HAA_checkLoginStatus()) {
+        $response->addJSON('cluster_data', false);
+    } else {
+        $wing_data = HAA_getWingData($_REQUEST['wing']);
+        $cluster_data = array();
+        while ($row = $wing_data->fetch()) {
+            $cluster = $row['wing'] . $row['cluster'] . '-' . $row['floor'];
+            $vacant_rooms = $row['vacant_rooms'];
+            array_push($cluster_data,
+                array('cluster' => $cluster, 'vacant_rooms' => $vacant_rooms)
+            );
+        }
+        $response->addJSON('cluster_data', json_encode($cluster_data));
+        date_default_timezone_set('Asia/Calcutta');
+        $response->addJSON('update_time', date('F j, Y, g:i:s a', time()));
+    }
+    $response->response();
+    exit;
+}
+
 // Check if user is logged in or not.
 if (! HAA_checkLoginStatus()) {
     HAA_redirectTo('index.php');
