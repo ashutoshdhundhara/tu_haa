@@ -74,39 +74,6 @@ class HAA_DatabaseInterface
 
         return $result;
     }
-
-    /**
-     * Authenticates a user with id and password.
-     *
-     * @param string $id User ID
-     * @param string $password Password
-     *
-     * @return bool
-     */
-    public function verifyUser($id, $password)
-    {
-        $link = $GLOBALS['db_link'];
-        if (empty($link)) {
-            return false;
-        }
-
-        $query = 'SELECT group_id FROM ' . tblGroupId . ' '
-            . 'WHERE groupID = :group_id AND password = :password '
-            . ' LIMIT 1';
-        // Prepare statement.
-        $stmt = $link->prepare($query);
-        // Bind string parameters.
-        $stmt->bindParam(':group_id', $id, PDO::PARAM_STR);
-        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-        $stmt->execute();
-
-        if($stmt->fetch()) {
-            $stmt->close();
-            return true;
-        } else {
-            return false;
-        }
-    }
 }
 
 ?>
