@@ -47,8 +47,11 @@ function HAA_validateValue($value, $type)
         case 'cluster':
             $regEx = '/^[a-fA-F]$/';
             break;
-        case 'room_no':
+        case 'room':
             $regEx = '/^[0-9]$|^[1][10]$/';
+            break;
+        case 'room_no':
+            $regEx = '/^[wWeE][a-fA-F][\-][1-8][0][1-9]$|^[wWeE][a-fA-F][\-][1-8][1][10]$/';
             break;
     }
 
