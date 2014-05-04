@@ -310,6 +310,10 @@ function HAA_allocateRooms($roll_nos, $group_id)
     return true;
 }
 
+/**
+ * Displays final group-room details
+ * @return string Html
+ */
 function HAA_getHtmlCompleteForm()
 {
     $retval = '';
