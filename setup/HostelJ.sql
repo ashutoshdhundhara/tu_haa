@@ -94,7 +94,8 @@ CREATE TABLE IF NOT EXISTS `student_details` (
   `permanent_address` varchar(200) NOT NULL,
   `alternate_address` varchar(200) DEFAULT NULL,
   `landline` varchar(25) DEFAULT NULL,
-  `photo` varchar(100) NOT NULL
+  `photo` varchar(100) NOT NULL,
+  `room_no` char(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains Student''s personal details';
 
 --
