@@ -113,7 +113,7 @@
 
 .selected_rooms_list {
     font-family: monospace;
-    list-style-type: decimal-leading-zero;
+    list-style-type: disc;
     list-style-position: inside;
     margin: 0 auto;
     margin-top: 1em;
@@ -124,6 +124,7 @@
 .selected_rooms_list li {
     margin-top: 0.2em;
     margin-bottom: 0.2em;
+    font-weight: 800;
 }
 
 .selected_rooms_list span {
