@@ -1,0 +1,50 @@
+/**
+ * Contains styles for post room selection page.
+ */
+
+.allocation_form {
+    width: 700px;
+    margin: 0 auto;
+}
+
+.allocation_form div:first-child {
+    font-weight: 600;
+    font-size: 1.2em;
+    margin-bottom: 0.5em;
+}
+
+.allocation_form ul {
+    width: 50%;
+    float: left;
+}
+
+.allocation_form li {
+    line-height: 1.5em;
+    margin: 0.2em;
+    padding: 0.5em;
+    border-radius: 3px;
+}
+
+.allocation_form li:first-child {
+    text-align: center;
+    font-weight: 800;
+    line-height: 2em;
+    margin-bottom: 1em;
+}
+
+.rooms_list {
+    text-align: center;
+}
+
+.draggable {
+    cursor: move;
+}
+
+.ui-state-highlight {
+    height: 1.5em;
+    margin: 0.2em;
+    padding: 0.5em;
+    border-radius: 3px;
+    background: #AADCDC;
+    border: 1px solid #388268;
+}
