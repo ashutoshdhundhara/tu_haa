@@ -198,7 +198,6 @@ function HAA_togglePasswordFields($target)
  * Submits form using Ajax and displays response in a dialog.
  *
  * @param jQuery Object $form Form to be submitted
- * @param string enctype Enctype: multipart or normal
  * @return void
  */
 function HAA_submitForm($form)
