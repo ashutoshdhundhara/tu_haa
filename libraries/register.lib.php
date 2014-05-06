@@ -325,7 +325,6 @@ function HAA_parseFormData($form_data)
     $form_params[':permanent_address'] = $_REQUEST['permanent_address'];
     $form_params[':alternate_address'] = $_REQUEST['alternate_address'];
 
-    $i=0;
     foreach ($form_data as $column => $value) {
         if (! empty($column) && in_array($column, $column_whitelist)) {
             if (in_array($column, $names)) {
@@ -369,7 +368,7 @@ function HAA_parseFormData($form_data)
             }
 
             // Remove matched element from white list.
-            unset($column_whitelist[$i++]);
+            $column_whitelist=array_diff($column_whitelist,array($column));
         }
     }
 
