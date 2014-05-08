@@ -279,21 +279,22 @@ function HAA_submitForm($form)
 function HAA_validatePasswords()
 {
     var isValid = true;
-
-    if ($('#input_password').val() !== $('#input_confirm').val()) {
-        HAA_showNotification(
-            'Passwords donot match.', 'error'
-        );
-        isValid = false;
-    }
-    if ($('#input_password').val().length < 8) {
-        HAA_showNotification(
-            'Password must be atleast 8 characters long.', 'error'
-        );
-        isValid = false;
-    }
-    if (! isValid) {
-        $('#input_password').focus();
+    if ($('#input_password').length) {
+        if ($('#input_password').val() !== $('#input_confirm').val()) {
+            HAA_showNotification(
+                'Passwords donot match.', 'error'
+            );
+            isValid = false;
+        }
+        if ($('#input_password').val().length < 8) {
+            HAA_showNotification(
+                'Password must be atleast 8 characters long.', 'error'
+            );
+            isValid = false;
+        }
+        if (! isValid) {
+            $('#input_password').focus();
+        }
     }
 
     return isValid;
