@@ -8,6 +8,7 @@
  */
 require_once 'libraries/common.inc.php';
 require_once 'libraries/register.lib.php';
+require_once 'libraries/mailConstants.inc.php';
 require_once 'libraries/swiftmailer/lib/swift_required.php';
 
 // If Form is submitted, process it.
