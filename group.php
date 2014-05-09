@@ -9,6 +9,21 @@
 require_once 'libraries/common.inc.php';
 require_once 'libraries/group.lib.php';
 require_once 'libraries/swiftmailer/lib/swift_required.php';
+require_once 'libraries/mailConstants.inc.php';
+
+//Process the form if submitted
+if (isset($_POST['create_group'])) {
+    $response = HAA_Response::getInstance();
+    if(! HAA_saveGroupRecord($_POST)) {
+        $response->addJSON('message', HAA_generateErrorMessage($GLOBALS['error']));
+        $response->addJSON('save', false);
+    } else {
+        $response->addJSON('message', $GLOBALS['message']);
+        $response->addJSON('save', true);
+    }
+    $response->response();
+    exit;
+}
 
 // Display Group creation form.
 $response = HAA_Response::getInstance();

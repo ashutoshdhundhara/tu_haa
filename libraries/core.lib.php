@@ -192,6 +192,35 @@ function HAA_insertStudentRecord($params)
 }
 
 /**
+ * Inserts record into `tblGroup`.
+ *
+ * @param array $params Query parameters
+ * @return PDO object
+ */
+function HAA_insertGroupRecord($params)
+{
+    // Create SQL query.
+    $sql_query = 'INSERT INTO `' . dbName . '`.`' . tblGroup . '`'
+        . ' (`unique_id`, `roll_no`, `group_id`) '
+        . 'VALUES (:unique_id'
+        . ', :roll_no'
+        . ', :group_id'
+        .')';
+    
+    // Execute the query.
+    foreach ( $params as $column => $value) {
+        if (array_key_exists(':roll_no',$value)) {
+            $result = $GLOBALS['dbi']->executeQuery($sql_query, $value);
+            if (! $result )
+                return false;
+        }
+    }
+        
+    return true;
+}
+
+
+/**
  * Deletes a record from `tblStudent`.
  *
  * @param string $roll_no Roll number
@@ -309,5 +338,91 @@ function HAA_redirectTo($location)
         header('Location: ' . $location);
         exit;
     }
+}
+
+/**
+ * Checks if record already exists in a group.
+ *
+ * @param string $roll_no
+ * @return bool True|False
+ */
+function HAA_isStudentGroupRecordExists($roll_no)
+{
+    // Query to check if record alredy exists.
+    $sql_query = 'SELECT roll_no FROM ' . tblGroup . ' '
+        . 'WHERE roll_no = :roll_no';
+
+    // Execute query.
+    $temp_result = $GLOBALS['dbi']->executeQuery(
+        $sql_query, array(':roll_no' => $roll_no)
+    );
+
+    if ($temp_result->fetch()) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Checks if the unique id for given student is correct
+ *
+ * @param string $roll_no
+ * @param string $unique_id
+ * @return bool True|False
+ */
+function HAA_isUniqueIdCorrect($roll_no,$unique_id)
+{
+    // Query to check if id matches.
+    $sql_query = 'SELECT unique_id FROM ' . tblStudent . ' '
+        . 'WHERE roll_no = :roll_no '
+        . 'AND unique_id = :unique_id';
+
+    // Execute query.
+    $temp_result = $GLOBALS['dbi']->executeQuery(
+        $sql_query, array(':roll_no' => $roll_no,':unique_id' => $unique_id)
+    );
+
+    if ($temp_result->fetch()) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Inserts record into `tblGroupId`.
+ *
+ * @param array $params Query parameters
+ * @return PDO object
+ */
+function HAA_insertGroupPassword($params)
+{
+    // Create SQL query.
+    $sql_query = 'INSERT INTO `' . dbName . '`.`' . tblGroupId . '`'
+        . ' (`group_id`, `password`, `group_size`, `allotment_status` ) '
+        . 'VALUES (:group_id'
+        . ', :password'
+        . ', :group_size'
+        . ', :allotment_status'
+        .')';
+    
+    //Get the group size
+    $size=-1;
+    foreach ( $params as $column => $value) {
+        $size++;
+    }
+    
+    //Remove confirm_password field and set allotment status to "SELECT" by default.
+    unset($params[$size][':confirm_password']);
+    $params[$size]['allotment_status']="SELECT";
+    
+    //hash the password
+    $params[$size][':password']= hash('sha512',$params[$size][':password']);
+    
+    // Execute the query.
+    $result = $GLOBALS['dbi']->executeQuery($sql_query, $params[$size]);
+        
+    return true;
 }
 ?>
