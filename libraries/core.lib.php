@@ -256,16 +256,18 @@ function HAA_generateUniqueId() {
     do {
         $unique_id = (string) mt_rand(1000,9999);
         $temp_result_tblStudent = $GLOBALS['dbi']->executeQuery(
-            $sql_query, array(':unique_id' => $unique_id)
-		$temp_result_tblGroup = $GLOBALS['dbi']->executeQuery(
-		            $sql_query, array(':group_id' => $group_id)
+            $sql_query_tblStudent, array(':unique_id' => $unique_id)
+		);
+		$temp_result_tblGroupId = $GLOBALS['dbi']->executeQuery(
+		            $sql_query_tblGroupId, array(':group_id' => $unique_id)
         );
 		
 		//Must not be present in both the tables
         if (! $temp_result_tblStudent->fetch()) {
             if (! $temp_result_tblGroupId->fetch()) {
 				break;
-        }
+			}
+		}
     }
     while(true);
 
