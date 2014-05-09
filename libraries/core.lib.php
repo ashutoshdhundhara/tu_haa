@@ -246,18 +246,25 @@ function HAA_deleteStudentRecord($roll_no)
 function HAA_generateUniqueId() {
 
     // SQL query to check if unique id already exists.
-    $sql_query = 'SELECT unique_id FROM ' . tblStudent . ' '
+    $sql_query_tblStudent = 'SELECT unique_id FROM ' . tblStudent . ' '
         . 'WHERE unique_id = :unique_id';
     $unique_id = '';
+	
+    $sql_query_tblGroupId = 'SELECT group_id FROM ' . tblGroupId . ' '
+        . 'WHERE group_id = :group_id';
 
     do {
         $unique_id = (string) mt_rand(1000,9999);
-        $temp_result = $GLOBALS['dbi']->executeQuery(
+        $temp_result_tblStudent = $GLOBALS['dbi']->executeQuery(
             $sql_query, array(':unique_id' => $unique_id)
+		$temp_result_tblGroup = $GLOBALS['dbi']->executeQuery(
+		            $sql_query, array(':group_id' => $group_id)
         );
-
-        if (! $temp_result->fetch()) {
-            break;
+		
+		//Must not be present in both the tables
+        if (! $temp_result_tblStudent->fetch()) {
+            if (! $temp_result_tblGroupId->fetch()) {
+				break;
         }
     }
     while(true);
