@@ -255,7 +255,7 @@ function HAA_generateUniqueId() {
 
     do {
         $unique_id = (string) mt_rand(1000,9999);
-        $temp_result_tblStudent = $GLOBALS['dbi']->executeQuery(
+		$temp_result_tblStudent = $GLOBALS['dbi']->executeQuery(
 			$sql_query_tblStudent, array(':unique_id' => $unique_id)
 		);
 		$temp_result_tblGroupId = $GLOBALS['dbi']->executeQuery(
