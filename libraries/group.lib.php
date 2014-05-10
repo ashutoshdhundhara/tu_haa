@@ -289,7 +289,7 @@ function HAA_saveGroupRecord($form_params)
             $name = HAA_getStudentDetail('full_name',$parsed_form_data[$i][':roll_no']);
             $to = array($mail_id => $name);
             $from = array(smtpFromEmail => smtpFromName);
-            $subject = 'Hostel-J Group Registraion';
+            $subject = 'Hostel-J Group Registration';
             $message = 'Dear ' . $name . ",\n\n"
                 . "\tYour Group details have been successfully received.\n"
                 . "\tYour Group password is : " . $parsed_form_data[$size][':password'] . "\n"
