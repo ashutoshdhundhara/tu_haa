@@ -468,7 +468,7 @@ function HAA_saveStudentRecord($form_params)
         $to = array($parsed_form_data[':email'] => $parsed_form_data[':full_name']);
         $from = array(smtpFromEmail => smtpFromName);
         $subject = 'Hostel-J Registraion';
-        $message = 'Dear ' . $parsed_form_data[':full_name'] . "\r\n\r\n"
+        $message = 'Dear ' . $parsed_form_data[':full_name'] . ",\r\n\r\n"
             . "\tYour Personal details have been successfully received.\r\n"
             . "\tYour Unique ID is : " . $parsed_form_data[':unique_id']
             . "\r\n\r\n\r\n"
@@ -476,7 +476,7 @@ function HAA_saveStudentRecord($form_params)
             . smtpFromName . ", Hostel-J\r\n"
             . 'Thapar University';
         $mail = HAA_sendMail($subject, $to, $from, $message);
-        $mail_message = ($mail == false) ? ('')
+        $mail_notify = ($mail == false) ? ('')
             : ('<p>An email has also been sent to : <span class="blue">'
                 . $parsed_form_data[':email'] . '</span><br>');
 
@@ -492,7 +492,7 @@ function HAA_saveStudentRecord($form_params)
             . $parsed_form_data[':unique_id'] . '</span><br>'
             . '<strong>Please note it down at a safe place.</strong><br>'
             . '<strong>It will be required during the Group Creation process.</strong></p>'
-            . $mail_message
+            . $mail_notify
             . '</div>';
         $GLOBALS['message'] = $success_msg;
 
