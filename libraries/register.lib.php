@@ -468,11 +468,12 @@ function HAA_saveStudentRecord($form_params)
         $to = array($parsed_form_data[':email'] => $parsed_form_data[':full_name']);
         $from = array(smtpFromEmail => smtpFromName);
         $subject = 'Hostel-J Registraion';
-        $message = 'Dear' . $parsed_form_data[':full_name'] .'\n\n'
-            . '\tYour Personal details have been successfully received.\n'
-            . '\tYour Unique ID is :' . $parsed_form_data[':unique_id'] . '\n\n\n'
-            . 'Regards,\n'
-            . smtpFromName . ', Hostel-J\n'
+        $message = 'Dear ' . $parsed_form_data[':full_name'] . "\r\n\r\n"
+            . "\tYour Personal details have been successfully received.\r\n"
+            . "\tYour Unique ID is : " . $parsed_form_data[':unique_id']
+            . "\r\n\r\n\r\n"
+            . "Regards,\r\n"
+            . smtpFromName . ", Hostel-J\r\n"
             . 'Thapar University';
         $mail = HAA_sendMail($subject, $to, $from, $message);
         $mail_message = ($mail == false) ? ('')
