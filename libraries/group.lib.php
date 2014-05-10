@@ -95,33 +95,33 @@ function HAA_parseFormData($form_data)
     } else {
         $size=$form_data["group_size"];
     }
-	
-	//Check if the group size is valid
-	if ($size<2 || $size>11) {
+    
+    //Check if the group size is valid
+    if ($size<2 || $size>11) {
         HAA_gotError(
             'Invalid number of students.'
         );
         return false;
-	}
-	
-	//Check if the number of roll numbers is equal to group size
-	if (count($form_data['roll_no']) != $size) {
+    }
+    
+    //Check if the number of roll numbers is equal to group size
+    if (count($form_data['roll_no']) != $size) {
         HAA_gotError(
             'Invalid data received.'
         );
         return false;
-	}
-	
-	//Check if any duplicate roll number was entered
-	$temp = $form_data['roll_no'];
-	$temp = array_unique($temp);
-	if (count($temp) != $size) {
+    }
+    
+    //Check if any duplicate roll number was entered
+    $temp = $form_data['roll_no'];
+    $temp = array_unique($temp);
+    if (count($temp) != $size) {
         HAA_gotError(
             'Number of Roll numbers entered is invalid.'
         );
         return false;
-	}
-	 
+    }
+     
     
     foreach ($form_data as $column => $value) {
         if (! empty($column) && in_array($column, $column_whitelist)) {
@@ -160,7 +160,7 @@ function HAA_parseFormData($form_data)
         HAA_gotError('Form submitted with incomplete data.');
         return false;
     }
-	
+    
     // If faced any error.
     if (! empty($GLOBALS['error'])) {
         return false;
