@@ -467,7 +467,7 @@ function HAA_saveStudentRecord($form_params)
         // Send an email.
         $to = array($parsed_form_data[':email'] => $parsed_form_data[':full_name']);
         $from = array(smtpFromEmail => smtpFromName);
-        $subject = 'Hostel-J Registraion';
+        $subject = 'Hostel-J Registration';
         $message = 'Dear' . $parsed_form_data[':full_name'] .'\n\n'
             . '\tYour Personal details have been successfully received.\n'
             . '\tYour Unique ID is :' . $parsed_form_data[':unique_id'] . '\n\n\n'

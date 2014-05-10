@@ -282,7 +282,7 @@ function HAA_validatePasswords()
     if ($('#input_password').length) {
         if ($('#input_password').val() !== $('#input_confirm').val()) {
             HAA_showNotification(
-                'Passwords donot match.', 'error'
+                'Passwords do not match.', 'error'
             );
             isValid = false;
         }
