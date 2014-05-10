@@ -206,7 +206,7 @@ function HAA_insertGroupRecord($params)
         . ', :roll_no'
         . ', :group_id'
         .')';
-    
+
     // Execute the query.
     foreach ( $params as $column => $value) {
         if (array_key_exists(':roll_no',$value)) {
@@ -215,7 +215,7 @@ function HAA_insertGroupRecord($params)
                 return false;
         }
     }
-        
+
     return true;
 }
 
@@ -249,7 +249,7 @@ function HAA_generateUniqueId() {
     $sql_query_tblStudent = 'SELECT unique_id FROM ' . tblStudent . ' '
         . 'WHERE unique_id = :unique_id';
     $unique_id = '';
-    
+
     $sql_query_tblGroupId = 'SELECT group_id FROM ' . tblGroupId . ' '
         . 'WHERE group_id = :group_id';
 
@@ -261,7 +261,7 @@ function HAA_generateUniqueId() {
         $temp_result_tblGroupId = $GLOBALS['dbi']->executeQuery(
             $sql_query_tblGroupId, array(':group_id' => $unique_id)
         );
-        
+
         //Must not be present in both the tables
         if (! $temp_result_tblStudent->fetch()) {
             if (! $temp_result_tblGroupId->fetch()) {
@@ -380,7 +380,7 @@ function HAA_isStudentGroupRecordExists($roll_no)
  * @param string $unique_id
  * @return bool True|False
  */
-function HAA_isUniqueIdCorrect($roll_no,$unique_id)
+function HAA_isUniqueIdCorrect($roll_no, $unique_id)
 {
     // Query to check if id matches.
     $sql_query = 'SELECT unique_id FROM ' . tblStudent . ' '
@@ -389,7 +389,7 @@ function HAA_isUniqueIdCorrect($roll_no,$unique_id)
 
     // Execute query.
     $temp_result = $GLOBALS['dbi']->executeQuery(
-        $sql_query, array(':roll_no' => $roll_no,':unique_id' => $unique_id)
+        $sql_query, array(':roll_no' => $roll_no, ':unique_id' => $unique_id)
     );
 
     if ($temp_result->fetch()) {
@@ -415,23 +415,23 @@ function HAA_insertGroupPassword($params)
         . ', :group_size'
         . ', :allotment_status'
         .')';
-    
-    //Get the group size
-    $size=-1;
-    foreach ( $params as $column => $value) {
+
+    // Get the group size
+    $size = -1;
+    foreach ($params as $column => $value) {
         $size++;
     }
-    
-    //Remove confirm_password field and set allotment status to "SELECT" by default.
+
+    // Remove confirm_password field and set allotment status to "SELECT" by default.
     unset($params[$size][':confirm_password']);
-    $params[$size]['allotment_status']="SELECT";
-    
-    //hash the password
+    $params[$size]['allotment_status'] = 'SELECT';
+
+    // Hash the password
     $params[$size][':password']= hash('sha512',$params[$size][':password']);
-    
+
     // Execute the query.
     $result = $GLOBALS['dbi']->executeQuery($sql_query, $params[$size]);
-        
+
     return true;
 }
 ?>
