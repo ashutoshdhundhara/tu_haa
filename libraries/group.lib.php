@@ -290,14 +290,16 @@ function HAA_saveGroupRecord($form_params)
             $to = array($mail_id => $name);
             $from = array(smtpFromEmail => smtpFromName);
             $subject = 'Hostel-J Group Registraion';
-            $message = 'Dear' . $name ."\n\n"
+            $message = 'Dear ' . $name . ",\n\n"
                 . "\tYour Group details have been successfully received.\n"
                 . "\tYour Group password is : " . $parsed_form_data[$size][':password'] . "\n"
-                . "\tYour Group Id is :" . $parsed_form_data[$size][':group_id'] . "\n\n\n"
+                . "\tYour Group ID is : " . $parsed_form_data[$size][':group_id'] . "\n\n\n"
                 . "Regards,\n"
                 . smtpFromName . ", Hostel-J\n"
                 . 'Thapar University';
             $mail = HAA_sendMail($subject, $to, $from, $message);
+            $mail_notify = ($mail == false) ? ('')
+                : ('<p>An email has also been sent to all members. </p>');
         }
 
         // Create a success message.
@@ -311,6 +313,7 @@ function HAA_saveGroupRecord($form_params)
             . $parsed_form_data[$size][':group_id'] . '</span><br>'
             . '<strong>Please note it down at a safe place.</strong><br>'
             . '<strong>It will be required during the Room Allotment process.</strong></p>'
+            . $mail_notify
             . '</div>';
         $GLOBALS['message'] = $success_msg;
 
