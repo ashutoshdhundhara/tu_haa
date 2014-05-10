@@ -281,7 +281,24 @@ function HAA_saveGroupRecord($form_params)
             return false;
         }
 
-        //@TODO: Send email to all the members of the group
+        //Send email to all the members of the group
+        
+        for ($i=0;$i<$size;$i++) {
+            // Send an email.
+            $mail_id = HAA_getStudentDetail('email',$parsed_form_data[$i][':roll_no']);
+            $name = HAA_getStudentDetail('full_name',$parsed_form_data[$i][':roll_no']);
+            $to = array($mail_id => $name);
+            $from = array(smtpFromEmail => smtpFromName);
+            $subject = 'Hostel-J Group Registraion';
+            $message = 'Dear' . $name ."\n\n"
+                . "\tYour Group details have been successfully received.\n"
+                . "\tYour Group password is : " . $parsed_form_data[$size][':password'] . "\n"
+                . "\tYour Group Id is :" . $parsed_form_data[$size][':group_id'] . "\n\n\n"
+                . "Regards,\n"
+                . smtpFromName . ", Hostel-J\n"
+                . 'Thapar University';
+            $mail = HAA_sendMail($subject, $to, $from, $message);
+        }
 
         // Create a success message.
         $success_msg = '<div class="response_dialog success">'

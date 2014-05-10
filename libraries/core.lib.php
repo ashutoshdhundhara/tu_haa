@@ -132,7 +132,7 @@ function HAA_sendMail($subject, $recepient, $sender, $message)
         $transport->setPassword(smtpPassword);
 
         // Create a SwiftMailer instance.
-        $mailer = Swift_Message::newInstance($transport);
+        $mailer = Swift_Mailer::newInstance($transport);
 
         // Create message instance with subject.
         $mail = Swift_Message::newInstance($subject);
@@ -141,7 +141,7 @@ function HAA_sendMail($subject, $recepient, $sender, $message)
         // Set sender.
         $mail->setFrom($sender);
         // Set message body.
-        $mail->setBody($message);
+        $mail->setBody($message, 'text/plain');
 
         // Send message.
         return $mailer->send($mail);
@@ -433,5 +433,30 @@ function HAA_insertGroupPassword($params)
     $result = $GLOBALS['dbi']->executeQuery($sql_query, $params[$size]);
 
     return true;
+}
+
+/**
+ * Returns the required detail of the student from tblStudent
+ *
+ * @param string $field_name
+ * @param string $roll_no
+ * @return string $field_value
+ */
+function HAA_getStudentDetail($field_name,$roll_no)
+{
+    // Query to fetch the required field value from the table.
+    $sql_query = 'SELECT ' . $field_name . ' FROM ' . tblStudent . ' '
+        . 'WHERE roll_no = :roll_no';
+    
+    // Execute query.
+    $field_value = $GLOBALS['dbi']->executeQuery(
+        $sql_query, array(':roll_no' => $roll_no)
+    );
+
+    if ($row = $field_value->fetch()) {
+        return $row[$field_name];
+    }
+
+    return NULL;
 }
 ?>
