@@ -173,7 +173,7 @@ class HAA_Header
             . '<link rel="shortcut icon" href="favicon.ico" '
             . 'type="image/x-icon" />'
             . '<link rel="stylesheet" '
-            . 'href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />';
+            . 'href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/redmond/jquery-ui.css" />';
         // Stylesheets
         $separator = '&stylesheets[]=';
         $url = 'css/get_stylesheets.php'
