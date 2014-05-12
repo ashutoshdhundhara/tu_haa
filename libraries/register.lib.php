@@ -237,6 +237,8 @@ function HAA_parseFormData($form_data)
 {
     // Array containing parsed form parameters.
     $form_params = array();
+    // Holds password, if any.
+    $password = '';
     // List of valid column names.
     $column_whitelist = array(
         'roll_no'
@@ -254,6 +256,8 @@ function HAA_parseFormData($form_data)
         , 'mother_name'
         , 'mother_mobile'
         , 'landline'
+        , 'room_type'
+        , 'password'
     );
 
     // Name of corresponding fields.
@@ -275,6 +279,7 @@ function HAA_parseFormData($form_data)
         , 'permanent_address' => 'Permanent Address'
         , 'alternate_address' => 'Alternate Address'
         , 'landline' => 'Landline'
+        , 'password' => 'Password'
     );
 
     // List of columns to be validated for alphabets only.
@@ -310,6 +315,10 @@ function HAA_parseFormData($form_data)
     $dates = array(
         'dob'
     );
+    //List of fields to be validated for passwords.
+    $password_fields = array(
+        'password'
+    );
 
     // If landline, mother_mobile empty, then they need not to be validated.
     if (empty($form_data['landline'])) {
@@ -324,6 +333,11 @@ function HAA_parseFormData($form_data)
     // Push addresses, as they need not to be validated.
     $form_params[':permanent_address'] = $_REQUEST['permanent_address'];
     $form_params[':alternate_address'] = $_REQUEST['alternate_address'];
+
+    // If user want to take room as an individual, no need to check password.
+    if ($_POST['room_type'] != 'individual') {
+        unset($column_whitelist[array_search('password', $column_whitelist)]);
+    }
 
     foreach ($form_data as $column => $value) {
         if (! empty($column) && in_array($column, $column_whitelist)) {
@@ -363,12 +377,31 @@ function HAA_parseFormData($form_data)
                 } else {
                     $form_params[':' . $column] = $value;
                 }
+            } elseif (in_array($column, $password_fields)) {
+                // Password must be atleast 8 chars long.
+                if (strlen($value) >= 8) {
+                    // Passwords must match.
+                    if ($_POST['password'] == $_POST['confirm_password']) {
+                        // Password must contain valid chars.
+                        if (! HAA_validateValue($value, 'password')) {
+                            HAA_inValidField($fields[$column]);
+                        } else {
+                            $password = $value;
+                        }
+                    } else {
+                        HAA_gotError('Passwords donot match.');
+                    }
+                } else {
+                    HAA_gotError(
+                        'Password must be atleast 8 characters long.'
+                    );
+                }
             } else {
                 // Nothing
             }
 
             // Remove matched element from white list.
-            $column_whitelist=array_diff($column_whitelist,array($column));
+            $column_whitelist = array_diff($column_whitelist,array($column));
         }
     }
 
@@ -393,7 +426,7 @@ function HAA_parseFormData($form_data)
         return false;
     }
 
-    return $form_params;
+    return array($form_params, $password);
 }
 
 /**
@@ -405,7 +438,7 @@ function HAA_parseFormData($form_data)
 function HAA_saveStudentRecord($form_params)
 {
     // Parse form data.
-    $parsed_form_data = HAA_parseFormData($form_params);
+    list($parsed_form_data, $password) = HAA_parseFormData($form_params);
 
     if (is_array($parsed_form_data) && $parsed_form_data != false) {
 
@@ -463,37 +496,36 @@ function HAA_saveStudentRecord($form_params)
         }
 
         // If user wants individual room, create his login ID.
+        if (! empty($password)) {
+            // Prepare data to insert into database.
+            $group_params = array(
+                0 => array(
+                        ':roll_no' => $parsed_form_data[':roll_no'],
+                        ':group_id' => $parsed_form_data[':unique_id'],
+                        ':unique_id' => $parsed_form_data[':unique_id']
+                    ),
+                1 => array(
+                        ':group_size' => 1,
+                        ':group_id' => $parsed_form_data[':unique_id'],
+                        ':password' => $password,
+                        ':confirm_password' => $password
+                    )
+            );
+            // Insert into `tblGroup`.
+            $result = HAA_insertGroupRecord($group_params);
+            // Insert into `tblGroupId`.
+            $result = HAA_insertGroupPassword($group_params);
+        }
 
         // Send an email.
         $to = array($parsed_form_data[':email'] => $parsed_form_data[':full_name']);
         $from = array(smtpFromEmail => smtpFromName);
         $subject = 'Hostel-J Registration';
-        $message = 'Dear ' . $parsed_form_data[':full_name'] . ",\r\n\r\n"
-            . "\tYour Personal details have been successfully received.\r\n"
-            . "\tYour Unique ID is : " . $parsed_form_data[':unique_id']
-            . "\r\n\r\n\r\n"
-            . "Regards,\r\n"
-            . smtpFromName . ", Hostel-J\r\n"
-            . 'Thapar University';
+        $message = HAA_getMailMessage($parsed_form_data, $_POST['room_type'], $password);
         $mail = HAA_sendMail($subject, $to, $from, $message);
-        $mail_notify = ($mail == false) ? ('')
-            : ('<p>An email has also been sent to : <span class="blue">'
-                . $parsed_form_data[':email'] . '</span><br>');
 
         // Create a success message.
-        $success_msg = '<div class="response_dialog success">'
-            . '<h1>CONGRATULATIONS !</h1>'
-            . '<div>Successfully received the details of :</div>'
-            . '<div class="blue" style="text-align: center;">'
-            . '<p>' . $parsed_form_data[':full_name'] . '</p>'
-            . '<p>' . $parsed_form_data[':roll_no'] . '</p>'
-            . '</div>'
-            . '<p>This is your Unique ID : <span class="blue">'
-            . $parsed_form_data[':unique_id'] . '</span><br>'
-            . '<strong>Please note it down at a safe place.</strong><br>'
-            . '<strong>It will be required during the Group Creation process.</strong></p>'
-            . $mail_notify
-            . '</div>';
+        $success_msg = HAA_getSuccessMessage($parsed_form_data, $_POST['room_type'], $mail);
         $GLOBALS['message'] = $success_msg;
 
         return true;
@@ -575,5 +607,84 @@ function HAA_validatePhoto($roll_no)
     $filename = './student_photos/' . $roll_no . '.' . $ext;
 
     return $filename;
+}
+
+/**
+ * Generates message for email for Registration process.
+ *
+ * @param array  $parsed_form_data Parsed form data
+ * @param string $room_type        Room choice type
+ * @param string $password         Password
+ *
+ * @return string $mail_message
+ */
+function HAA_getMailMessage($parsed_form_data, $room_type, $password)
+{
+    $mail_message = 'Dear ' . $parsed_form_data[':full_name'] . ",\r\n\r\n"
+        . "\tYour Personal details have been successfully received.\r\n";
+
+    switch ($room_type) {
+    case 'group':
+        $mail_message .= "\tYour Unique ID is : " . $parsed_form_data[':unique_id']
+            . "\r\n" . 'It will be required during the Group Creation process.';
+        break;
+    case 'individual':
+        $mail_message .= "\tYour Login ID is : " . $parsed_form_data[':unique_id'] . "\r\n"
+            . "\tYour Password is : " . $password ."\r\n"
+            . 'Use this Login ID and Password to select a room when allotment '
+            . 'process starts.';
+        break;
+    }
+
+    $mail_message .= "\r\n\r\n\r\n" . "Regards,\r\n"
+            . smtpFromName . ", Hostel-J\r\n"
+            . 'Thapar University';
+
+    return $mail_message;
+}
+
+/**
+ * Generates success message for Registration process.
+ *
+ * @param array  $parsed_form_data Parsed form data
+ * @param string $room_type        Room choice type
+ * @param bool   $mail             eMail sent or not
+ *
+ * @return string $success_message
+ */
+function HAA_getSuccessMessage($parsed_form_data, $room_type, $mail)
+{
+    $success_msg = '<div class="response_dialog success">'
+        . '<h1>CONGRATULATIONS !</h1>'
+        . '<div>Successfully received the details of :</div>'
+        . '<div class="blue" style="text-align: center;">'
+        . '<p>' . $parsed_form_data[':full_name'] . '</p>'
+        . '<p>' . $parsed_form_data[':roll_no'] . '</p>'
+        . '</div>'
+        . '<p>This is your %s ID : <span class="blue">'
+        . $parsed_form_data[':unique_id'] . '</span><br>'
+        . '<strong>Please note it down at a safe place.</strong><br>';
+    $mail_notify = ($mail == false) ? ''
+        : '<p>An email has also been sent to : <span class="blue">'
+            . $parsed_form_data[':email'] . '</span><br>';
+
+    switch ($room_type) {
+    case 'group':
+        $success_msg = sprintf($success_msg, 'Unique');
+        $success_msg .= '<strong>'
+            . 'It will be required during the Group Creation process.'
+            . '</strong></p>';
+        break;
+    case 'individual':
+        $success_msg = sprintf($success_msg, 'Login');
+        $success_msg .= '<strong>'
+            . 'Use this Login ID and your Password to select a room '
+            . 'when allotment process starts.</strong></p>';
+        break;
+    }
+
+    $success_msg .= $mail_notify . '</div>';
+
+    return $success_msg;
 }
 ?>

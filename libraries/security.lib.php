@@ -49,7 +49,8 @@ function HAA_secureSession()
  */
 function HAA_secureLogin($group_id, $password)
 {
-    // Initialize
+    // Initialize.
+    $password = hash('sha512', $password);
     $sql_query = 'SELECT * FROM ' . tblGroupId . ' '
             . 'WHERE group_id = :group_id AND password = :password '
             . 'LIMIT 1';
@@ -64,8 +65,6 @@ function HAA_secureLogin($group_id, $password)
         $group_details = $result->fetch();
         // Get the user-agent string of the user.
         $user_browser = $_SERVER['HTTP_USER_AGENT'];
-        // Hash the password with unique salt to create login_string.
-        $password = hash('sha512', $password . $group_details['salt']);
         // Set session variables.
         $_SESSION['login_id'] = $group_id;
         $_SESSION['login_string'] = hash('sha512', $password . $user_browser);
@@ -104,7 +103,7 @@ function HAA_checkLoginStatus()
         // Get the user-agent string of the user.
         $user_browser = $_SERVER['HTTP_USER_AGENT'];
         // SQL query to fetch password from DB.
-        $sql_query = 'SELECT password, salt FROM ' . tblGroupId . ' '
+        $sql_query = 'SELECT password FROM ' . tblGroupId . ' '
             . 'WHERE group_id = :group_id '
             . 'LIMIT 1';
         // Execute query.
@@ -114,7 +113,6 @@ function HAA_checkLoginStatus()
             // Get password saved in DB.
             $row = $result->fetch();
             $password = $row['password'];
-            $password = hash('sha512', $password . $row['salt']);
             // Create check login_string.
             $login_check = hash('sha512', $password . $user_browser);
             if ($login_string == $login_check) {
