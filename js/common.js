@@ -237,7 +237,7 @@ function HAA_submitForm($form)
                 // Create dialog.
                 $response_dialog = $(dialog_content).dialog({
                     minWidth: 525,
-                    minHeight: 250,
+                    height: 300,
                     modal: true,
                     title: dialog_title,
                     resizable: true,
