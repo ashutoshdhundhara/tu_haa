@@ -101,7 +101,7 @@ function HAA_getHtmlWingMap($wing = 'E')
             . '&wing=' . urlencode($row['wing'])
             . '&cluster=' . urlencode($row['cluster'])
             . '&floor=' . urlencode($row['floor'])
-            . '">' . $cluster_name . '<br><span class="vacant_rooms">'
+            . '"><strong>' . $cluster_name . '</strong><br><span class="vacant_rooms">'
             . 'Vacant rooms: <span id="' . $cluster_name
             . '" class="'. $class . '">' . $row['vacant_rooms']
             . '</span></span></a></li>';
