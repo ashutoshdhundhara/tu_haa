@@ -70,9 +70,8 @@ function HAA_validateValue($value, $type)
  */
 function HAA_inValidField($field_name)
 {
-    array_push($GLOBALS['error'],
-        $field_name
-        . ' field contains invalid characters.'
+    HAA_gotError(
+        $field_name . ' field contains invalid characters.'
     );
 }
 
@@ -447,7 +446,7 @@ function HAA_getStudentDetail($field_name,$roll_no)
     // Query to fetch the required field value from the table.
     $sql_query = 'SELECT ' . $field_name . ' FROM ' . tblStudent . ' '
         . 'WHERE roll_no = :roll_no';
-    
+
     // Execute query.
     $field_value = $GLOBALS['dbi']->executeQuery(
         $sql_query, array(':roll_no' => $roll_no)
