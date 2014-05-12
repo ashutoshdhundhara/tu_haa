@@ -142,11 +142,11 @@ header td {
     padding: 5px;
     position: absolute;
     z-index: 9999;
-    max-width: 300px;
-    -webkit-box-shadow: 0 0 5px #aaa;
-    box-shadow: 0 0 5px #aaa;
+    max-width: 320px;
     font-size: 0.7em;
-    background: #FFE0E0
+    background: rgba(0,0,0,0.7);
+    color: white;
+    font-weight: 800;
 }
 
 a {
@@ -314,7 +314,7 @@ th {
 }
 
 .ui-autocomplete, .ui-datepicker {
-    font-size: 0.7em;
+    font-size: 0.8em;
 }
 
 .ui-datepicker {
