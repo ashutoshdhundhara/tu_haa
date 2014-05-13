@@ -30,6 +30,8 @@ define('tblEligibleStudents', '');
 define('tblRoom', '');
 // Define table for Admin credentials.
 define('tblAdmin', '');
+// Define table for Complaint details.
+define('tblComplaint', '');
 
 /**
  * reCaptcha constants.
