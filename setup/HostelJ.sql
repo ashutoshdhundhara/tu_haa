@@ -102,3 +102,17 @@ CREATE TABLE IF NOT EXISTS `student_details` (
   `room_no` char(6) DEFAULT NULL,
   PRIMARY KEY (`roll_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains Student''s personal details';
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `complaint_details`
+--
+
+CREATE TABLE `complaint_details` (
+ `email` varchar(50) NOT NULL,
+ `complaint_id` varchar(10) NOT NULL,
+ `complaint` varchar(500) NOT NULL,
+ `name` varchar(50) NOT NULL,
+ PRIMARY KEY (`complaint_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains complaint details';
