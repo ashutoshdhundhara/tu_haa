@@ -175,7 +175,7 @@ function HAA_saveErrorReport($form_params)
         $mail = HAA_sendMail($subject, $to, $from, $message);
         $mail_notify = ($mail == false) ? ('')
             : ('<p>An email has also been sent to : <span class="blue"> '
-            . $parsed_form_data[':mail']
+            . $parsed_form_data[':email']
             . '. </span></p>');
 
         // Create a success message.
