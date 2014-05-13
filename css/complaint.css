@@ -1,0 +1,29 @@
+/**
+ * Styles for Error Reporting page.
+ */
+
+.report_complaint {
+    width: 600px;
+    margin: 0 auto;
+}
+
+.report_complaint table {
+    table-layout: fixed;
+    margin: 0 auto;
+    width: 600px;
+}
+
+.report_complaint td {
+    padding: 0.4em;
+    vertical-align: middle;
+}
+
+input[type='text'], input[type='password'], select, textarea {
+    width: 250px;
+}
+
+textarea {
+    height: 5em;
+    max-width: 250px;
+    max-height: 100px;
+}

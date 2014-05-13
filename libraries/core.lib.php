@@ -459,4 +459,29 @@ function HAA_getStudentDetail($field_name,$roll_no)
 
     return NULL;
 }
+
+/**
+ * Inserts record into `tblComplaint`.
+ *
+ * @param array $params Query parameters
+ * @return PDO object
+ */
+function HAA_insertComplaintRecord($params)
+{
+    // Create SQL query.
+    $sql_query = 'INSERT INTO `' . dbName . '`.`' . tblComplaint . '`'
+        . ' (`email`, `complaint_id`, `complaint`, `name`) '
+        . 'VALUES (:email'
+        . ', :complaint_id'
+        . ', :complaint_description'
+        . ', :full_name'
+        .')';
+
+    // Execute the query.
+    $result = $GLOBALS['dbi']->executeQuery($sql_query, $params);
+    if (! $result )
+        return false;
+
+    return true;
+}
 ?>
