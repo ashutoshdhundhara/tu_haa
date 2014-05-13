@@ -174,7 +174,9 @@ function HAA_saveErrorReport($form_params)
             . 'Thapar University';
         $mail = HAA_sendMail($subject, $to, $from, $message);
         $mail_notify = ($mail == false) ? ('')
-            : ('<p>An email has also been sent to ' . $parsed_form_data[':complaint_id'] . '. </p>');
+            : ('<p>An email has also been sent to : <span class="blue"> '
+            . $parsed_form_data[':email']
+            . '. </span></p>');
 
         // Create a success message.
         $success_msg = '<div class="report_complaint gray_grad box success">'
