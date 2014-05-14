@@ -47,6 +47,13 @@ class HAA_Header
      * @var string
      */
     private $_bodyId;
+    /**
+     * Whether to display global message box or not.
+     *
+     * @access private
+     * @var bool
+     */
+    private $_displayGlobalMessage;
 
     /**
      * Creates a new class instance.
@@ -54,6 +61,7 @@ class HAA_Header
     public function __construct()
     {
         $this->_isEnabled = true;
+        $this->_displayGlobalMessage = true;
         $this->_title = '';
         $this->_scripts = array();
         $this->_scripts = array();
@@ -276,6 +284,7 @@ class HAA_Header
             . '</a></td>'
             . '</tr></table></header>';
         $retval .= $this->_getLoginDetails();
+        $retval .= $this->_getGlobalMessage();
         $retval .= '<div class="body_area">';
         $retval .= '<div class="body_content">';
 
@@ -302,6 +311,25 @@ class HAA_Header
     }
 
     /**
+     * Returns global message box, if any message to display
+     *
+     * @return string Html
+     */
+    private function _getGlobalMessage()
+    {
+        $retval = '';
+        if (HAA_checkToDisplayGlobalMessage() && $this->_displayGlobalMessage) {
+            $allotment_status = HAA_getAllotmentProcessStatus();
+            $message = $allotment_status['message'];
+            $retval .= '<div class="global_message">'
+                . HAA_Message::notice($message)
+                . '</div>';
+        }
+
+        return $retval;
+    }
+
+    /**
      * Disables the rendering of the header.
      *
      * @return void
@@ -309,6 +337,16 @@ class HAA_Header
     public function disable()
     {
         $this->_isEnabled = false;
+    }
+
+    /**
+     * Disables global message box.
+     *
+     * @return void
+     */
+    public function disableGlobalMessage()
+    {
+        $this->_displayGlobalMessage = false;
     }
 
     /**
