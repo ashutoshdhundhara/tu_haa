@@ -507,8 +507,7 @@ function HAA_saveStudentRecord($form_params)
                 1 => array(
                         ':group_size' => 1,
                         ':group_id' => $parsed_form_data[':unique_id'],
-                        ':password' => $password,
-                        ':confirm_password' => $password
+                        ':password' => $password
                     )
             );
             // Insert into `tblGroup`.
