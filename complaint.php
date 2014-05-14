@@ -14,7 +14,7 @@ require_once 'libraries/swiftmailer/lib/swift_required.php';
 // If Form is submitted, process it.
 if (isset($_REQUEST['submitted'])) {
     $response = HAA_Response::getInstance();
-    
+
     $header = $response->getHeader();
     $header->addFile('complaint.css', 'css');
 
@@ -37,6 +37,8 @@ if (isset($_REQUEST['submitted'])) {
 // Display Error Reporting form.
 $response = HAA_Response::getInstance();
 $header = $response->getHeader();
+// No need to display global message on this page.
+$header->disableGlobalMessage();
 $header->addFile('complaint.css', 'css');
 $header->setTitle('');
 $html_output = '';
