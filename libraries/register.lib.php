@@ -381,7 +381,7 @@ function HAA_parseFormData($form_data)
                 // Password must be atleast 8 chars long.
                 if (strlen($value) >= 8) {
                     // Passwords must match.
-                    if ($_POST['password'] == $_POST['confirm_password']) {
+                    if ($form_data['password'] == $form_data['confirm_password']) {
                         // Password must contain valid chars.
                         if (! HAA_validateValue($value, 'password')) {
                             HAA_inValidField($fields[$column]);
@@ -389,7 +389,7 @@ function HAA_parseFormData($form_data)
                             $password = $value;
                         }
                     } else {
-                        HAA_gotError('Passwords donot match.');
+                        HAA_gotError('Passwords do not match.');
                     }
                 } else {
                     HAA_gotError(
