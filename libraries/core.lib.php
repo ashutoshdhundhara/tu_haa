@@ -421,8 +421,7 @@ function HAA_insertGroupPassword($params)
         $size++;
     }
 
-    // Remove confirm_password field and set allotment status to "SELECT" by default.
-    unset($params[$size][':confirm_password']);
+    // Set allotment status to "SELECT" by default.
     $params[$size]['allotment_status'] = 'SELECT';
 
     // Hash the password
