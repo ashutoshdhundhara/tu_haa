@@ -49,7 +49,7 @@ class HAA_Footer
                 . '<ul>'
                 . '<li><a href="#">Rules & Regulations</a></li>'
                 . '<li class="separator">|</li>'
-                . '<li><a href="#">Report Issue</a></li>'
+                . '<li><a href="complaint.php">Report Issue</a></li>'
                 . '<li class="separator">|</li>'
                 . '<li><a href="#">Contact Us</a></li>'
                 . '<li class="separator">|</li>'
