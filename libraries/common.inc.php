@@ -26,6 +26,10 @@ if (count($_REQUEST) > 1000) {
 define('TU_HAA', true);
 
 /**
+ * Used to messages.
+ */
+require_once 'libraries/Message.class.php';
+/**
  * Used to generate the page
  */
 require_once 'libraries/Response.class.php';
@@ -54,4 +58,8 @@ $GLOBALS['error'] = array();
  */
 $GLOBALS['message'] = array();
 
+/**
+ * Allotment process status.
+ */
+$GLOBALS['allotment_process_status'] = HAA_getAllotmentProcessStatus();
 ?>

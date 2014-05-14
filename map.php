@@ -71,7 +71,9 @@ $header->addFile('map.css', 'css');
 $header->setTitle('');
 $html_output = '';
 
-$html_output .= HAA_getHtmlHostelMap(true);
+// Get the allotment status.
+$process_status = ($_SESSION['process_status'] == 'DISABLED') ? false : true;
+$html_output .= HAA_getHtmlHostelMap($process_status);
 
 $response->addHTML($html_output);
 $response->response();

@@ -65,11 +65,14 @@ function HAA_secureLogin($group_id, $password)
         $group_details = $result->fetch();
         // Get the user-agent string of the user.
         $user_browser = $_SERVER['HTTP_USER_AGENT'];
+        // Get allotment process status.
+        $allotment_status = HAA_getAllotmentProcessStatus();
         // Set session variables.
         $_SESSION['login_id'] = $group_id;
         $_SESSION['login_string'] = hash('sha512', $password . $user_browser);
         $_SESSION['group_size'] = $group_details['group_size'];
         $_SESSION['allotment_status'] = $group_details['allotment_status'];
+        HAA_updateAllotmentProcessStatus();
         // Login successful.
         return true;
 
@@ -116,6 +119,8 @@ function HAA_checkLoginStatus()
             // Create check login_string.
             $login_check = hash('sha512', $password . $user_browser);
             if ($login_string == $login_check) {
+                // Update allotment process status.
+                HAA_updateAllotmentProcessStatus();
                 // Logged in.
                 return true;
             } else {
@@ -164,5 +169,45 @@ function HAA_pageCheck()
             //HAA_redirectTo('login.php');
             break;
     }
+}
+
+/**
+ * Fetches details about allotment process from `tblAllotmentStatus`
+ *
+ * @return PDO object
+ */
+function HAA_getAllotmentProcessStatus()
+{
+    // SQL query.
+    $sql_query = 'SELECT * FROM ' . tblAllotmentStatus . ' '
+        . 'LIMIT 1';
+
+    // Execute query.
+    $result = $GLOBALS['dbi']->executeQuery($sql_query, array());
+
+    return $result->fetch();
+}
+
+/**
+ * Updates allotment process status.
+ */
+function HAA_updateAllotmentProcessStatus()
+{
+    // Get allotment process status.
+    $status = $GLOBALS['allotment_process_status'];
+    $_SESSION['process_status'] = $status['process_status'];
+}
+
+/**
+ * Checks whether to display any message in global message box or not.
+ *
+ * @return bool
+ */
+function HAA_checkToDisplayGlobalMessage()
+{
+    // Get allotment process status.
+    $status = $GLOBALS['allotment_process_status'];
+
+    return $status['show_message'];
 }
 ?>

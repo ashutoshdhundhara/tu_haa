@@ -25,10 +25,15 @@ function HAA_getHtmlHostelMap($selectable = true)
         . '</li>'
         . '</ul>'
         . '</div>';
-    if ($selectable) {
-        $group_size = $_SESSION['group_size'];
-        $retval .= HAA_getHtmlSideBar($group_size);
-    }
+    // Set JS variable for group size.
+    $group_size = $_SESSION['group_size'];
+    $retval .= '<script>'
+        . 'var group_size = ' . $group_size . '; '
+        . 'var selected_rooms = 0; '
+        . 'var process_status = ' . (($selectable) ? 'true' : 'false') . ';'
+        . '</script>';
+    $retval .= HAA_getHtmlSideBar($group_size);
+
     return $retval;
 }
 
@@ -56,11 +61,6 @@ function HAA_getHtmlSideBar($group_size = '0')
         . $_SESSION['login_id'] . '">'
         . '</form>'
         . '</div>';
-    // Set JS variable for group size.
-    $retval .= '<script>'
-        . 'var group_size = ' . $group_size . '; '
-        . 'var selected_rooms = 0;'
-        . '</script>';
 
     return $retval;
 }

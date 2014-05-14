@@ -35,6 +35,17 @@ if (isset($_POST['rooms_selected']) && $_POST['rooms_selected'] == true) {
         $response->response();
         exit;
     }
+    // Check allotment process status.
+    if ($_SESSION['process_status'] != 'ENABLED') {
+        HAA_gotError(
+            $GLOBALS['allotment_process_status']['message']
+        );
+        $response->addJSON(
+            'message', HAA_generateErrorMessage($GLOBALS['error'])
+        );
+        $response->response();
+        exit;
+    }
     // Verify if group has not already taken rooms.
     if ($_SESSION['allotment_status'] != 'SELECT') {
         HAA_gotError(
@@ -74,7 +85,7 @@ if (isset($_POST['rooms_selected']) && $_POST['rooms_selected'] == true) {
 }
 
 // If user has submitted final member-room mapping.
-if (isset($_POST['rooms_allocated']) && $_POST['rooms_allocated'] == true) {
+if (isset($_REQUEST['rooms_allocated']) && $_REQUEST['rooms_allocated'] == true) {
     if (! HAA_checkLoginStatus()) {
         HAA_gotError(
             'Either your are not logged in or your session has expired.<br>'
@@ -93,7 +104,8 @@ if (isset($_POST['rooms_allocated']) && $_POST['rooms_allocated'] == true) {
         HAA_redirectTo('index.php');
     }
     // Validate all received roll numbers.
-    if (! HAA_validateRollNumbers($_POST['members_order'])) {
+    $members_order = $_REQUEST['members_order'];
+    if (! HAA_validateRollNumbers($members_order)) {
         $response->addHTML(
             '<div class="box gray_grad" style="width: 600px;">'
             . HAA_generateErrorMessage($GLOBALS['error'])
@@ -104,7 +116,7 @@ if (isset($_POST['rooms_allocated']) && $_POST['rooms_allocated'] == true) {
     }
     // Everything fine upto here, allocate the rooms.
     $group_id = $_SESSION['login_id'];
-    if (! HAA_allocateRooms($_POST['members_order'], $group_id)) {
+    if (! HAA_allocateRooms($members_order, $group_id)) {
         $response->addHTML(
             '<div class="box gray_grad" style="width: 600px;">'
             . HAA_generateErrorMessage($GLOBALS['error'])
@@ -127,6 +139,17 @@ $html_output = '';
 switch ($allotment_status) {
     // Display room allocation form.
     case 'ALLOT':
+        // If group_size is 1, skip this step.
+        $group_size = $_SESSION['group_size'];
+        if ($group_size == 1) {
+            $group_id = $_SESSION['login_id'];
+            $member = HAA_getMembers($group_id);
+            $member = $member->fetch();
+            $url = 'allot.php?rooms_allocated=true'
+                . '&members_order[]=' . $member['roll_no'];
+            HAA_redirectTo($url);
+        }
+
         $header->addFile('allot.js', 'js');
         $header->setTitle('');
         $html_output = HAA_getHtmlAllocationForm();

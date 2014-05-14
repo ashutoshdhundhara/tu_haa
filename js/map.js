@@ -4,10 +4,11 @@
 
 $(document).ready(function () {
     $('#wing_tabs').tabs({
-        select: function(event, ui) {
-            if ($.data(ui.tab, 'load.tabs')) {
-                $(ui.panel).html("Loading...");
-            }
+        beforeLoad: function(event, ui){
+            $(ui.panel)
+            .siblings('div.ui-tabs-panel[aria-expanded="true"]')
+            .empty()
+            .html('<strong>Loading...</strong>');
         }
     });
     $('.ui-tabs-nav').addClass('green_grad');
@@ -63,6 +64,8 @@ var update_interval = null;
  */
 function HAA_showClusterMap($cluster_anchor)
 {
+    // Show loading notification.
+    var $notification = HAA_showNotification();
     var cluster_url = $cluster_anchor.attr('href');
     var cluster_name = $cluster_anchor.find('.vacant_rooms')
         .find('span').attr('id');
@@ -74,6 +77,8 @@ function HAA_showClusterMap($cluster_anchor)
         cache: false,
         dataType: 'json',
         success: function (response) {
+            // Remove notification.
+            $notification.remove();
             // Display a dialog containing response. --START--
             // Variable that holds the response dialog.
             var $response_dialog = null;
@@ -95,7 +100,7 @@ function HAA_showClusterMap($cluster_anchor)
             buttonOptions['Close'] = function () {
                 document.body.style.overflow = "visible";
                 if (response.not_logged_in) {
-                    window.location.replace('http://onlinehostelj.in');
+                    window.location.replace('index.php');
                 }
                 $(this).remove();
             };
@@ -135,7 +140,7 @@ function HAA_showClusterMap($cluster_anchor)
                     close: function () {
                         document.body.style.overflow = "visible";
                         if (response.not_logged_in) {
-                            window.location.replace('http://onlinehostelj.in');
+                            window.location.replace('index.php');
                         }
                         $(this).remove();
                     }
@@ -178,8 +183,10 @@ function HAA_selectRoom(room_no)
         .appendTo('#selected_rooms_list');
     // Step 5: Handle 'submit' button.
     if (selected_rooms === group_size) {
+        var disabled = (process_status) ? '' : 'disabled="disabled"';
         $('<input type="submit" name="submit" value="Submit"' +
-            ' class="submit_button green_grad">')
+            ' class="submit_button green_grad" ' +
+            disabled + '>')
             .appendTo('#rooms_form');
     // Step 6: Block all available room if selected_rooms == group_size.
         $('.room_available').each(function () {
@@ -264,6 +271,8 @@ function HAA_removeAll()
  */
 function HAA_submitRoomChoices($form)
 {
+    // Show loading notification.
+    var $notification = HAA_showNotification();
     var form_data = new FormData($($form)[0]);
     $.ajax({
         type: 'POST',
@@ -274,6 +283,8 @@ function HAA_submitRoomChoices($form)
         processData: false, // Don't process the files
         contentType: false, // Set content type to false as jQuery will tell the server its a query string request
         success: function (response) {
+            // Remove notification.
+            $notification.remove();
             // Display a dialog containing response. --START--
             // Variable that holds the response dialog.
             var $response_dialog = null;
@@ -284,7 +295,7 @@ function HAA_submitRoomChoices($form)
             // 'OK' button action.
             buttonOptions['OK'] = function () {
                 if (response.not_logged_in || response.book_success) {
-                    window.location.replace('http://onlinehostelj.in');
+                    window.location.replace('index.php');
                 } else {
                     document.body.style.overflow = "visible";
                     $(this).dialog('close');
@@ -316,7 +327,7 @@ function HAA_submitRoomChoices($form)
                     },
                     close: function () {
                         if (response.not_logged_in || response.book_success) {
-                            window.location.replace('http://onlinehostelj.in');
+                            window.location.replace('index.php');
                         } else {
                             HAA_removeAll();
                         }
