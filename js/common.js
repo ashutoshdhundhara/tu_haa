@@ -80,25 +80,28 @@ var unique_id_format = '9999';
  */
 function HAA_showNotification(message, type)
 {
+    // Whether the notification will automatically disappear
+    var self_closing = true;
     // Remove any previous notification.
     $('.haa_notification').remove();
 
     // Initialize some variables.
     var uiClass = 'ui-state-highlight';
-    var uiIcon  = 'ui-icon-lightbulb';
+    var uiIcon  = 'ui-icon-info';
     var uiText  = '';
-    message = (message !== undefined) ? message : 'Loading...';
+    message = (message !== undefined) ? message : 'Please wait...';
     type = (type !== undefined) ? type : 'load';
 
     switch(type) {
         case 'load':
+            self_closing = false;
             break;
         case 'info':
-            uiText = 'INFORMATION: ';
+            uiText = 'NOTICE: ';
             break;
         case 'error':
             uiClass = 'ui-state-error';
-            uiIcon  = 'ui-icon-notice';
+            uiIcon  = 'ui-icon-alert';
             uiText  = 'ERROR: ';
     }
 
@@ -117,13 +120,29 @@ function HAA_showNotification(message, type)
     .appendTo('.body_content')
     .bind('click', function () {
         if (type !== 'load') {
-            $(this).fadeOut('medium', function () {
+            $(this)
+            .stop(true, true)
+            .fadeOut('medium', function () {
                 $(this).tooltip('destroy');
                 $(this).remove();
             });
+        } else {
+            return false;
         }
     })
     .show();
+
+    if (self_closing) {
+        $notification
+        .delay(3000)
+        .fadeOut('medium', function () {
+            if ($(this).is(':data(tooltip)')) {
+                $(this).tooltip('destroy');
+            }
+            // Remove the notification
+            $(this).remove();
+        });
+    }
 
     if (type !== 'load') {
         $($notification).tooltip({
@@ -202,6 +221,7 @@ function HAA_togglePasswordFields($target)
  */
 function HAA_submitForm($form)
 {
+    var $notification = HAA_showNotification();
     var form_data = new FormData($($form)[0]);
     $.ajax({
         type: 'POST',
@@ -212,6 +232,8 @@ function HAA_submitForm($form)
         processData: false, // Don't process the files
         contentType: false, // Set content type to false as jQuery will tell the server its a query string request
         success: function (response) {
+            // Remove notification.
+            $notification.remove();
             // Display a dialog containing response. --START--
             // Variable that holds the response dialog.
             var $response_dialog = null;
@@ -222,7 +244,7 @@ function HAA_submitForm($form)
             // 'OK' button action.
             buttonOptions['OK'] = function () {
                 if (response.save) {
-                    window.location.replace('http://onlinehostelj.in');
+                    window.location.replace('index.php');
                 } else {
                     document.body.style.overflow = "visible";
                     $(this).dialog('close');
@@ -254,7 +276,7 @@ function HAA_submitForm($form)
                     },
                     close: function () {
                         if (response.save) {
-                            window.location.replace('http://onlinehostelj.in');
+                            window.location.replace('index.php');
                         }
                         document.body.style.overflow = "visible";
                         $(this).remove();
