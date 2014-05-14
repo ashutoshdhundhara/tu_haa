@@ -621,16 +621,16 @@ function HAA_validatePhoto($roll_no)
 function HAA_getMailMessage($parsed_form_data, $room_type, $password)
 {
     $mail_message = 'Dear ' . $parsed_form_data[':full_name'] . ",\r\n\r\n"
-        . "\tYour Personal details have been successfully received.\r\n";
+        . "Your Personal details have been successfully received.\r\n";
 
     switch ($room_type) {
     case 'group':
-        $mail_message .= "\tYour Unique ID is : " . $parsed_form_data[':unique_id']
+        $mail_message .= "Your Unique ID is : " . $parsed_form_data[':unique_id']
             . "\r\n" . 'It will be required during the Group Creation process.';
         break;
     case 'individual':
-        $mail_message .= "\tYour Login ID is : " . $parsed_form_data[':unique_id'] . "\r\n"
-            . "\tYour Password is : " . $password ."\r\n"
+        $mail_message .= "Your Login ID is : " . $parsed_form_data[':unique_id'] . "\r\n"
+            . "Your Password is : " . $password ."\r\n"
             . 'Use this Login ID and Password to select a room when allotment '
             . 'process starts.';
         break;
