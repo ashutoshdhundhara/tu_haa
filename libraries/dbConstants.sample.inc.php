@@ -32,6 +32,8 @@ define('tblRoom', '');
 define('tblAdmin', '');
 // Define table for Complaint details.
 define('tblComplaint', '');
+// Define table for allotment process details.
+define('tblAllotmentStatus', '');
 
 /**
  * reCaptcha constants.

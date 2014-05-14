@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `admin_id` (
 -- Table structure for table `eligible_students`
 --
 
-CREATE TABLE IF NOT EXISTS  `eligible_students` (
+CREATE TABLE IF NOT EXISTS `eligible_students` (
   `roll_no` varchar(12) NOT NULL,
   `full_name` varchar(50) NOT NULL,
   PRIMARY KEY (`roll_no`)
@@ -109,10 +109,23 @@ CREATE TABLE IF NOT EXISTS `student_details` (
 -- Table structure for table `complaint_details`
 --
 
-CREATE TABLE `complaint_details` (
- `email` varchar(50) NOT NULL,
- `complaint_id` varchar(10) NOT NULL,
- `complaint` varchar(500) NOT NULL,
- `name` varchar(50) NOT NULL,
- PRIMARY KEY (`complaint_id`)
+CREATE TABLE IF NOT EXISTS `complaint_details` (
+  `email` varchar(50) NOT NULL,
+  `complaint_id` varchar(10) NOT NULL,
+  `complaint` varchar(500) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`complaint_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains complaint details';
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `allotment_status`
+--
+
+CREATE TABLE IF NOT EXISTS `allotment_status` (
+  `process_status` enum('ENABLED','DISABLED','','') NOT NULL COMMENT 'Status of allotment process.',
+  `message` varchar(200) NOT NULL COMMENT 'Message to be displayed if allotment disabled.',
+  `show_message` enum('0','1','','') NOT NULL COMMENT 'Whether to to show global message or not.',
+  PRIMARY KEY (`process_status`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains status about allotment process.'
