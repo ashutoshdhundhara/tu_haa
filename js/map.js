@@ -183,7 +183,8 @@ function HAA_selectRoom(room_no)
         .appendTo('#selected_rooms_list');
     // Step 5: Handle 'submit' button.
     if (selected_rooms === group_size) {
-        var disabled = (process_status) ? '' : 'disabled="disabled"';
+        /*var disabled = (process_status) ? '' : 'disabled="disabled"';*/
+        var disabled = '';
         $('<input type="submit" name="submit" value="Submit"' +
             ' class="submit_button green_grad" ' +
             disabled + '>')
