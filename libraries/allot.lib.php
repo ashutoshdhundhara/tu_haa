@@ -205,7 +205,8 @@ function HAA_getMembers($group_id)
         . 'WHERE ' . tblGroup . '.' . '`roll_no` '
         . '= '
         . tblStudent . '.' . '`roll_no` '
-        . 'AND ' . tblGroup . '.' . '`group_id` = :group_id';
+        . 'AND ' . tblGroup . '.' . '`group_id` = :group_id '
+        . 'ORDER BY `room_no`';
     // Execute the query.
     $query_params = array(':group_id' => $group_id);
     $result = $GLOBALS['dbi']->executeQuery($sql_query, $query_params);
@@ -342,7 +343,7 @@ function HAA_getHtmlCompleteForm()
         . '<div style="margin-top: 2em;">'
         . '<strong>NOTE: </strong>'
         . 'Now all have to show the Hostel-Fee proof and collect the room keys from '
-        . 'Hostel Administartion.'
+        . 'Hostel Administration.'
         . '</div>'
         . '</div>';
 
