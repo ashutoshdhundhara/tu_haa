@@ -310,6 +310,10 @@ th {
     font-weight: 800;
 }
 
+iframe {
+    position: absolute;
+}
+
 .uniform_field {
     border-radius: 3px;
     border: 1px solid #ababab;
