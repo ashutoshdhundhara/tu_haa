@@ -63,7 +63,6 @@ function HAA_parseFormData($form_data)
     $column_whitelist = array(
         'group_size'
         , 'password'
-        , 'confirm_password'
         , 'roll_no'
         , 'unique_id'
     );
@@ -72,13 +71,11 @@ function HAA_parseFormData($form_data)
     $fields = array(
         'group_size' => 'Group Size'
         , 'password' => 'Password'
-        , 'confirm_password' => 'Confirm Password'
     );
 
     //List of fields to be validated for passwords.
     $password_fields = array(
         'password'
-        , 'confirm_password'
     );
 
     //List of fields to be validated for integers only.
@@ -116,7 +113,7 @@ function HAA_parseFormData($form_data)
     $temp = array_unique($temp);
     if (count($temp) != $size) {
         HAA_gotError(
-            'Number of Roll numbers entered is invalid.'
+            'Number of Roll numbers entered is incorrect. Check for duplicate entries in the roll number column.'
         );
         return false;
     }
@@ -132,10 +129,20 @@ function HAA_parseFormData($form_data)
                     }
                 }
             } elseif (in_array($column, $password_fields)) {
-                if (! HAA_validateValue($value, 'password')) {
-                    HAA_inValidField($fields[$column]);
+                if (strlen($value) >= 8) {
+                    if ($form_data['password'] == $form_data['confirm_password']) {
+                        if (! HAA_validateValue($value, 'password')) {
+                            HAA_inValidField($fields[$column]);
+                        } else {
+                            $form_params[$size][':' . $column] = $value;
+                        }
+                    } else {
+                        HAA_gotError('Passwords do not match.');
+                    }
                 } else {
-                    $form_params[$size][':' . $column] = $value;
+                    HAA_gotError(
+                        'Password must be atleast 8 characters long.'
+                    );
                 }
             } elseif (in_array($column, $integers)) {
                 if (! HAA_validateValue($value, 'integer')) {
