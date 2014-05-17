@@ -62,7 +62,7 @@ class HAA_Header
     {
         $this->_isEnabled = true;
         $this->_displayGlobalMessage = true;
-        $this->_title = '';
+        $this->_title = ' | Hostel-J';
         $this->_scripts = array();
         $this->_scripts = array();
         $this->_addDefaultFiles();
@@ -103,7 +103,7 @@ class HAA_Header
      */
     public function setTitle($title)
     {
-        $this->_title = htmlspecialchars($title);
+        $this->_title = htmlspecialchars($title) . $this->_title;
     }
 
      /**
