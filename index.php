@@ -18,7 +18,7 @@ $response = HAA_Response::getInstance();
 $header = $response->getHeader();
 $header->addFile('login.js', 'js');
 $header->addFile('login.css', 'css');
-$header->setTitle('');
+$header->setTitle('Home');
 $html_output = '';
 $login_error = '';
 $recaptcha = '';
@@ -60,7 +60,7 @@ $html_output .= '<form id="login_form" class="login_form gray_grad box"'
     . '<tr><td><label for="input_username">Login ID:</label></td>'
     . '<td>'
     . '<input type="text" name="haa_username" id="input_username"'
-    . ' title="Please provide your Group ID">'
+    . ' title="Please provide your Group ID/Login ID">'
     . '</td></tr>'
     . '<tr><td><label for="input_password">Password:</label></td>'
     . '<td>'

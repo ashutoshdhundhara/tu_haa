@@ -36,7 +36,7 @@ $response = HAA_Response::getInstance();
 $header = $response->getHeader();
 $header->addFile('register.js', 'js');
 $header->addFile('register.css', 'css');
-$header->setTitle('');
+$header->setTitle('Register');
 $html_output = '';
 
 $html_output .= HAA_getHtmlRegisterForm();

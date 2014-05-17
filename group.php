@@ -30,7 +30,7 @@ $response = HAA_Response::getInstance();
 $header = $response->getHeader();
 $header->addFile('group.js', 'js');
 $header->addFile('group.css', 'css');
-$header->setTitle('');
+$header->setTitle('Group');
 $html_output = '';
 
 $html_output .= HAA_getHtmlGroupForm();
