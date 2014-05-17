@@ -71,8 +71,8 @@ function HAA_secureLogin($group_id, $password)
         $_SESSION['login_id'] = $group_id;
         $_SESSION['login_string'] = hash('sha512', $password . $user_browser);
         $_SESSION['group_size'] = $group_details['group_size'];
-        $_SESSION['allotment_status'] = $group_details['allotment_status'];
         HAA_updateAllotmentProcessStatus();
+        HAA_updateGroupAllotmentStatus();
         // Login successful.
         return true;
 
@@ -121,6 +121,8 @@ function HAA_checkLoginStatus()
             if ($login_string == $login_check) {
                 // Update allotment process status.
                 HAA_updateAllotmentProcessStatus();
+                // Update group allotment status.
+                HAA_updateGroupAllotmentStatus();
                 // Logged in.
                 return true;
             } else {
@@ -189,6 +191,24 @@ function HAA_getAllotmentProcessStatus()
 }
 
 /**
+ * Fetches allotment status of group from `tblGroupId`
+ *
+ * @return string
+ */
+function HAA_getGroupAllotmentStatus($group_id)
+{
+    // SQL query.
+    $sql_query = 'SELECT `allotment_status` FROM ' . tblGroupId . ' '
+        . 'WHERE `group_id` = :group_id';
+
+    // Execute query.
+    $result = $GLOBALS['dbi']->executeQuery($sql_query, array(':group_id' => $group_id));
+    $row = $result->fetch();
+
+    return $row['allotment_status'];
+}
+
+/**
  * Updates allotment process status.
  */
 function HAA_updateAllotmentProcessStatus()
@@ -196,6 +216,17 @@ function HAA_updateAllotmentProcessStatus()
     // Get allotment process status.
     $status = $GLOBALS['allotment_process_status'];
     $_SESSION['process_status'] = $status['process_status'];
+}
+
+/**
+ * Updates group allotment status.
+ */
+function HAA_updateGroupAllotmentStatus()
+{
+    // Get allotment status.
+    $group_id = $_SESSION['login_id'];
+    $status = HAA_getGroupAllotmentStatus($group_id);
+    $_SESSION['allotment_status'] = $status;
 }
 
 /**
