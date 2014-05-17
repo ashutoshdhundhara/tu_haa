@@ -179,7 +179,7 @@ class HAA_Header
             . '<link rel="shortcut icon" href="favicon.ico" '
             . 'type="image/x-icon" />'
             . '<link rel="stylesheet" '
-            . 'href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/redmond/jquery-ui.css" />';
+            . 'href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/redmond/jquery-ui.css" />';
         // Stylesheets
         $separator = '&stylesheets[]=';
         $url = 'css/get_stylesheets.php'
@@ -231,9 +231,9 @@ class HAA_Header
     private function _getScriptTag()
     {
         $script_tag = '<script type="text/javascript" '
-            . 'src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>';
+            . 'src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>';
         $script_tag .= '<script type="text/javascript" '
-            . 'src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>';
+            . 'src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>';
         $separator = '&scripts[]=';
         $url = 'js/get_scripts.php'
             . '?scripts[]='
