@@ -178,8 +178,8 @@ function HAA_insertStudentRecord($params)
         . ', :father_mobile'
         . ', UPPER(TRIM(:mother_name))'
         . ', :mother_mobile'
-        . ', TRIM(:permanent_address)'
-        . ', TRIM(:alternate_address)'
+        . ', UPPER(TRIM(:permanent_address))'
+        . ', UPPER(TRIM(:alternate_address))'
         . ', :landline'
         . ', :photo'
         .')';
