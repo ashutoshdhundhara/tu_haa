@@ -47,9 +47,10 @@ if (isset($_POST['rooms_selected']) && $_POST['rooms_selected'] == true) {
         exit;
     }
     // Verify if group has not already taken rooms.
-    if ($_SESSION['allotment_status'] != 'SELECT') {
+    $group_id = $_SESSION['login_id'];
+    if (HAA_getGroupAllotmentStatus($group_id) != 'SELECT') {
         HAA_gotError(
-            'Your group has already taken rooms.'
+            'You have already submitted room choice(s). Kindly refresh your page.'
         );
         $response->addJSON(
             'message', HAA_generateErrorMessage($GLOBALS['error'])
@@ -66,7 +67,6 @@ if (isset($_POST['rooms_selected']) && $_POST['rooms_selected'] == true) {
         exit;
     }
     // Everything fine upto now, book the rooms.
-    $group_id = $_SESSION['login_id'];
     if (HAA_bookRooms($_POST['selected_rooms'], $group_id)) {
         $response->addJSON('book_success', true);
         $response->addJSON('message'
@@ -133,6 +133,9 @@ if (! HAA_checkLoginStatus()) {
     HAA_redirectTo('index.php');
 }
 
+// Redirect user to correct page.
+HAA_pageCheck();
+
 // Get allocation_status, required to display proper page.
 $allotment_status = $_SESSION['allotment_status'];
 $html_output = '';
@@ -151,12 +154,12 @@ switch ($allotment_status) {
         }
 
         $header->addFile('allot.js', 'js');
-        $header->setTitle('');
+        $header->setTitle('Room Allot');
         $html_output = HAA_getHtmlAllocationForm();
         break;
     // Display completed form.
     case 'COMPLETE':
-        $header->setTitle('');
+        $header->setTitle('Complete');
         $html_output = HAA_getHtmlCompleteForm();
         break;
 }

@@ -19,11 +19,18 @@ if (isset($_REQUEST['wing_map']) && $_REQUEST['wing_map'] == true
     $response->disable();
     if (! HAA_checkLoginStatus()) {
         HAA_gotError(
-            'Either your are not logged in or your session has expired'
+            'Either your are not logged in or your session has expired.'
         );
         $response->addHTML(HAA_generateErrorMessage($GLOBALS['error']));
     } else {
-        $response->addHTML(HAA_getHtmlWingMap($_REQUEST['wing']));
+        if ($_SESSION['allotment_status'] != 'SELECT') {
+            HAA_gotError(
+                'You have already submitted room choice(s). Kindly refresh your page.'
+            );
+            $response->addHTML(HAA_generateErrorMessage($GLOBALS['error']));
+        } else {
+            $response->addHTML(HAA_getHtmlWingMap($_REQUEST['wing']));
+        }
     }
 
     $response->response();
@@ -36,7 +43,7 @@ if (isset($_REQUEST['update_map']) && $_REQUEST['update_map'] == true
     $response = HAA_Response::getInstance();
     // Validate wing name.
     if (! HAA_validateValue($_REQUEST['wing'], 'wing')
-        || ! HAA_checkLoginStatus()) {
+        || ! HAA_checkLoginStatus() || ! $_SESSION['allotment_status'] != 'SELECT') {
         $response->addJSON('cluster_data', false);
     } else {
         $wing_data = HAA_getWingData($_REQUEST['wing']);
@@ -68,7 +75,7 @@ $response = HAA_Response::getInstance();
 $header = $response->getHeader();
 $header->addFile('map.js', 'js');
 $header->addFile('map.css', 'css');
-$header->setTitle('');
+$header->setTitle('Map');
 $html_output = '';
 
 // Get the allotment status.

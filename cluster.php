@@ -29,6 +29,21 @@ if (! HAA_checkLoginStatus()) {
     $response->response();
     exit;
 }
+
+if ($_SESSION['allotment_status'] != 'SELECT') {
+    HAA_gotError(
+        'You have already submitted room choice(s). Kindly refresh your page.'
+    );
+    $response->addHTML(HAA_generateErrorMessage($GLOBALS['error']));
+    $response->addJSON(
+        'message', HAA_generateErrorMessage($GLOBALS['error'])
+    );
+    $response->addJSON('not_logged_in', true);
+    $response->addJSON('is_map', false);
+    $response->response();
+    exit;
+}
+
 $html_output = HAA_getHtmlClusterMap(
     $_REQUEST['wing'], $_REQUEST['floor'], $_REQUEST['cluster']
 );
