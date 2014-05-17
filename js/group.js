@@ -3,6 +3,7 @@
  */
 
 $(document).ready(function () {
+    $("input:file, select").uniform();
     $('#input_size').bind('change', function () {
         HAA_togglePasswordFields($(this));
         HAA_generateGroupDetailsForm($(this).val());

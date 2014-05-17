@@ -76,9 +76,7 @@ class HAA_Header
     private function _addDefaultFiles()
     {
         $default_scripts = array(
-            'jquery/jquery-uniform.js'
-            , 'jquery/jquery.maskedinput.min.js'
-            , 'common.js'
+            'common.js'
             );
         foreach ($default_scripts as $key => $filename) {
             $this->addFile($filename, 'js');

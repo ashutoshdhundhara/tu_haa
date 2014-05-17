@@ -3,6 +3,9 @@
  */
 
 $(document).ready(function () {
+    $("input:file, select").uniform();
+    $('.datefield').mask(date_format);
+    $('.mobilefield').mask(mobile_format);
     $('#input_roll_no').focus();
     var branches = [
         'COE'
