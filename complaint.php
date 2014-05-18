@@ -11,13 +11,16 @@ require_once 'libraries/complaint.lib.php';
 require_once 'libraries/mailConstants.inc.php';
 require_once 'libraries/swiftmailer/lib/swift_required.php';
 
+$response = HAA_Response::getInstance();
+$header = $response->getHeader();
+// No need to display global message on this page.
+$header->disableGlobalMessage();
+$header->addFile('complaint.css', 'css');
+$header->setTitle('Report Issue');
+$html_output = '';
+
 // If Form is submitted, process it.
 if (isset($_REQUEST['submitted'])) {
-    $response = HAA_Response::getInstance();
-
-    $header = $response->getHeader();
-    $header->addFile('complaint.css', 'css');
-
     // Parse and save form data.
     $save = HAA_saveErrorReport($_REQUEST);
 
@@ -35,14 +38,6 @@ if (isset($_REQUEST['submitted'])) {
 }
 
 // Display Error Reporting form.
-$response = HAA_Response::getInstance();
-$header = $response->getHeader();
-// No need to display global message on this page.
-$header->disableGlobalMessage();
-$header->addFile('complaint.css', 'css');
-$header->setTitle('Report Issue');
-$html_output = '';
-
 $html_output .= HAA_getHtmlErrorReportForm();
 
 $response->addHTML($html_output);
