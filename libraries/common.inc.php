@@ -45,6 +45,12 @@ require_once 'libraries/DatabaseInterface.class.php';
  * Library for all authentication and authorization tasks.
  */
 require_once 'libraries/security.lib.php';
+
+/**
+ * Set default timezone.
+ */
+date_default_timezone_set('Asia/Calcutta');
+
 /**
  * Global DBI class instance.
  */

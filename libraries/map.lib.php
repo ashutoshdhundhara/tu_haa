@@ -76,7 +76,6 @@ function HAA_getHtmlWingMap($wing = 'E')
     // Get wing data.
     $wing_data = HAA_getWingData($wing);
     // Start with current timestamp.
-    date_default_timezone_set('Asia/Calcutta');
     $retval = '<div class="wing_map">'
         . '<div class="update_time">'
         . '<strong>Last Update : </strong>'

@@ -56,7 +56,6 @@ if (isset($_REQUEST['update_map']) && $_REQUEST['update_map'] == true
             );
         }
         $response->addJSON('cluster_data', json_encode($cluster_data));
-        date_default_timezone_set('Asia/Calcutta');
         $response->addJSON('update_time', date('F j, Y, g:i:s a', time()));
     }
     $response->response();
