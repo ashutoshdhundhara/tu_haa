@@ -298,6 +298,31 @@ function HAA_isEligible($roll_no)
 }
 
 /**
+ * Checks if student entered the correct unique key as provided in WebKiosk.
+ *
+ * @param string $roll_no Student's roll number.
+ * @param string $unique_id Unique ID to be checked for correctness.
+ * @return bool Correct or not
+ */
+function HAA_validateUniqueKey($roll_no, $unique_id)
+{
+    // Query to check if student entered the correct unique_key or not.
+    $sql_query = 'SELECT `unique_id` FROM ' . tblEligibleStudents .' '
+        . 'WHERE `roll_no` = :roll_no AND `unique_id` = :unique_id ';
+
+    // Execute query.
+    $temp_result = $GLOBALS['dbi']->executeQuery(
+        $sql_query, array(':roll_no' => $roll_no, ':unique_id' => $unique_id)
+    );
+    
+    if (! $temp_result->fetch()) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
  * Checks if record already exists.
  *
  * @param string $roll_no
