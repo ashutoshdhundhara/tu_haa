@@ -6,7 +6,7 @@ $(document).ready(function () {
     $("input:file, select").uniform();
     $('.datefield').mask(date_format);
     $('.mobilefield').mask(mobile_format);
-    $('#input_roll_no').focus();
+    $('#input_unique_id').focus();
     var branches = [
         'COE'
         , 'MEE'
@@ -22,9 +22,10 @@ $(document).ready(function () {
     });
 
     $('#input_roll_no').mask(roll_no_format);
+    $('#input_unique_id').mask(unique_id_format);
 
     $('#input_type').bind('change', function () {
-        HAA_togglePasswordFields($(this));
+        HAA_togglePasswordFields($(this),'register.lib');
     });
 
     // Submit form action.

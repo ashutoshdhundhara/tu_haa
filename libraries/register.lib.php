@@ -22,6 +22,11 @@ function HAA_getHtmlRegisterForm()
         . '<table>'
         . '<caption>Registration Form</caption>'
         . '<tr>'
+        . '<td><label for="input_unique_id">Unique ID<sup class="req">*</sup> :</label></td>'
+        . '<td><input type="text" class="required" id="input_unique_id" name="unique_id"'
+        . ' title="Please provide your Unique ID"></td>'
+        . '</tr>'
+        . '<tr>'
         . '<td><label for="input_roll_no">Roll No<sup class="req">*</sup> :</label></td>'
         . '<td><input type="text" class="required" id="input_roll_no" name="roll_no"'
         . ' title="Please provide your University Roll Number"></td>'
@@ -241,7 +246,8 @@ function HAA_parseFormData($form_data)
     $password = '';
     // List of valid column names.
     $column_whitelist = array(
-        'roll_no'
+        'unique_id'
+        , 'roll_no'
         , 'full_name'
         , 'class'
         , 'branch'
@@ -262,7 +268,8 @@ function HAA_parseFormData($form_data)
 
     // Name of corresponding fields.
     $fields = array(
-        'roll_no' => 'Roll No'
+        'unique_id' => 'Unique ID'
+        , 'roll_no' => 'Roll No'
         , 'full_name' => 'Full Name'
         , 'class' => 'Class'
         , 'branch' => 'Branch'
@@ -307,7 +314,8 @@ function HAA_parseFormData($form_data)
     );
     //List of columns to be validated for integers only.
     $integers = array(
-        'roll_no'
+        'unique_id'
+        , 'roll_no'
         , 'current_year'
         , 'landline'
     );
@@ -404,7 +412,7 @@ function HAA_parseFormData($form_data)
             $column_whitelist = array_diff($column_whitelist,array($column));
         }
     }
-
+    
     // Validate uploaded photo.
     $photo = HAA_validatePhoto($form_params[':roll_no']);
     if ($photo == false) {
@@ -459,15 +467,17 @@ function HAA_saveStudentRecord($form_params)
             );
             return false;
         }
-
-        // Generate Unique ID.
-        $unique_id = HAA_generateUniqueId();
-        if (! $unique_id) {
+        
+        //Check if the unique ID entered is valid
+        if (! HAA_validateUniqueKey($parsed_form_data[':roll_no'],$parsed_form_data[':unique_id'])) {
+            HAA_gotError( 'The Unique ID for ' 
+                . '<span class="blue">'
+                . $parsed_form_data[':roll_no']
+                . '</span> is incorrect. In case of any discrepency, please immediately'
+                . ' contact administration.'
+            );
             return false;
         }
-
-        // Add newly generated unique ID to $parsed_form_data.
-        $parsed_form_data[':unique_id'] = $unique_id;
 
         // Insert student record.
         $result = HAA_insertStudentRecord($parsed_form_data);
@@ -624,8 +634,6 @@ function HAA_getMailMessage($parsed_form_data, $room_type, $password)
 
     switch ($room_type) {
     case 'group':
-        $mail_message .= "Your Unique ID is : " . $parsed_form_data[':unique_id']
-            . "\r\n" . 'It will be required during the Group Creation process.';
         break;
     case 'individual':
         $mail_message .= "Your Login ID is : " . $parsed_form_data[':unique_id'] . "\r\n"
@@ -659,10 +667,7 @@ function HAA_getSuccessMessage($parsed_form_data, $room_type, $mail)
         . '<div class="blue" style="text-align: center;">'
         . '<p>' . $parsed_form_data[':full_name'] . '</p>'
         . '<p>' . $parsed_form_data[':roll_no'] . '</p>'
-        . '</div>'
-        . '<p>This is your %s ID : <span class="blue">'
-        . $parsed_form_data[':unique_id'] . '</span><br>'
-        . '<strong>Please note it down at a safe place.</strong><br>';
+        . '</div>';
     $mail_notify = ($mail == false) ? ''
         : '<p>An email has also been sent to : <span class="blue">'
             . $parsed_form_data[':email'] . '</span><br>';
@@ -671,14 +676,20 @@ function HAA_getSuccessMessage($parsed_form_data, $room_type, $mail)
     case 'group':
         $success_msg = sprintf($success_msg, 'Unique');
         $success_msg .= '<strong>'
-            . 'It will be required during the Group Creation process.'
+            . 'The entered '
+            . '<span class="blue">'
+            . 'Unique ID: '
+            . $parsed_form_data[':unique_id']
+            . '</span>'
+            . ' will be required during the Group Creation process.'
             . '</strong></p>';
         break;
     case 'individual':
         $success_msg = sprintf($success_msg, 'Login');
         $success_msg .= '<strong>'
-            . 'Use this Login ID and your Password to select a room '
-            . 'when allotment process starts.</strong></p>';
+            . 'Use your Unique ID and Password to select a room '
+            . 'when allotment process starts. '
+            . 'No futher registration is needed by you.</strong></p>';
         break;
     }
 

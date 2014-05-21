@@ -179,16 +179,23 @@ function HAA_validateFields()
  * @param jQuery Object $target Element after which fields to be inserted
  * @return void
  */
-function HAA_togglePasswordFields($target)
+function HAA_togglePasswordFields($target, page)
 {
     if ($target.val() !== '...' && $target.val() !== 'group') {
         if ($('.password_fields').length === 0) {
-            var $password_fields = $('<tr class="password_fields">' +
-            '<td colspan="2">Choose Password:</td>' +
+            var $upper = '<tr class="password_fields">' +
+            '<td colspan="2"><strong>' +
+            'Choose Password:</strong></td>' +
             '</tr>' +
             '<tr class="password_fields">' +
-            '<td colspan="2"><strong>' +
-            'Login ID will be System generated</strong></td>' +
+            '<td colspan="2"><strong>';
+            if (page == 'register.lib') {
+                var message = 'Login ID used for Room Allotment will be same as your Unique ID.';
+            }
+            else {
+                var message = 'Login ID will be system generated.';
+            }
+            var $lower = '</strong></td>' +
             '</tr>' +
             '<tr class="password_fields">'+
             '<td><label for="input_password">Password<sup class="req">*</sup> :</td>' +
@@ -200,7 +207,10 @@ function HAA_togglePasswordFields($target)
             '<td><label for="input_confirm">Confirm Password<sup class="req">*</sup> :</td>' +
             '<td><input id="input_confirm" type="password" name="confirm_password"' +
             ' title="Please confirm your password." class="required"></td>' +
-            '</tr>');
+            '</tr>';
+            
+            var $password_fields = $($upper + message + $lower);
+            
             $target.closest('tr').after($password_fields);
             $('#input_password, #input_confirm').tooltip(tooltip_right);
         }
