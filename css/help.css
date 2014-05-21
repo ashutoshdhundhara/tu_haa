@@ -1,0 +1,32 @@
+/**
+ * Contains styles for help page.
+ */
+
+.help_content {
+    width: 750px;
+    margin: 0 auto;
+    line-height: 1.5em;
+}
+
+.help_content h2 {
+    font-weight: 400;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-size: 1.2em;
+    text-decoration: underline;
+}
+
+.help_content h2:first-child {
+    text-align: center;
+    text-decoration: none;
+}
+
+.help_content ul {
+    list-style-position: outside;
+    margin-left: 1.2em;
+    margin-bottom: 2em;
+}
+
+.help_content li {
+    padding: 0.2em;
+}
