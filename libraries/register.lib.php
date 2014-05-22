@@ -112,7 +112,7 @@ function HAA_getHtmlRegisterForm()
         . '</tr>'
         . '<tr>'
         . '<td colspan="2"><input type="checkbox" id="input_agreement" name="agreement">'
-        . '<label for="input_agreement">I have read all <a href="jrules.html" target="_blank">Hostel Rules &amp; Regulations</a>. I will abide by all of them failing which authorities can take punitive action.</label>'
+        . '<label for="input_agreement">I have read all <a href="rules.pdf" target="_blank">Hostel Rules &amp; Regulations</a>. I will abide by all of them failing which authorities can take punitive action.</label>'
         . '</td>'
         . '</tr>'
         . '<tr>'
