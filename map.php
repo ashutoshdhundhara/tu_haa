@@ -43,7 +43,7 @@ if (isset($_REQUEST['update_map']) && $_REQUEST['update_map'] == true
     $response = HAA_Response::getInstance();
     // Validate wing name.
     if (! HAA_validateValue($_REQUEST['wing'], 'wing')
-        || ! HAA_checkLoginStatus() || ! $_SESSION['allotment_status'] != 'SELECT') {
+        || ! HAA_checkLoginStatus() || $_SESSION['allotment_status'] != 'SELECT') {
         $response->addJSON('cluster_data', false);
     } else {
         $wing_data = HAA_getWingData($_REQUEST['wing']);
