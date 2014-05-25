@@ -43,8 +43,10 @@ function HAA_secureSession()
 
 /**
  * Securely logs in a user with credentials.
+ *
  * @param string $group_id Group ID
  * @param string $password Password
+ *
  * @return bool true or false
  */
 function HAA_secureLogin($group_id, $password)
@@ -94,6 +96,7 @@ function HAA_secureLogin($group_id, $password)
 
 /**
  * Checks if user is logged in or not.
+ *
  * @return bool true or false
  */
 function HAA_checkLoginStatus()

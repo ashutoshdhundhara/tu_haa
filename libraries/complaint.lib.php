@@ -60,22 +60,22 @@ function HAA_parseFormData($form_data)
     $form_params = array();
     // List of valid column names.
     $column_whitelist = array(
-        'full_name'
-        , 'email'
+        'full_name',
+        'email'
     );
 
     // Name of corresponding fields.
     $fields = array(
-        'full_name' => 'Full Name'
-        , 'email' => 'Email'
-        , 'complaint_description' => 'Complaint Description'
+        'full_name' => 'Full Name',
+        'email' => 'Email',
+        'complaint_description' => 'Complaint Description'
     );
 
     // List of columns to be validated for email.
     $emails = array(
         'email'
     );
-    
+
     // List of columns to be validated for alphabets only.
     $names = array(
         'full_name'
@@ -83,7 +83,9 @@ function HAA_parseFormData($form_data)
 
     //Check that email and complaint are filled
     $error = false;
-    if (! isset($form_data['complaint_description']) || empty($form_data['complaint_description'])) {
+    if (! isset($form_data['complaint_description'])
+        || empty($form_data['complaint_description'])
+    ) {
         HAA_gotError(
             'Complaint description was left blank.'
         );
@@ -105,19 +107,19 @@ function HAA_parseFormData($form_data)
                     $form_params[':' . $column] = $value;
                 }
             } else {
-                //Nothing
+                // Do nothing
             }
 
             // Remove matched element from white list.
             $column_whitelist = array_diff($column_whitelist, array($column));
         }
     }
-    
+
     //If any error, exit
     if ($error==true) {
         return false;
     }
-    
+
     $form_params[':complaint_description'] = $form_data['complaint_description'];
 
     // If faced any error.
@@ -132,15 +134,16 @@ function HAA_parseFormData($form_data)
  * Saves complaint information into database.
  *
  * @param array Form parameters.
+ *
  * @return bool Success or failure
  */
 function HAA_saveErrorReport($form_params)
 {
-    //Parsed form data
+    // Parsed form data.
     $parsed_form_data = HAA_parseFormData($form_params);
 
     if (is_array($parsed_form_data) && $parsed_form_data != false) {
-        // Generate Complaint ID
+        // Generate Complaint ID.
         $complaint_id = HAA_generateComplaintId();
         if (! $complaint_id) {
             return false;
@@ -148,7 +151,7 @@ function HAA_saveErrorReport($form_params)
 
         // Add newly generated unique Complaint ID to $parsed_form_data.
         $parsed_form_data[':complaint_id'] = $complaint_id;
-        
+
         // Insert complaint record.
         $result = HAA_insertComplaintRecord($parsed_form_data);
 
@@ -162,7 +165,7 @@ function HAA_saveErrorReport($form_params)
 
         // Send an email.
         $mail_id = $parsed_form_data[':email'];
-        $name = 'Student';
+        $name = $parsed_form_data[':full_name'];
         $to = array($mail_id => $name);
         $from = array(smtpFromEmail => smtpFromName);
         $subject = 'Hostel-J Complaint Registration';
@@ -229,15 +232,15 @@ function HAA_generateComplaintId() {
     $unique_id = '';
 
     do {
-        $unique_id = (string) mt_rand(1000,9999);
+        $unique_id = (string) mt_rand(1000, 9999);
         $temp_result = $GLOBALS['dbi']->executeQuery(
             $sql_query, array(':complaint_id' => $unique_id)
         );
-        
-        //Must not be present in the table
+
+        // Must not be present in the table.
         if (! $temp_result->fetch()) {
                 break;
-            }
+        }
     }
     while(true);
 

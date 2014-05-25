@@ -240,69 +240,75 @@ function HAA_getHtmlSelectRoomType()
  */
 function HAA_parseFormData($form_data)
 {
-    // Array containing parsed form parameters.
+    /**
+     * Array containing parsed form parameters.
+     * Structure:
+     * - prefixed with ':' for prepared statement execution.
+     * - eg. $form_params[':attribute'] = 'value';
+     *
+     * @var array
+     */
     $form_params = array();
     // Holds password, if any.
     $password = '';
     // List of valid column names.
     $column_whitelist = array(
-        'unique_id'
-        , 'roll_no'
-        , 'full_name'
-        , 'class'
-        , 'branch'
-        , 'current_year'
-        , 'dob'
-        , 'category'
-        , 'blood_group'
-        , 'student_mobile'
-        , 'email'
-        , 'father_name'
-        , 'father_mobile'
-        , 'mother_name'
-        , 'mother_mobile'
-        , 'landline'
-        , 'room_type'
-        , 'password'
+        'unique_id',
+        'roll_no',
+        'full_name',
+        'class',
+        'branch',
+        'current_year',
+        'dob',
+        'category',
+        'blood_group',
+        'student_mobile',
+        'email',
+        'father_name',
+        'father_mobile',
+        'mother_name',
+        'mother_mobile',
+        'landline',
+        'room_type',
+        'password'
     );
 
     // Name of corresponding fields.
     $fields = array(
-        'unique_id' => 'Unique ID'
-        , 'roll_no' => 'Roll No'
-        , 'full_name' => 'Full Name'
-        , 'class' => 'Class'
-        , 'branch' => 'Branch'
-        , 'current_year' => 'Current Year'
-        , 'dob' => 'Date Of Birth'
-        , 'category' => 'Category'
-        , 'blood_group' => 'Blood Group'
-        , 'student_mobile' => 'Student Mobile'
-        , 'email' => 'Email'
-        , 'father_name' => 'Father Name'
-        , 'father_mobile' => 'Father Mobile'
-        , 'mother_name' => 'Mother Name'
-        , 'mother_mobile' => 'Mother Mobile'
-        , 'permanent_address' => 'Permanent Address'
-        , 'alternate_address' => 'Alternate Address'
-        , 'landline' => 'Landline'
-        , 'password' => 'Password'
+        'unique_id' => 'Unique ID',
+        'roll_no' => 'Roll No',
+        'full_name' => 'Full Name',
+        'class' => 'Class',
+        'branch' => 'Branch',
+        'current_year' => 'Current Year',
+        'dob' => 'Date Of Birth',
+        'category' => 'Category',
+        'blood_group' => 'Blood Group',
+        'student_mobile' => 'Student Mobile',
+        'email' => 'Email',
+        'father_name' => 'Father Name',
+        'father_mobile' => 'Father Mobile',
+        'mother_name' => 'Mother Name',
+        'mother_mobile' => 'Mother Mobile',
+        'permanent_address' => 'Permanent Address',
+        'alternate_address' => 'Alternate Address',
+        'landline' => 'Landline',
+        'password' => 'Password'
     );
 
     // List of columns to be validated for alphabets only.
     $names = array(
-        'full_name'
-        , 'class'
-        , 'branch'
-        , 'category'
-        , 'father_name'
-        , 'mother_name'
-    );
+        'full_name',
+        'class',
+        'branch',
+        'category',
+        'father_name',
+        'mother_name'   );
     //List of columns to be validated for mobile number.
     $mobile_numbers = array(
-        'student_mobile'
-        , 'father_mobile'
-        , 'mother_mobile'
+        'student_mobile',
+        'father_mobile',
+        'mother_mobile'
     );
     // List of columns to be validated for email.
     $emails = array(
@@ -314,10 +320,10 @@ function HAA_parseFormData($form_data)
     );
     //List of columns to be validated for integers only.
     $integers = array(
-        'unique_id'
-        , 'roll_no'
-        , 'current_year'
-        , 'landline'
+        'unique_id',
+        'roll_no',
+        'current_year',
+        'landline'
     );
     // List of columns to validated for dates.
     $dates = array(
@@ -405,14 +411,14 @@ function HAA_parseFormData($form_data)
                     );
                 }
             } else {
-                // Nothing
+                // Do nothing
             }
 
             // Remove matched element from white list.
             $column_whitelist = array_diff($column_whitelist,array($column));
         }
     }
-    
+
     // Validate uploaded photo.
     $photo = HAA_validatePhoto($form_params[':roll_no']);
     if ($photo == false) {
@@ -441,6 +447,7 @@ function HAA_parseFormData($form_data)
  * Saves user information into database.
  *
  * @param array Form parameters.
+ *
  * @return bool Success or failure
  */
 function HAA_saveStudentRecord($form_params)
@@ -467,10 +474,14 @@ function HAA_saveStudentRecord($form_params)
             );
             return false;
         }
-        
-        //Check if the unique ID entered is valid
-        if (! HAA_validateUniqueKey($parsed_form_data[':roll_no'],$parsed_form_data[':unique_id'])) {
-            HAA_gotError( 'The Unique ID for ' 
+
+        // Check if the unique ID entered is valid.
+        if (! HAA_validateUniqueKey(
+            $parsed_form_data[':roll_no'],
+            $parsed_form_data[':unique_id'])
+        ) {
+            HAA_gotError(
+                'The Unique ID for '
                 . '<span class="blue">'
                 . $parsed_form_data[':roll_no']
                 . '</span> is incorrect. In case of any discrepency, please immediately'
@@ -547,6 +558,7 @@ function HAA_saveStudentRecord($form_params)
  * Validates uploaded photo.
  *
  * @param string $roll_no Roll number of student for file naming.
+ *
  * @return bool|string If valid, returns filename else false
  */
 function HAA_validatePhoto($roll_no)
@@ -565,18 +577,18 @@ function HAA_validatePhoto($roll_no)
     // Check $_FILES['photo']['error'] value for type of error.
     $err_msg = '';
     switch ($_FILES['photo']['error']) {
-        case UPLOAD_ERR_OK:
-            break;
-        case UPLOAD_ERR_NO_FILE:
-            $err_msg = 'No photo sent.';
-            break;
-        case UPLOAD_ERR_INI_SIZE:
-        case UPLOAD_ERR_FORM_SIZE:
-            $err_msg = 'Image file size limit execeeded.';
-            break;
-        default:
-            $err_msg = 'Something went wrong with photo.';
-            break;
+    case UPLOAD_ERR_OK:
+        break;
+    case UPLOAD_ERR_NO_FILE:
+        $err_msg = 'No photo sent.';
+        break;
+    case UPLOAD_ERR_INI_SIZE:
+    case UPLOAD_ERR_FORM_SIZE:
+        $err_msg = 'Image file size limit execeeded.';
+        break;
+    default:
+        $err_msg = 'Something went wrong with photo.';
+        break;
     }
 
     if (!empty($err_msg)) {

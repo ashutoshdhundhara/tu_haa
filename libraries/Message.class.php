@@ -11,7 +11,9 @@ class HAA_Message
 
     /**
      * Generates success message.
+     *
      * @param  string $message Message to display
+     *
      * @return string          Html
      */
     public static function success($message = '') {
@@ -32,7 +34,9 @@ class HAA_Message
 
     /**
      * Generates error message.
+     *
      * @param  string $message Message to display
+     *
      * @return string          Html
      */
     public static function error($message = '') {
@@ -53,7 +57,9 @@ class HAA_Message
 
     /**
      * Generates notice message.
+     *
      * @param  string $message Message to display
+     *
      * @return string          Html
      */
     public static function notice($message = '') {

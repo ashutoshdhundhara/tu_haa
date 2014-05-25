@@ -9,7 +9,9 @@ if (! defined('TU_HAA')) {
 
 /**
  * Validates room numbers.
+ *
  * @param array $room_no Array of room numbers
+ *
  * @return bool
  */
 function HAA_validateRoomNumbers($room_no)
@@ -36,8 +38,10 @@ function HAA_validateRoomNumbers($room_no)
 
 /**
  * Books rooms for a given group_id.
+ *
  * @param array  $room_numbers Array containing selected room numbers
  * @param string $group_id     Group ID
+ *
  * @return bool
  */
 function HAA_bookRooms($room_numbers, $group_id)
@@ -121,6 +125,7 @@ function HAA_bookRooms($room_numbers, $group_id)
 
 /**
  * Generates Html for member-room matching form.
+ *
  * @return string|bool Html or false
  */
 function HAA_getHtmlAllocationForm()
@@ -166,7 +171,9 @@ function HAA_getHtmlAllocationForm()
 
 /**
  * Fetches selected rooms of a group from DB.
+ *
  * @param string $group_id Group ID
+ *
  * @return PDO statement|bool PDO statement or false
  */
 function HAA_getSelectedRooms($group_id)
@@ -192,7 +199,9 @@ function HAA_getSelectedRooms($group_id)
 
 /**
  * Fetches members details of a group from DB.
+ *
  * @param string $group_id Group ID
+ *
  * @return PDO statement|bool PDO statement or false
  */
 function HAA_getMembers($group_id)
@@ -223,7 +232,9 @@ function HAA_getMembers($group_id)
 
 /**
  * Validates roll numbers.
+ *
  * @param array $roll_nos Array of roll numbers
+ *
  * @return bool
  */
 function HAA_validateRollNumbers($roll_nos)
@@ -267,8 +278,10 @@ function HAA_validateRollNumbers($roll_nos)
 
 /**
  * Allocates rooms to group members for a given group_id.
+ *
  * @param array  $roll_nos     Array containing roll numbers
  * @param string $group_id     Group ID
+ *
  * @return bool
  */
 function HAA_allocateRooms($roll_nos, $group_id)
@@ -313,6 +326,7 @@ function HAA_allocateRooms($roll_nos, $group_id)
 
 /**
  * Displays final group-room details
+ *
  * @return string Html
  */
 function HAA_getHtmlCompleteForm()

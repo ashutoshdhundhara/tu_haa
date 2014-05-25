@@ -61,38 +61,38 @@ function HAA_parseFormData($form_data)
     $form_params = array();
     // List of valid column names.
     $column_whitelist = array(
-        'group_size'
-        , 'password'
-        , 'roll_no'
-        , 'unique_id'
+        'group_size',
+        'password',
+        'roll_no',
+        'unique_id'
     );
 
     // Name of corresponding fields.
     $fields = array(
-        'group_size' => 'Group Size'
-        , 'password' => 'Password'
+        'group_size' => 'Group Size',
+        'password' => 'Password'
     );
 
-    //List of fields to be validated for passwords.
+    // List of fields to be validated for passwords.
     $password_fields = array(
         'password'
     );
 
-    //List of fields to be validated for integers only.
+    // List of fields to be validated for integers only.
     $integers = array(
-        'group_size'
-        , 'roll_no'
-        , 'unique_id'
+        'group_size',
+        'roll_no',
+        'unique_id'
     );
 
-    //Validate and get the total number of students
+    // Validate and get the total number of students.
     if (! HAA_validateValue($form_data["group_size"], 'integer')) {
         HAA_inValidField($fields["group_size"]);
     } else {
         $size = $form_data["group_size"];
     }
 
-    //Check if the group size is valid
+    // Check if the group size is valid.
     if ($size<2 || $size>11) {
         HAA_gotError(
             'Invalid number of members.'
@@ -100,7 +100,7 @@ function HAA_parseFormData($form_data)
         return false;
     }
 
-    //Check if the number of roll numbers is equal to group size
+    // Check if the number of roll numbers is equal to group size.
     if (count($form_data['roll_no']) != $size) {
         HAA_gotError(
             'Invalid data received.'
@@ -108,12 +108,13 @@ function HAA_parseFormData($form_data)
         return false;
     }
 
-    //Check if any duplicate roll number was entered
+    // Check if any duplicate roll number was entered.
     $temp = $form_data['roll_no'];
     $temp = array_unique($temp);
     if (count($temp) != $size) {
         HAA_gotError(
-            'Number of Roll numbers entered is incorrect. Check for duplicate entries in the roll number column.'
+            'Number of Roll numbers entered is incorrect. '
+            . 'Check for duplicate entries in the roll number column.'
         );
         return false;
     }
@@ -151,7 +152,7 @@ function HAA_parseFormData($form_data)
                     $form_params[$size][':' . $column] = $value;
                 }
             } else {
-                //Nothing
+                // Do nothing
             }
 
             // Remove matched element from white list.
@@ -178,15 +179,16 @@ function HAA_parseFormData($form_data)
  * Saves group information into database.
  *
  * @param array Form parameters.
+ *
  * @return bool Success or failure
  */
 function HAA_saveGroupRecord($form_params)
 {
-    //Parsed form data
+    // Parsed form data.
     $parsed_form_data = HAA_parseFormData($form_params);
 
     if (is_array($parsed_form_data) && $parsed_form_data != false) {
-        // Get the group_size
+        // Get the group_size.
         foreach ($parsed_form_data as $column => $value) {
             if (is_array($value)) {
                 foreach ($value as $column1 => $value1) {
@@ -200,13 +202,14 @@ function HAA_saveGroupRecord($form_params)
         // Check the records for already group registered,
         // wrong unique id and not registered.
         $error = false;
-        foreach ( $parsed_form_data as $column => $value) {
+        foreach ($parsed_form_data as $column => $value) {
             if (is_array($value)) {
                 foreach ($value as $column1 => $value1) {
                     if (strcmp($column1, ":roll_no") == 0) {
                         // Check if student is registered individually.
                         if (! HAA_isStudentRecordExists($value1)) {
-                            HAA_gotError('<span class="blue">'
+                            HAA_gotError(
+                                '<span class="blue">'
                                 . $value1
                                 . '</span> is not registered.'
                                 . ' In case of any discrepency, please contact'
@@ -217,10 +220,11 @@ function HAA_saveGroupRecord($form_params)
                             continue;
                         }
 
-                        //Check if the given unique_id for roll_no is correct
+                        // Check if the given unique_id for roll_no is correct.
                         if (! HAA_isUniqueIdCorrect($value1,
                             $parsed_form_data[$column][":unique_id"])) {
-                            HAA_gotError('Unique ID for Roll Number '
+                            HAA_gotError(
+                                'Unique ID for Roll Number '
                                 . '<span class="blue">'
                                 . $value1
                                 . '</span>'
@@ -233,9 +237,10 @@ function HAA_saveGroupRecord($form_params)
                             continue;
                         }
 
-                        //Check if student has already registered in another group
+                        // Check if student has already registered in another group.
                         if (HAA_isStudentGroupRecordExists($value1)) {
-                            HAA_gotError('Roll number '
+                            HAA_gotError(
+                                'Roll number '
                                 . '<span class="blue">'
                                 . $value1
                                 . '</span> is already registered as part of another group.'
@@ -257,6 +262,9 @@ function HAA_saveGroupRecord($form_params)
         // Generate Group ID for group
         $group_id = HAA_generateUniqueId();
         if (! $group_id) {
+            HAA_gotError(
+                'Error in generating Login ID.'
+            );
             return false;
         }
 
@@ -288,8 +296,8 @@ function HAA_saveGroupRecord($form_params)
             return false;
         }
 
-        //Send email to all the members of the group
-        
+        // Send email to all the members of the group.
+
         for ($i=0;$i<$size;$i++) {
             // Send an email.
             $mail_id = HAA_getStudentDetail('email',$parsed_form_data[$i][':roll_no']);
@@ -332,7 +340,9 @@ function HAA_saveGroupRecord($form_params)
 
 /**
  * Returns the html containing list of members of recent group
+ *
  * @param array $params Parsed form data array
+ *
  * @return string Html
  */
 function HAA_getHtmlMemberList($params)

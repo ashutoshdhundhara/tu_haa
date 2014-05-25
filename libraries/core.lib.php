@@ -12,6 +12,7 @@ if (! defined('TU_HAA')) {
  *
  * @param string Value to be checked
  * @param string type of value
+ *
  * @return bool Valid or Invalid
  */
 function HAA_validateValue($value, $type)
@@ -66,12 +67,13 @@ function HAA_validateValue($value, $type)
  * Adds error message to $GLOBALS['error'] for invalid field.
  *
  * @param string Field name.
+ *
  * @return void
  */
 function HAA_inValidField($field_name)
 {
     HAA_gotError(
-        $field_name . ' field contains invalid characters.'
+        $field_name . ' field is empty or contains invalid characters.'
     );
 }
 
@@ -79,6 +81,7 @@ function HAA_inValidField($field_name)
  * Adds error message to $GLOBALS['error'].
  *
  * @param string $message Error message
+ *
  * @return void
  */
 function HAA_gotError($message)
@@ -92,6 +95,7 @@ function HAA_gotError($message)
  * Create error message to be sent via Ajax.
  *
  * @param array Array containing error messages.
+ *
  * @return string $retval String with formatted error messages.
  */
 function HAA_generateErrorMessage($messages)
@@ -115,6 +119,7 @@ function HAA_generateErrorMessage($messages)
  * @param array $recepient Array containing recepient emais
  * @param array $sender Array containing sender emails
  * @param string $message Body of message
+ *
  * @return bool|int Successful recepients or false
  */
 function HAA_sendMail($subject, $recepient, $sender, $message)
@@ -153,6 +158,7 @@ function HAA_sendMail($subject, $recepient, $sender, $message)
  * Inserts record into `tblStudent`.
  *
  * @param array $params Query parameters
+ *
  * @return PDO object
  */
 function HAA_insertStudentRecord($params)
@@ -194,6 +200,7 @@ function HAA_insertStudentRecord($params)
  * Inserts record into `tblGroup`.
  *
  * @param array $params Query parameters
+ *
  * @return PDO object
  */
 function HAA_insertGroupRecord($params)
@@ -223,6 +230,7 @@ function HAA_insertGroupRecord($params)
  * Deletes a record from `tblStudent`.
  *
  * @param string $roll_no Roll number
+ *
  * @return PDO object
  */
 function HAA_deleteStudentRecord($roll_no)
@@ -253,7 +261,7 @@ function HAA_generateUniqueId() {
         . 'WHERE group_id = :group_id';
 
     do {
-        $unique_id = (string) mt_rand(1000,9999);
+        $unique_id = (string) mt_rand(1000, 9999);
         $temp_result_tblStudent = $GLOBALS['dbi']->executeQuery(
             $sql_query_tblStudent, array(':unique_id' => $unique_id)
         );
@@ -277,6 +285,7 @@ function HAA_generateUniqueId() {
  * Checks if student has been allocated hostel or not.
  *
  * @param string $roll_no Student's roll number.
+ *
  * @return bool Allocated or not
  */
 function HAA_isEligible($roll_no)
@@ -302,6 +311,7 @@ function HAA_isEligible($roll_no)
  *
  * @param string $roll_no Student's roll number.
  * @param string $unique_id Unique ID to be checked for correctness.
+ *
  * @return bool Correct or not
  */
 function HAA_validateUniqueKey($roll_no, $unique_id)
@@ -314,7 +324,7 @@ function HAA_validateUniqueKey($roll_no, $unique_id)
     $temp_result = $GLOBALS['dbi']->executeQuery(
         $sql_query, array(':roll_no' => $roll_no, ':unique_id' => $unique_id)
     );
-    
+
     if (! $temp_result->fetch()) {
         return false;
     }
@@ -326,6 +336,7 @@ function HAA_validateUniqueKey($roll_no, $unique_id)
  * Checks if record already exists.
  *
  * @param string $roll_no
+ *
  * @return bool True|False
  */
 function HAA_isStudentRecordExists($roll_no)
@@ -348,6 +359,7 @@ function HAA_isStudentRecordExists($roll_no)
 
 /**
  * Redirects to a page.
+ *
  * @param string $location Location
  */
 function HAA_redirectTo($location)
@@ -377,6 +389,7 @@ function HAA_redirectTo($location)
  * Checks if record already exists in a group.
  *
  * @param string $roll_no
+ *
  * @return bool True|False
  */
 function HAA_isStudentGroupRecordExists($roll_no)
@@ -402,6 +415,7 @@ function HAA_isStudentGroupRecordExists($roll_no)
  *
  * @param string $roll_no
  * @param string $unique_id
+ *
  * @return bool True|False
  */
 function HAA_isUniqueIdCorrect($roll_no, $unique_id)
@@ -427,6 +441,7 @@ function HAA_isUniqueIdCorrect($roll_no, $unique_id)
  * Inserts record into `tblGroupId`.
  *
  * @param array $params Query parameters
+ *
  * @return PDO object
  */
 function HAA_insertGroupPassword($params)
@@ -463,6 +478,7 @@ function HAA_insertGroupPassword($params)
  *
  * @param string $field_name
  * @param string $roll_no
+ *
  * @return string $field_value
  */
 function HAA_getStudentDetail($field_name,$roll_no)
@@ -487,6 +503,7 @@ function HAA_getStudentDetail($field_name,$roll_no)
  * Inserts record into `tblComplaint`.
  *
  * @param array $params Query parameters
+ *
  * @return PDO object
  */
 function HAA_insertComplaintRecord($params)

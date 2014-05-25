@@ -11,6 +11,7 @@ if (! defined('TU_HAA')) {
  * Generates Html for Hostel Map.
  *
  * @param string $type Type of map, selectable or not
+ *
  * @return string Html containing Map.
  */
 function HAA_getHtmlHostelMap($selectable = true)
@@ -41,6 +42,7 @@ function HAA_getHtmlHostelMap($selectable = true)
  * Generates Html for Side Bar displayed on Room selection page.
  *
  * @param string $group_size Size of the group
+ *
  * @return string       Html
  */
 function HAA_getHtmlSideBar($group_size = '0')
@@ -69,6 +71,7 @@ function HAA_getHtmlSideBar($group_size = '0')
  * Generates Map of a particular wing and return Html
  *
  * @param string $wing Wing ('E' or 'W')
+ *
  * @return string Html containing Wing Map
  */
 function HAA_getHtmlWingMap($wing = 'E')
@@ -117,6 +120,7 @@ function HAA_getHtmlWingMap($wing = 'E')
  * Fetches data for particular wing (Vacant rooms count)
  *
  * @param string $wing Wing name
+ *
  * @return PDO Object PDO result object
  */
 function HAA_getWingData($wing = 'E')

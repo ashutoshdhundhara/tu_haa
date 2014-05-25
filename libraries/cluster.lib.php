@@ -9,9 +9,11 @@ if (! defined('TU_HAA')) {
 
 /**
  * Generates Html for cluster map
+ *
  * @param string $wing    Wing
  * @param string $floor   Floor number
  * @param string $cluster Cluster number
+ *
  * @return string Html
  */
 function HAA_getHtmlClusterMap($wing, $floor, $cluster, $selectable = true)
@@ -27,13 +29,13 @@ function HAA_getHtmlClusterMap($wing, $floor, $cluster, $selectable = true)
     }
 
     $skip_blocks = array(
-        5
-        , 7
-        , 8
-        , 9
-        , 10
-        , 11
-        , 17
+        5,
+        7,
+        8,
+        9,
+        10,
+        11,
+        17
     );
 
     for ($block=1;$block<=18;$block++) {
@@ -83,9 +85,11 @@ function HAA_getHtmlClusterMap($wing, $floor, $cluster, $selectable = true)
 
 /**
  * Fetches cluster data from database
+ *
  * @param string $wing    Wing
  * @param string $floor   Floor number
  * @param string $cluster Cluster number
+ *
  * @return resource|bool  PDO object or false
  */
 function HAA_getClusterData($wing, $floor, $cluster)
