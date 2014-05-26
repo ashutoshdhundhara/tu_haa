@@ -179,7 +179,7 @@ class HAA_Header
             . '<link rel="shortcut icon" href="favicon.ico" '
             . 'type="image/x-icon" />'
             . '<link rel="stylesheet" '
-            . 'href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/redmond/jquery-ui.css" />';
+            . 'href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/redmond/jquery-ui.min.css" />';
         // Stylesheets
         $separator = '&stylesheets[]=';
         $url = 'css/get_stylesheets.php'
