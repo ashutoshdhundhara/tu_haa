@@ -16,7 +16,7 @@ HAA_secureSession();
 
 $response = HAA_Response::getInstance();
 $header = $response->getHeader();
-$header->addFile('allot.css', 'css');
+$header->addFile('minified/allot.css', 'css');
 
 // If user has submitted rooms choices.
 if (isset($_POST['rooms_selected']) && $_POST['rooms_selected'] == true) {
@@ -153,7 +153,7 @@ switch ($allotment_status) {
             HAA_redirectTo($url);
         }
 
-        $header->addFile('allot.js', 'js');
+        $header->addFile('minified/allot.js', 'js');
         $header->setTitle('Room Allot');
         $html_output = HAA_getHtmlAllocationForm();
         break;

@@ -15,7 +15,7 @@ $response = HAA_Response::getInstance();
 $header = $response->getHeader();
 // No need to display global message on this page.
 $header->disableGlobalMessage();
-$header->addFile('complaint.css', 'css');
+$header->addFile('minified/complaint.css', 'css');
 $header->setTitle('Report Issue');
 $html_output = '';
 

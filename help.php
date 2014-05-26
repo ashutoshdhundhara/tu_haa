@@ -12,9 +12,9 @@ $response = HAA_Response::getInstance();
 $header = $response->getHeader();
 $header->disableGlobalMessage();
 $header->addFile('jquery/jquery.tools.min.js', 'js');
-$header->addFile('help.js', 'js');
-$header->addFile('help.css', 'css');
-$header->addFile('simple_overlay.css', 'css');
+$header->addFile('minified/help.js', 'js');
+$header->addFile('minified/help.css', 'css');
+$header->addFile('minified/simple_overlay.css', 'css');
 $header->setTitle('Help');
 
 $html_output = '<div class="help_content gray_grad box">'

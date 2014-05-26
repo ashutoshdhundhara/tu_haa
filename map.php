@@ -72,8 +72,8 @@ HAA_pageCheck();
 // Display Hostel map.
 $response = HAA_Response::getInstance();
 $header = $response->getHeader();
-$header->addFile('map.js', 'js');
-$header->addFile('map.css', 'css');
+$header->addFile('minified/map.js', 'js');
+$header->addFile('minified/map.css', 'css');
 $header->setTitle('Map');
 $html_output = '';
 

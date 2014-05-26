@@ -16,8 +16,8 @@ HAA_pageCheck();
 
 $response = HAA_Response::getInstance();
 $header = $response->getHeader();
-$header->addFile('login.js', 'js');
-$header->addFile('login.css', 'css');
+$header->addFile('minified/login.js', 'js');
+$header->addFile('minified/login.css', 'css');
 $header->setTitle('Home');
 $html_output = '';
 $login_error = '';
