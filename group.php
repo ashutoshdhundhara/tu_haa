@@ -28,10 +28,10 @@ if (isset($_POST['create_group'])) {
 // Display Group creation form.
 $response = HAA_Response::getInstance();
 $header = $response->getHeader();
-$header->addFile('group.js', 'js');
+$header->addFile('minified/group.js', 'js');
 $header->addFile('jquery/jquery-uniform.js', 'js');
 $header->addFile('jquery/jquery.maskedinput.min.js', 'js');
-$header->addFile('group.css', 'css');
+$header->addFile('minified/group.css', 'css');
 $header->setTitle('Group');
 $html_output = '';
 

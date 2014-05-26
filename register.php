@@ -34,10 +34,10 @@ if (isset($_REQUEST['agreement'])) {
 // Display User Registration form.
 $response = HAA_Response::getInstance();
 $header = $response->getHeader();
-$header->addFile('register.js', 'js');
+$header->addFile('minified/register.js', 'js');
 $header->addFile('jquery/jquery-uniform.js', 'js');
 $header->addFile('jquery/jquery.maskedinput.min.js', 'js');
-$header->addFile('register.css', 'css');
+$header->addFile('minified/register.css', 'css');
 $header->setTitle('Register');
 $html_output = '';
 

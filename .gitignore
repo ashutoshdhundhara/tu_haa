@@ -1,5 +1,13 @@
-# Directory for 'Photo' uploads.
-/student_photos/
+# Student 'Photo' uploads.
+/student_photos/*.png
+/student_photos/*.jpg
+/student_photos/*.bmp
+
+# Minified CSS/JS files.
+/js/minified/*.js
+/js/minified/*.php
+/css/minified/*.css
+/css/minified/*.php
 
 # Configuration files.
 /libraries/dbConstants.inc.php

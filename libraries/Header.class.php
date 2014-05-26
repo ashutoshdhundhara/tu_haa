@@ -76,16 +76,16 @@ class HAA_Header
     private function _addDefaultFiles()
     {
         $default_scripts = array(
-            'common.js'
+            '/minified/common.js'
             );
         foreach ($default_scripts as $key => $filename) {
             $this->addFile($filename, 'js');
         }
 
         $default_stylesheets = array(
-            'reset.css'
-            , 'absolution.css'
-            , 'common.css'
+            'minified/reset.css',
+            'minified/absolution.css',
+            'minified/common.css'
             );
         foreach ($default_stylesheets as $key => $filename) {
             $this->addFile($filename, 'css');
