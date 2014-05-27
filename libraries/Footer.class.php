@@ -51,7 +51,7 @@ class HAA_Footer
                 . '<li class="separator">|</li>'
                 . '<li><a target="_blank" href="complaint.php">Support</a></li>'
                 . '<li class="separator">|</li>'
-                . '<li><a target="_blank" href="#">Developers</a></li>'
+                . '<li><a target="_blank" href="developers.php">Developers</a></li>'
                 . '</ul>'
                 . '</footer>'
                 . '</body></html>';

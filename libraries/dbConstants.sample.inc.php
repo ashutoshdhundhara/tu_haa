@@ -34,6 +34,8 @@ define('tblAdmin', '');
 define('tblComplaint', '');
 // Define table for allotment process details.
 define('tblAllotmentStatus', '');
+// Define table for the developers page.
+define('tblDevelopers', '');
 
 /**
  * reCaptcha constants.
