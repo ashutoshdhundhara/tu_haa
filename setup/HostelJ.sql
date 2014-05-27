@@ -130,4 +130,17 @@ CREATE TABLE IF NOT EXISTS `allotment_status` (
   `message` varchar(200) NOT NULL COMMENT 'Message to be displayed if allotment disabled.',
   `show_message` enum('0','1','','') NOT NULL COMMENT 'Whether to to show global message or not.',
   PRIMARY KEY (`process_status`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains status about allotment process.'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains status about allotment process.';
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `allotment_status`
+--
+
+CREATE TABLE IF NOT EXISTS `allotment_status` (
+  `process_status` enum('ENABLED','DISABLED','','') NOT NULL COMMENT 'Status of allotment process.',
+  `message` varchar(200) NOT NULL COMMENT 'Message to be displayed if allotment disabled.',
+  `show_message` enum('0','1','','') NOT NULL COMMENT 'Whether to to show global message or not.',
+  PRIMARY KEY (`process_status`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains status about allotment process.';
