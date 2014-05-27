@@ -20,7 +20,7 @@ function HAA_getHtmlErrorReportForm()
         . '<input type="hidden" name="MAX_FILE_SIZE" value="2097152">'
         . '<input type="hidden" name="submitted" value="true">'
         . '<table>'
-        . '<caption>Report Issue</caption>'
+        . '<caption>Support</caption>'
         . '<tr>'
         . '<td><label for="input_name">Name<sup class="req">*</sup> :</label></td>'
         . '<td><input type="text" class="required" id="input_name" name="full_name"'
@@ -32,9 +32,9 @@ function HAA_getHtmlErrorReportForm()
         . ' title="Please provide your valid Email address"></td>'
         . '</tr>'
         . '<tr>'
-        . '<td><label for="input_addr">Error Description<sup class="req">*</sup> :</label></td>'
+        . '<td><label for="input_addr">Query/Problem Description<sup class="req">*</sup> :</label></td>'
         . '<td><textarea class="required" id="complaint_desc" name="complaint_description"'
-        . ' title="Please provide a detailed description of the complaint or problem"></textarea></td>'
+        . ' title="Please provide a detailed description of your query or problem"></textarea></td>'
         . '</tr>'
         . '<tr>'
         . '<td colspan="2" style="text-align: center;">'
@@ -177,9 +177,20 @@ function HAA_saveErrorReport($form_params)
             . 'Thapar University';
         $mail = HAA_sendMail($subject, $to, $from, $message);
         $mail_notify = ($mail == false) ? ('')
-            : ('<p>An email has also been sent to : <span class="blue"> '
+            : ('<p>A confirmation email has also been sent to : <span class="blue"> '
             . $parsed_form_data[':email']
             . '. </span></p>');
+        
+        // Send an email to help mailing list.
+        $to_id = "help@onlinehostelj.in";
+        $to_name = "Support Hostel-J";
+        $mail_id = $parsed_form_data[':email'];
+        $name = $parsed_form_data[':full_name'];
+        $to = array($to_id => $to_name);
+        $from = array($mail_id => $name);
+        $subject = 'Hostel-J Complaint';
+        $message = $parsed_form_data[':complaint_description'];
+        $mail = HAA_sendMail($subject, $to, $from, $message);
 
         // Create a success message.
         $success_msg = '<div class="report_complaint gray_grad box success">'
