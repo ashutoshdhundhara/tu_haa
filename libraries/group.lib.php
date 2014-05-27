@@ -81,7 +81,11 @@ function HAA_parseFormData($form_data)
     // List of fields to be validated for integers only.
     $integers = array(
         'group_size',
-        'roll_no',
+        'roll_no'
+    );
+    
+    //List of unique id fields
+    $uids = array(
         'unique_id'
     );
 
@@ -122,11 +126,21 @@ function HAA_parseFormData($form_data)
     foreach ($form_data as $column => $value) {
         if (! empty($column) && in_array($column, $column_whitelist)) {
             if (is_array($value)) {
-                foreach ($value as $column1 => $value1) {
-                    if (! HAA_validateValue($value1,'integer')) {
-                        HAA_inValidField($fields[$column1]);
-                    } else {
-                        $form_params[$column1][':' . $column] = $value1;
+                if (in_array($column, $integers)) {
+                    foreach ($value as $column1 => $value1) {
+                        if (! HAA_validateValue($value1,'integer')) {
+                            HAA_inValidField($fields[$column1]);
+                        } else {
+                            $form_params[$column1][':' . $column] = $value1;
+                        }
+                    }
+                } elseif (in_array($column, $uids)) {
+                    foreach ($value as $column1 => $value1) {
+                        if (! HAA_validateValue($value1,'unique_id')) {
+                            HAA_inValidField($fields[$column1]);
+                        } else {
+                            $form_params[$column1][':' . $column] = $value1;
+                        }
                     }
                 }
             } elseif (in_array($column, $password_fields)) {
