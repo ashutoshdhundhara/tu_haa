@@ -469,7 +469,7 @@ function HAA_saveStudentRecord($form_params)
         // Check if record already exists.
         if (HAA_isStudentRecordExists($parsed_form_data[':roll_no'])) {
             HAA_gotError( '<span class="blue">'
-                . $parsed_form_data[':full_name'] . '(' . $parsed_form_data[':roll_no'] . ')'
+                . $parsed_form_data[':roll_no']
                 . '</span> is already registered. In case of any discrepency, please immediately'
                 . ' contact administration.'
             );
@@ -477,9 +477,9 @@ function HAA_saveStudentRecord($form_params)
         }
         // Check if student is eligible for hostel or not.
         if (! HAA_isEligible($parsed_form_data[':roll_no'])) {
-            HAA_gotError(
-                $parsed_form_data[':full_name'] . '(' . $parsed_form_data[':roll_no'] . ')'
-                . ' has not been allotted Hostel-J. Check your Web Kiosk.'
+            HAA_gotError( '<span class="blue">'
+                . $parsed_form_data[':roll_no']
+                . '</span> has not been allotted Hostel-J. Check your Web Kiosk.'
             );
             return false;
         }
