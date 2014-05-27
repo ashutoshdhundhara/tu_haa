@@ -100,7 +100,8 @@ if (isset($_REQUEST['rooms_allocated']) && $_REQUEST['rooms_allocated'] == true)
         exit;
     }
     // Check if group is eligible for this step.
-    if ($_SESSION['allotment_status'] != 'ALLOT') {
+    $group_id = $_SESSION['login_id'];
+    if (HAA_getGroupAllotmentStatus($group_id) != 'ALLOT') {
         HAA_redirectTo('index.php');
     }
     // Validate all received roll numbers.

@@ -357,7 +357,7 @@ function HAA_getHtmlCompleteForm()
         . '<div style="margin-top: 2em;">'
         . '<strong>NOTE: </strong>'
         . 'Now all have to show the Hostel-Fee proof and collect the room keys from '
-        . 'Hostel Administration.'
+        . 'Hostel Administration anytime once the college re-opens.'
         . '</div>'
         . '</div>';
 
