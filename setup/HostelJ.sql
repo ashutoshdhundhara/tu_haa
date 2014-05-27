@@ -115,6 +115,7 @@ CREATE TABLE IF NOT EXISTS `complaint_details` (
   `complaint_id` varchar(10) NOT NULL,
   `complaint` varchar(500) NOT NULL,
   `name` varchar(50) NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`complaint_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains complaint details';
 
