@@ -66,7 +66,7 @@ var roll_no_format = '999999999';
 /**
  * Default unique ID format.
  */
-var unique_id_format = '9999';
+var unique_id_format = '******';
 
 /**
  * Display notification message.
@@ -208,9 +208,9 @@ function HAA_togglePasswordFields($target, page)
             '<td><input id="input_confirm" type="password" name="confirm_password"' +
             ' title="Please confirm your password." class="required"></td>' +
             '</tr>';
-            
+
             var $password_fields = $($upper + message + $lower);
-            
+
             $target.closest('tr').after($password_fields);
             $('#input_password, #input_confirm').tooltip(tooltip_right);
         }
