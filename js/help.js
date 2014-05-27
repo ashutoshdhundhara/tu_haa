@@ -41,8 +41,8 @@ $(document).ready(function () {
  */
 var messages = Array();
 messages['snapshot_unique_ID.png'] = Array(
-    'Unique ID',
-    'Use the Unique ID you received on Web-Kiosk to register.'
+    'Passkey',
+    'Use the Passkey you received on Web-Kiosk to register.'
 );
 messages['snapshot_group.png'] = Array(
     'Group Registration',
