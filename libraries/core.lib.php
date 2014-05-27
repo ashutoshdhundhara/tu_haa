@@ -54,6 +54,9 @@ function HAA_validateValue($value, $type)
         case 'room_no':
             $regEx = '/^[wWeE][a-fA-F][\-][1-8][0][1-9]$|^[wWeE][a-fA-F][\-][1-8][1][10]$/';
             break;
+        case 'unique_id':
+            $regEx = '/^[A-Za-z0-9]{6}$/';
+            break;
     }
 
     if (! preg_match($regEx, $value)) {

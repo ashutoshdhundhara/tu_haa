@@ -320,10 +320,13 @@ function HAA_parseFormData($form_data)
     );
     //List of columns to be validated for integers only.
     $integers = array(
-        'unique_id',
         'roll_no',
         'current_year',
         'landline'
+    );
+    // List of columns to be validated for unique id.
+    $unique_ids = array(
+        'unique_id'
     );
     // List of columns to validated for dates.
     $dates = array(
@@ -369,6 +372,12 @@ function HAA_parseFormData($form_data)
                 }
             } elseif (in_array($column, $emails)) {
                 if (! HAA_validateValue($value, 'email')) {
+                    HAA_inValidField($fields[$column]);
+                } else {
+                    $form_params[':' . $column] = $value;
+                }
+            } elseif (in_array($column, $unique_ids)) {
+                if (! HAA_validateValue($value, 'unique_id')) {
                     HAA_inValidField($fields[$column]);
                 } else {
                     $form_params[':' . $column] = $value;
