@@ -16,7 +16,7 @@ $header = $response->getHeader();
 // No need to display global message on this page.
 $header->disableGlobalMessage();
 $header->addFile('minified/complaint.css', 'css');
-$header->setTitle('Report Issue');
+$header->setTitle('Support');
 $html_output = '';
 
 // If Form is submitted, process it.
