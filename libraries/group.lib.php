@@ -21,6 +21,12 @@ function HAA_getHtmlGroupForm()
         . '<table id="password_table">'
         . '<caption>Create Group</caption>'
         . '<tr>'
+        . '<td colspan="2"><strong>NOTE : </strong>'
+        . 'Once you create a group, you can&apos;t <strong>ADD/REMOVE </strong>'
+        . 'a member.'
+        . '</td>'
+        . '</tr>'
+        . '<tr>'
         . '<td><label for="input_size">Number of members<sup class="req">*</sup> :</label></td>'
         . '<td>' . HAA_getHtmlSelectGroupSize() . '</td>'
         . '</tr>'
@@ -83,7 +89,7 @@ function HAA_parseFormData($form_data)
         'group_size',
         'roll_no'
     );
-    
+
     //List of unique id fields
     $uids = array(
         'unique_id'
