@@ -19,4 +19,4 @@ $html_output = HAA_getHtmlDevelopers();
 
 $response->addHTML($html_output);
 $response->response();
-?>\
+?>

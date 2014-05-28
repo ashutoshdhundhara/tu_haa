@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `group_id` (
   `group_id` varchar(10) NOT NULL,
   `password` char(128) NOT NULL,
   `group_size` varchar(2) NOT NULL,
-  `allotment_status` varchar(20) NOT NULL DEFAULT 'NOT_ALLOTED',
+  `allotment_status` enum('SELECT','ALLOT','COMPLETE','') NOT NULL DEFAULT 'SELECT',
   PRIMARY KEY (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains credentials of Groups formed.';
 
