@@ -1,0 +1,50 @@
+/**
+ * Contains styles required by developers page.
+ */
+
+.developers_content {
+    width: 800px;
+    text-align: center;
+}
+
+.developers_content h2 {
+    font-weight: 400;
+    margin-top: 0.5em;
+    margin-bottom: 2em;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.developer_info {
+    display: inline-block;
+    text-align: left;
+    margin: 0 auto;
+    width: 570px;
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.developer_info caption {
+    text-align: left;
+}
+
+.developers_info img {
+
+}
+
+.developer_info table {
+    float: right;
+    width: 350px;
+    margin-top: 0.2em;
+    table-layout: fixed;
+}
+
+.developer_info table td {
+    padding: 0.4em;
+    line-height: 1.5em;
+    font-size: 1.05em;
+}
+
+hr {
+    border-top: 1px solid gray;
+}

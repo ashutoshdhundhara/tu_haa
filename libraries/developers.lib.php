@@ -13,7 +13,8 @@ if (! defined('TU_HAA')) {
  * @return string $retval Form Html
  */
 function HAA_getHtmlDevelopers() {
-    $retval = '<div class="developers_content">'
+    $retval = '<div class="developers_content gray_grad box">'
+    . '<h2>Developers</h2>'
     . HAA_getHtmlDeveloperInfo()
     . '</div>';
 
@@ -48,29 +49,37 @@ function HAA_getDeveloperInfo() {
 function HAA_getHtmlDeveloperInfo() {
     $retval = '';
     $developers = HAA_getDeveloperInfo();
-    while($row = $developers->fetch()) {
+    $row = $developers->fetch();
+    while($row) {
         $retval .= '<div class="developer_info">'
-        . '<img src="img/developers/' . $row['photo'] . '">'
-        . '<h3>' . $row['full_name'] . '</h3>'
+        . '<img src="img/developers/' . $row['photo'] . '" alt="'
+        . $row['full_name'] . '" height="200" width="170"'
+        . '>'
         . '<table>'
+        . '<caption>' . $row['full_name'] . '</caption>'
         . '<tr>'
-        . '<td>E-Mail :'
-        . '<td>' . $row['email']
+        . '<td>E-Mail :</td>'
+        . '<td>' . $row['email'] . '</td>'
         . '</tr>'
         . '<tr>'
-        . '<td>Mobile :'
-        . '<td>' . $row['mobile']
+        . '<td>Mobile :</td>'
+        . '<td>' . $row['mobile'] . '</td>'
         . '</tr>'
         . '<tr>'
-        . '<td>Role :'
-        . '<td>' . $row['role']
+        . '<td>Role :</td>'
+        . '<td>' . $row['role'] . '</td>'
         . '</tr>'
         . '<tr>'
-        . '<td>Additional Info :'
-        . '<td>' . $row['other_details']
-        . '</tr>'
+        . '<td>Additional Info :</td>'
+        . '<td><a target="_blank" href="http://'
+        . $row['other_details'] . '">link</a>'
+        . '</td></tr>'
         . '</table>'
         . '</div>';
+
+        if ($row = $developers->fetch()) {
+            $retval .= '<hr>';
+        }
     }
     return $retval;
 }

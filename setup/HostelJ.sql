@@ -135,12 +135,16 @@ CREATE TABLE IF NOT EXISTS `allotment_status` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `allotment_status`
+-- Table structure for table `developers`
 --
 
-CREATE TABLE IF NOT EXISTS `allotment_status` (
-  `process_status` enum('ENABLED','DISABLED','','') NOT NULL COMMENT 'Status of allotment process.',
-  `message` varchar(200) NOT NULL COMMENT 'Message to be displayed if allotment disabled.',
-  `show_message` enum('0','1','','') NOT NULL COMMENT 'Whether to to show global message or not.',
-  PRIMARY KEY (`process_status`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains status about allotment process.';
+CREATE TABLE IF NOT EXISTS `developers` (
+  `index` int(11) NOT NULL AUTO_INCREMENT,
+  `full_name` varchar(50) NOT NULL COMMENT 'Developer name.',
+  `email` varchar(50) NOT NULL COMMENT 'Developers email id.',
+  `mobile` varchar(20) NOT NULL COMMENT 'Developers mobile number.',
+  `role` varchar(20) NOT NULL COMMENT 'Developers role.',
+  `other_details` varchar(50) NOT NULL COMMENT 'Developers other details.',
+  `photo` varchar(100) NOT NULL COMMENT 'Developers photo.',
+  PRIMARY KEY (`index`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains information about developers.';
