@@ -69,6 +69,8 @@ $html_output = '<div class="help_content gray_grad box">'
     . 'them to assign rooms to members of the group.'
     . '</li>'
     . '</ul>'
+    . 'A demo video can be seen <a href="http://youtu.be/xP66EbowUf4" class="blue" target="_blank">here</a>.'
+    . '<br><br>'
     . '<strong>NOTE</strong>: In case of any further issues, you can report them on our'
     . ' <a href="complaint.php" class="blue" target="_blank">Support</a> page.';
 
