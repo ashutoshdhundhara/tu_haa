@@ -82,7 +82,7 @@ function HAA_populateTblRoom()
         }
     }
     // SQL query.
-    $sql_query = 'REPLACE INTO `' . tblRoom . '` '
+    $sql_query = 'INSERT IGNORE INTO `' . tblRoom . '` '
         . '(`wing`, `floor`, `cluster`, `room_no`, `room_status`, `group_id`) '
         . 'VALUES ' . implode(', ', $query_params);
     // Execute the query.
