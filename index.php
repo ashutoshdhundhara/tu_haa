@@ -50,6 +50,15 @@ if (isset($_SESSION['show_captcha'])) {
         . '</tr>';
 }
 
+// Check if login is enabled or not.
+if (HAA_isloginEnabled() != 'ENABLED') {
+    $login_error = '<tr>'
+        . '<td colspan="2" class="red">'
+        . HAA_getLoginStatusMessage()
+        . '</td>'
+        . '</tr>';
+}
+
 // Build login form. --START--
 $html_output .= '<form id="login_form" class="login_form gray_grad box"'
     . ' action="login.php" method="POST">'

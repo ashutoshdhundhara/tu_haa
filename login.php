@@ -27,7 +27,11 @@ if (isset($_SESSION['show_captcha'])) {
 }
 
 // Check if all request parameters set.
-if (isset($_POST['haa_username']) && isset($_POST['haa_password'])) {
+if (
+    isset($_POST['haa_username'])
+    && isset($_POST['haa_password'])
+    && HAA_isLoginEnabled() == 'ENABLED'
+) {
     $group_id = $_POST['haa_username'];
     $password = $_POST['haa_password'];
     // Validate credentials.

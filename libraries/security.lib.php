@@ -244,4 +244,38 @@ function HAA_checkToDisplayGlobalMessage()
 
     return $status['show_message'];
 }
+
+/**
+ * Returns `login_status` ('ENABLED', 'DISABLED')
+ *
+ * @return string $login_status ('ENABLED', 'DISABLED')
+ */
+function HAA_isLoginEnabled()
+{
+    // SQL query.
+    $sql_query = 'SELECT `login_status` FROM ' . tblAllotmentStatus . ' '
+        . 'LIMIT 1';
+    // Execute query.
+    $result = $GLOBALS['dbi']->executeQuery($sql_query, array());
+    $login_status = $result->fetch();
+
+    return $login_status['login_status'];
+}
+
+/**
+ * Returns `login_message`
+ *
+ * @return string $login_status
+ */
+function HAA_getLoginStatusMessage()
+{
+    // SQL query.
+    $sql_query = 'SELECT `login_message` FROM ' . tblAllotmentStatus . ' '
+        . 'LIMIT 1';
+    // Execute query.
+    $result = $GLOBALS['dbi']->executeQuery($sql_query, array());
+    $login_status = $result->fetch();
+
+    return $login_status['login_message'];
+}
 ?>
