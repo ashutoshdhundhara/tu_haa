@@ -36,6 +36,8 @@ define('tblComplaint', '');
 define('tblAllotmentStatus', '');
 // Define table for the developers page.
 define('tblDevelopers', '');
+// Define table for the feedback.
+define('tblFeedback', '');
 
 /**
  * reCaptcha constants.

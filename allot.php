@@ -129,6 +129,19 @@ if (isset($_REQUEST['rooms_allocated']) && $_REQUEST['rooms_allocated'] == true)
     HAA_redirectTo('index.php');
 }
 
+// If user has submitted feedback.
+if (isset($_POST['feedback_submit']) && $_POST['feedback_submit'] == true) {
+    $group_id = $_SESSION['login_id'];
+    if (isset($_POST['score'])
+        && preg_match('/^[0-5]$/', $_POST['score'])
+        && ! HAA_checkFeedbackStatus($group_id)
+    ) {
+        $score = $_POST['score'];
+        $comments = $_POST['comments'];
+        HAA_saveFeedback($group_id, $score, $comments);
+    }
+}
+
 // Check if user is logged in or not.
 if (! HAA_checkLoginStatus()) {
     HAA_redirectTo('index.php');
@@ -160,6 +173,7 @@ switch ($allotment_status) {
         break;
     // Display completed form.
     case 'COMPLETE':
+        $header->addFile('jquery/jquery.raty.min.js', 'js');
         $header->setTitle('Complete');
         $html_output = HAA_getHtmlCompleteForm();
         break;

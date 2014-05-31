@@ -353,14 +353,112 @@ function HAA_getHtmlCompleteForm()
             . $row['full_name'] . ' (' . $row['roll_no'] . ')'
             . '</li>';
     }
+
+    $feedback_form = (HAA_checkFeedbackStatus($group_id)) ?
+        '<div style="margin-top: 1em;">'
+        . 'Thanks for your valuable feedback.'
+        . '</div>' :
+        HAA_getHtmlFeedbackForm();
+
     $retval .= '</ul><div style="clear: both;"></div>'
         . '<div style="margin-top: 2em;">'
         . '<strong>NOTE: </strong>'
         . 'Now all have to show the Hostel-Fee proof and collect the room keys from '
         . 'Hostel Administration anytime once the college re-opens.'
         . '</div>'
+        . $feedback_form
         . '</div>';
 
     return $retval;
+}
+
+/**
+ * Return Html for feedback form.
+ *
+ * @return string Html
+ */
+function HAA_getHtmlFeedbackForm()
+{
+    $retval = '<form action="allot.php" method="POST" id="feedback_form">'
+        . '<input type="hidden" name="feedback_submit" value="true">'
+        . '<table>'
+        . '<caption>Help us Improve</caption>'
+        . '<tr>'
+        . '<td>'
+        . 'Rate this system :'
+        . '</td>'
+        . '<td>'
+        . '<div id="raty_box"></div>'
+        . '</td>'
+        . '</tr>'
+        . '<tr>'
+        . '<td>'
+        . 'Suggestions/Comments :'
+        . '</td>'
+        . '<td>'
+        . '<textarea name="comments"></textarea>'
+        . '</td>'
+        . '</tr>'
+        . '<tr>'
+        . '<td colspan="2" style="text-align: center;">'
+        . '<input type="submit" name="submit" value="Submit">'
+        . '</td>'
+        . '</tr>'
+        . '</table>'
+        . '</form>';
+
+    $retval .= '<script>'
+        . '$(document).ready(function () {'
+        . '$.fn.raty.defaults.path = "css/images";'
+        . '$("#raty_box").raty({'
+        . 'width: "100%"'
+        . '});'
+        . '$("img[title]").tooltip("destroy");'
+        . '});'
+        . '</script>';
+
+    return $retval;
+}
+
+/**
+ * Checks if a group hsa submitted feedback or not.
+ *
+ * @param string $group_id Group ID
+ *
+ * @return bool
+ */
+function HAA_checkFeedbackStatus($group_id)
+{
+    // SQL query.
+    $sql_query = 'SELECT `group_id` FROM ' . tblFeedback . ' '
+        . 'WHERE `group_id` = :group_id';
+
+    $result = $GLOBALS['dbi']->executeQuery($sql_query, array(':group_id' => $group_id));
+
+    if ($result->rowCount() > 0) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Inserts feedback into DB.
+ *
+ * @param string $group_id Group ID
+ * @param string $score    Rating
+ * @param string $comments Comments
+ */
+function HAA_saveFeedback($group_id, $score, $comments)
+{
+    $sql_query = 'INSERT INTO ' . tblFeedback . ' '
+        . '(`group_id`, `score`, `comments`) '
+        . 'VALUES (:group_id, :score, :comments)';
+    $query_params = array(
+        ':group_id' => $group_id,
+        ':score' => $score,
+        ':comments' => $comments
+    );
+    $result = $GLOBALS['dbi']->executeQuery($sql_query, $query_params);
 }
 ?>

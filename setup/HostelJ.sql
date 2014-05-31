@@ -148,3 +148,15 @@ CREATE TABLE IF NOT EXISTS `developers` (
   `photo` varchar(100) NOT NULL COMMENT 'Developers photo.',
   PRIMARY KEY (`index`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains information about developers.';
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feedback`
+--
+
+CREATE TABLE IF NOT EXISTS `feedback` (
+  `group_id` varchar(10) NOT NULL,
+  `score` varchar(5) NOT NULL,
+  `comments` varchar(5000) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains feedback from users.';
