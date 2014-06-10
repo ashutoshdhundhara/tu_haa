@@ -1,7 +1,8 @@
-Thapar University, Hostel-J Allocation Automation
+Thapar University, Hostel-J Room Allocation Automation
 =================================================
-An online system for Hostel-J Room Allocation.
-
+An online system for Hostel-J Room booking.
+`Website link.
+<http://onlinehostelj.in>`_
 
 
 Developer's Guide
