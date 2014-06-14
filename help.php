@@ -72,7 +72,8 @@ $html_output = '<div class="help_content gray_grad box">'
     . 'A demo video can be seen <a href="http://youtu.be/xP66EbowUf4" class="blue" target="_blank">here</a>.'
     . '<br><br>'
     . '<strong>NOTE</strong>: In case of any further issues, you can report them on our'
-    . ' <a href="complaint.php" class="blue" target="_blank">Support</a> page.';
+    . ' <a href="complaint.php" class="blue" target="_blank">Support</a> page or mail us directly'
+    . ' at <span class="blue">help@onlinehostelj.in</span>.';
 
 // Overlay container.
 $html_output .= '<div class="simple_overlay" id="simple_overlay">'

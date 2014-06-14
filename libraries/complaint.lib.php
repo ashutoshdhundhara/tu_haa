@@ -41,6 +41,11 @@ function HAA_getHtmlErrorReportForm()
         . '<input type="submit" name="submit" value="Report">'
         . '</td>'
         . '</tr>'
+        . '<tr>'
+        . '<td colspan="2" style="text-align: center;">'
+        . 'Or you can mail us directly at <span class="blue">help@onlinehostelj.in</span>.'
+        . '</td>'
+        . '</tr>'
         . '</table>'
         . '</form>';
 
@@ -180,7 +185,7 @@ function HAA_saveErrorReport($form_params)
             : ('<p>A confirmation email has also been sent to : <span class="blue"> '
             . $parsed_form_data[':email']
             . '. </span></p>');
-        
+
         // Send an email to help mailing list.
         $to_id = "help@onlinehostelj.in";
         $to_name = "Support Hostel-J";
