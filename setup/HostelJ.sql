@@ -14,7 +14,6 @@ SET time_zone = "+05:30";
 CREATE TABLE IF NOT EXISTS `admin_id` (
   `admin_id` varchar(10) NOT NULL,
   `password` varchar(50) NOT NULL,
-  `allotment_status` varchar(20) NOT NULL DEFAULT 'DISABLED',
   PRIMARY KEY (`admin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains Admin credentials.';
 
