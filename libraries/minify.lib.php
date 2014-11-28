@@ -31,20 +31,25 @@ function HAA_minify($type)
     // Minify each file.
     foreach ($files as $file) {
         $file = basename($file);
-        // Minify it.
+        // Get SERVER base directory.
+        $base_dir = __FILE__;
+        $base_dir = str_replace($_SERVER['DOCUMENT_ROOT'], '', $base_dir);
+        $base_dir = str_replace(basename($base_dir), '', $base_dir);
+        $base_dir = str_replace('libraries/', '', $base_dir);
         $root = (isset($_SERVER['HTTPS']) ? 'https' : 'http')
             . '://'
             . $_SERVER['HTTP_HOST']
-            . '/';
-        $minified_js = file_get_contents(
+            . $base_dir;
+        // Minify it.
+        $minified_file = file_get_contents(
             $root
-            . 'min/?f=' . $type . '/'
+            . 'min/?f=' . $base_dir . $type . '/'
             . htmlspecialchars($file)
         );
 
         // Open a new file for writing minified JS content.
         $new_file = fopen($type . '/minified/' . $file, 'w');
-        fwrite($new_file, $minified_js);
+        fwrite($new_file, $minified_file);
         fclose($new_file);
     }
     // Set a flag that all files have been minified.
