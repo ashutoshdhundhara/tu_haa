@@ -44,25 +44,35 @@ function HAA_secureSession()
 /**
  * Securely logs in a user with credentials.
  *
- * @param string $group_id Group ID
+ * @param string $login_id Login ID
  * @param string $password Password
+ * @param bool   $is_admin If user is Admin
  *
  * @return bool true or false
  */
-function HAA_secureLogin($group_id, $password)
+function HAA_secureLogin($login_id, $password, $is_admin = false)
 {
     // Initialize.
     $password = hash('sha512', $password);
-    $sql_query = 'SELECT * FROM ' . tblGroupId . ' '
-            . 'WHERE group_id = :group_id AND password = :password '
+    if ($is_admin) {
+        $sql_query = 'SELECT `password` FROM ' . tblAdmin . ' '
+            . 'WHERE `admin_id` = :login_id AND `password` = :password '
             . 'LIMIT 1';
-    $query_params = array(':group_id' => $group_id
-        , ':password' => $password
+    } else {
+        $sql_query = 'SELECT * FROM ' . tblGroupId . ' '
+            . 'WHERE `group_id` = :login_id AND `password` = :password '
+            . 'LIMIT 1';
+    }
+
+    $query_params = array(
+        ':login_id' => $login_id,
+        ':password' => $password
     );
+
     $result = $GLOBALS['dbi']->executeQuery($sql_query, $query_params);
 
     if ($result->rowCount() == 1) {
-        // group_id and password are correct.
+        // login_id and password are correct.
         // Get the fetched row.
         $group_details = $result->fetch();
         // Get the user-agent string of the user.
@@ -70,11 +80,13 @@ function HAA_secureLogin($group_id, $password)
         // Get allotment process status.
         $allotment_status = HAA_getAllotmentProcessStatus();
         // Set session variables.
-        $_SESSION['login_id'] = $group_id;
+        $_SESSION['login_id'] = $login_id;
         $_SESSION['login_string'] = hash('sha512', $password . $user_browser);
-        $_SESSION['group_size'] = $group_details['group_size'];
+        if (! $is_admin) {
+            $_SESSION['group_size'] = $group_details['group_size'];
+            HAA_updateGroupAllotmentStatus();
+        }
         HAA_updateAllotmentProcessStatus();
-        HAA_updateGroupAllotmentStatus();
         // Login successful.
         return true;
 
@@ -99,21 +111,28 @@ function HAA_secureLogin($group_id, $password)
  *
  * @return bool true or false
  */
-function HAA_checkLoginStatus()
+function HAA_checkLoginStatus($is_admin = false)
 {
     // Check if all session variables are set.
     if (isset($_SESSION['login_id'], $_SESSION['login_string'])) {
         // Fetch session variables for verification.
-        $group_id = $_SESSION['login_id'];
+        $login_id = $_SESSION['login_id'];
         $login_string = $_SESSION['login_string'];
         // Get the user-agent string of the user.
         $user_browser = $_SERVER['HTTP_USER_AGENT'];
         // SQL query to fetch password from DB.
-        $sql_query = 'SELECT password FROM ' . tblGroupId . ' '
-            . 'WHERE group_id = :group_id '
-            . 'LIMIT 1';
+        if ($is_admin) {
+            $sql_query = 'SELECT `password` FROM ' . tblAdmin . ' '
+                . 'WHERE `admin_id` = :login_id '
+                . 'LIMIT 1';
+        } else {
+            $sql_query = 'SELECT * FROM ' . tblGroupId . ' '
+                . 'WHERE `group_id` = :login_id '
+                . 'LIMIT 1';
+        }
+
         // Execute query.
-        $query_params = array(':group_id' => $group_id);
+        $query_params = array(':login_id' => $login_id);
         $result = $GLOBALS['dbi']->executeQuery($sql_query, $query_params);
         if ($result->rowCount() == 1) {
             // Get password saved in DB.
@@ -124,8 +143,10 @@ function HAA_checkLoginStatus()
             if ($login_string == $login_check) {
                 // Update allotment process status.
                 HAA_updateAllotmentProcessStatus();
-                // Update group allotment status.
-                HAA_updateGroupAllotmentStatus();
+                if (! $is_admin) {
+                    // Update group allotment status.
+                    HAA_updateGroupAllotmentStatus();
+                }
                 // Logged in.
                 return true;
             } else {

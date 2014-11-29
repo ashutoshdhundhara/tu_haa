@@ -1,0 +1,37 @@
+/**
+ * Styles for admin page.
+ */
+
+.login_form {
+    width: 350px;
+    text-align: center;
+}
+
+.login_form a {
+    font-weight: 600;
+    color: black;
+}
+
+.login_form table {
+    margin: 0 auto;
+}
+
+.login_form td {
+    padding: 0.5em;
+}
+
+.admin_page {
+    width: 700px;
+}
+
+.admin_page h2:first-child {
+    font-weight: 400;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.admin_form td {
+    padding: 0.5em;
+}

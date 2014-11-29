@@ -336,7 +336,7 @@ iframe {
     display: none;
 }
 
-.ui-dialog, .ui-tabs-nav {
+.ui-dialog, .ui-tabs-nav, .ui-accordion {
     font-size: 0.8em;
 }
 
