@@ -53,6 +53,9 @@ if (isset($_POST['haa_username'])
 
 // If admin is not logged in, display login form.
 if (! HAA_checkLoginStatus(true)) {
+    $login_error = '';
+    $recaptcha = '';
+
     // If to show captcha error message.
     if (isset($_GET['captcha_error']) && $_GET['captcha_error'] == true) {
         $login_error = '<tr>'
