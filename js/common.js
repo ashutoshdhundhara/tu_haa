@@ -69,6 +69,11 @@ var roll_no_format = '999999999';
 var unique_id_format = '******';
 
 /**
+ * Default Cluster format.
+ */
+var cluster_format = 'aa-9';
+
+/**
  * Display notification message.
  *
  * @param string message  Message to be displayed
