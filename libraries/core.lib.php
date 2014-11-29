@@ -482,7 +482,7 @@ function HAA_insertGroupPassword($params)
  * @param string $field_name
  * @param string $roll_no
  *
- * @return string $field_value
+ * @return array|string Full row or value
  */
 function HAA_getStudentDetail($field_name,$roll_no)
 {
@@ -496,10 +496,13 @@ function HAA_getStudentDetail($field_name,$roll_no)
     );
 
     if ($row = $field_value->fetch()) {
+        if ($field_name == '*') {
+            return $row;
+        }
         return $row[$field_name];
     }
 
-    return NULL;
+    return false;
 }
 
 /**

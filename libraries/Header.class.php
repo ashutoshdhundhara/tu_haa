@@ -64,7 +64,7 @@ class HAA_Header
         $this->_displayGlobalMessage = true;
         $this->_title = ' | Hostel-J';
         $this->_scripts = array();
-        $this->_scripts = array();
+        $this->_stylesheets = array();
         $this->_addDefaultFiles();
     }
 
@@ -297,10 +297,12 @@ class HAA_Header
     private function _getLoginDetails()
     {
         $retval = '';
-        if (isset($_SESSION['login_id'])) {
+        if (isset($_SESSION['login_id']) || isset($_SESSION['admin_id'])) {
             $retval .= '<div class="login_details">'
                 . 'Login ID : '
-                . '<strong> ' . $_SESSION['login_id'] . ' </strong>'
+                . '<strong> '
+                . $_SESSION['login_id']
+                . ' </strong>'
                 . '<a href="logout.php" class="blue"> Logout</a>'
                 . '</div>';
         }
