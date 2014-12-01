@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `group_id` (
   `group_id` varchar(10) NOT NULL,
   `password` char(128) NOT NULL,
   `group_size` varchar(2) NOT NULL,
-  `allotment_status` enum('SELECT','ALLOT','COMPLETE','') NOT NULL DEFAULT 'SELECT',
+  `allotment_status` enum('SELECT','ALLOT','COMPLETE') NOT NULL DEFAULT 'SELECT',
   PRIMARY KEY (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains credentials of Groups formed.';
 
@@ -125,9 +125,11 @@ CREATE TABLE IF NOT EXISTS `complaint_details` (
 --
 
 CREATE TABLE IF NOT EXISTS `allotment_status` (
-  `process_status` enum('ENABLED','DISABLED','','') NOT NULL COMMENT 'Status of allotment process.',
+  `process_status` enum('ENABLED','DISABLED') NOT NULL COMMENT 'Status of allotment process.',
   `message` varchar(200) NOT NULL COMMENT 'Message to be displayed if allotment disabled.',
-  `show_message` enum('0','1','','') NOT NULL COMMENT 'Whether to to show global message or not.',
+  `show_message` enum('0','1') NOT NULL COMMENT 'Whether to to show global message or not.',
+  `login_status` enum('ENABLED','DISABLED') NOT NULL DEFAULT 'DISABLED',
+  `login_message` varchar(500) NOT NULL,
   PRIMARY KEY (`process_status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains status about allotment process.';
 
