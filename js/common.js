@@ -3,7 +3,7 @@
  */
 
 $(document).ready(function () {
-    $('input:submit').addClass('submit_button green_grad');
+    $('input:submit, button').addClass('submit_button green_grad');
     $('[title]').tooltip(tooltip_right);
     $('.datefield').datepicker(datepicker_defaults);
 });
@@ -71,7 +71,32 @@ var unique_id_format = '******';
 /**
  * Default Cluster format.
  */
-var cluster_format = 'aa-9';
+var cluster_format = 'WC-R';
+
+/**
+ * Default Room number format.
+ */
+var room_no_format = 'WC-RRR';
+
+/**
+ * Placeholders for Room/Cluster number.
+ */
+$.mask.definitions['W'] = "[WwEe]";
+$.mask.definitions['C'] = "[A-Fa-f]";
+$.mask.definitions['F'] = "[1-8]";
+$.mask.definitions['R'] = "[0-9]";
+
+
+var branches = [
+    'COE',
+    'MEE',
+    'ECE',
+    'CIE',
+    'EIC',
+    'ELE',
+    'BT',
+    'CHE'
+];
 
 /**
  * Display notification message.

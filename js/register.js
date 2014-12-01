@@ -7,16 +7,6 @@ $(document).ready(function () {
     $('.datefield').mask(date_format);
     $('.mobilefield').mask(mobile_format);
     $('#input_unique_id').focus();
-    var branches = [
-        'COE'
-        , 'MEE'
-        , 'ECE'
-        , 'CIE'
-        , 'EIC'
-        , 'ELE'
-        , 'BT'
-        , 'CHE'
-    ];
     $("#input_branch").autocomplete({
         source: branches
     });
