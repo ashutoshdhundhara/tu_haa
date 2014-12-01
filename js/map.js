@@ -86,7 +86,7 @@ function HAA_showClusterMap($cluster_anchor)
             var dialog_title = cluster_name;
             // Dialog Button options.
             var buttonOptions = {};
-            if (response.is_map) {
+            if (response.is_map && group_size > 0) {
                 buttonOptions['Select All'] = function () {
                     // Select All available rooms
                     HAA_selectAll();

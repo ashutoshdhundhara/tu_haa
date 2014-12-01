@@ -35,3 +35,15 @@
 .admin_form td {
     padding: 0.5em;
 }
+
+.admin_page table {
+    width: 100%;
+}
+
+.admin_page td {
+    padding: 0.5em;
+}
+
+.selector {
+    width: 151px;
+}

@@ -12,12 +12,18 @@ require_once 'libraries/cluster.lib.php';
 // Start a secure session.
 HAA_secureSession();
 
+if (isset($_SESSION['is_admin'])) {
+    $is_admin = true;
+} else {
+    $is_admin = false;
+}
+
 // Generate cluster map.
 $response = HAA_Response::getInstance();
 $html_output = '';
 
 // Check if user is logged in or not.
-if (! HAA_checkLoginStatus()) {
+if (! HAA_checkLoginStatus($is_admin)) {
     HAA_gotError(
         'Either your are not logged in or your session has expired'
     );
@@ -30,7 +36,7 @@ if (! HAA_checkLoginStatus()) {
     exit;
 }
 
-if ($_SESSION['allotment_status'] != 'SELECT') {
+if ($_SESSION['allotment_status'] != 'SELECT' && ! $is_admin) {
     HAA_gotError(
         'You have already submitted room choice(s). Kindly refresh your page.'
     );

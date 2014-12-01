@@ -14,7 +14,7 @@ if (! defined('TU_HAA')) {
  *
  * @return string Html containing Map.
  */
-function HAA_getHtmlHostelMap($selectable = true)
+function HAA_getHtmlHostelMap($selectable = true, $is_admin = false)
 {
     $retval = '<div id="wing_tabs" class="wing_tabs gray_grad box">'
         . '<ul>'
@@ -26,14 +26,22 @@ function HAA_getHtmlHostelMap($selectable = true)
         . '</li>'
         . '</ul>'
         . '</div>';
-    // Set JS variable for group size.
-    $group_size = $_SESSION['group_size'];
+    if (! $is_admin) {
+        // Set JS variable for group size.
+        $group_size = $_SESSION['group_size'];
+    } else {
+        $group_size = 0;
+        $selectable = false;
+    }
+
     $retval .= '<script>'
         . 'var group_size = ' . $group_size . '; '
         . 'var selected_rooms = 0; '
         . 'var process_status = ' . (($selectable) ? 'true' : 'false') . ';'
         . '</script>';
-    $retval .= HAA_getHtmlSideBar($group_size);
+    if (! $is_admin) {
+        $retval .= HAA_getHtmlSideBar($group_size);
+    }
 
     return $retval;
 }

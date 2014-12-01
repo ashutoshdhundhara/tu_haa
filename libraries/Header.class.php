@@ -76,6 +76,7 @@ class HAA_Header
     private function _addDefaultFiles()
     {
         $default_scripts = array(
+            'jquery/jquery.maskedinput.min.js',
             '/minified/common.js'
             );
         foreach ($default_scripts as $key => $filename) {

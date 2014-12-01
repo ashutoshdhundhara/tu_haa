@@ -8,6 +8,7 @@
  */
 require_once 'libraries/common.inc.php';
 require_once 'libraries/jadmin.lib.php';
+require_once 'libraries/register.lib.php';
 require_once 'libraries/recaptcha/recaptchalib.php';
 
 // Start a secure session.
@@ -115,12 +116,17 @@ if (! HAA_checkLoginStatus(true)) {
 }
 
 // Admin form submitted.
-if (isset($_POST['submit_type'])) {
-    switch ($_POST['submit_type']) {
+if (isset($_REQUEST['submit_type'])) {
+    switch ($_REQUEST['submit_type']) {
+    case 'resident_details':
+        break;
+    case 'resident_search':
+        break;
     default:
         break;
     }
 
+    $response->response();
     exit;
 }
 
@@ -128,6 +134,9 @@ $html_output .= '<div class="admin_page gray_grad box">'
     . '<h2>Hostel Administration</h2>'
     . '<div class="admin_content">';
 
+$html_output .= HAA_getHtmlShowMap();
+$html_output .= HAA_getHtmlResidentDetails();
+$html_output .= HAA_getHtmlSearchResidents();
 
 $html_output .= '</div></div>';
 

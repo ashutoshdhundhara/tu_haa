@@ -85,6 +85,8 @@ function HAA_secureLogin($login_id, $password, $is_admin = false)
         if (! $is_admin) {
             $_SESSION['group_size'] = $group_details['group_size'];
             HAA_updateGroupAllotmentStatus();
+        } else {
+            $_SESSION['is_admin'] = true;
         }
         HAA_updateAllotmentProcessStatus();
         // Login successful.
