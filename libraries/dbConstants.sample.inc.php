@@ -19,31 +19,31 @@ define('dbName', '');
  * Define constants for databse tables.
  */
 //Define table for storing Student details.
-define('tblStudent', '');
+define('tblStudent', 'student_details');
 //Define table for storing Group details.
-define('tblGroup', '');
+define('tblGroup', 'group_details');
 //Define table for storing Group credentials.
-define('tblGroupId', '');
+define('tblGroupId', 'group_id');
 // Define table for storing Eligible students.
-define('tblEligibleStudents', '');
+define('tblEligibleStudents', 'eligible_students');
 // Define table for storing Rooms details.
-define('tblRoom', '');
+define('tblRoom', 'rooms_info');
 // Define table for Admin credentials.
-define('tblAdmin', '');
+define('tblAdmin', 'admin_id');
 // Define table for Complaint details.
-define('tblComplaint', '');
+define('tblComplaint', 'complaint_details');
 // Define table for allotment process details.
-define('tblAllotmentStatus', '');
+define('tblAllotmentStatus', 'allotment_status');
 // Define table for the developers page.
-define('tblDevelopers', '');
+define('tblDevelopers', 'developers');
 // Define table for the feedback.
-define('tblFeedback', '');
+define('tblFeedback', 'feedback');
 
 /**
  * reCaptcha constants.
  */
 // reCaptcha Public key.
-define('captchaPublicKey', '');
+define('captchaPublicKey', '6Ldxz_ISAAAAAJgevE76oejMwCDiyBePSrd8wBki');
 // reCaptcha Private key.
-define('captchaPrivateKey', '');
+define('captchaPrivateKey', '6Ldxz_ISAAAAAHTa4ApDTQ7jG5VqsaZ6JPV-pgr5');
 ?>
