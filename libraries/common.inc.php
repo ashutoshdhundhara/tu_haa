@@ -73,13 +73,13 @@ $GLOBALS['message'] = array();
 $GLOBALS['allotment_process_status'] = HAA_getAllotmentProcessStatus();
 
 /**
- * Minify JS/CSS files if not.
+ * Minify JS/CSS files if required.
  */
 require_once 'libraries/minify.lib.php';
-if (! isset($is_js_minified)) {
+if (isset($_REQUEST['min_js'])) {
     HAA_minify('js');
 }
-if (! isset($is_css_minified)) {
+if (isset($_REQUEST['min_css'])) {
     HAA_minify('css');
 }
 ?>

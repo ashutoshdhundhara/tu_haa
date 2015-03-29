@@ -32,10 +32,9 @@ function HAA_minify($type)
     foreach ($files as $file) {
         $file = basename($file);
         // Get SERVER base directory.
-        $base_dir = __FILE__;
+        $base_dir = dirname(__FILE__);
         $base_dir = str_replace($_SERVER['DOCUMENT_ROOT'], '', $base_dir);
-        $base_dir = str_replace(basename($base_dir), '', $base_dir);
-        $base_dir = str_replace('libraries/', '', $base_dir);
+        $base_dir = str_replace('libraries', '', $base_dir);
         $root = (isset($_SERVER['HTTPS']) ? 'https' : 'http')
             . '://'
             . $_SERVER['HTTP_HOST']
@@ -52,11 +51,6 @@ function HAA_minify($type)
         fwrite($new_file, $minified_file);
         fclose($new_file);
     }
-    // Set a flag that all files have been minified.
-    $flag = '<?php $is_' . $type . '_minified = true; ?>';
-    $flag_file = fopen($type . '/minified/is_' . $type . '_minified.php', 'w');
-    fwrite($flag_file, $flag);
-    fclose($flag_file);
 }
 
 ?>
