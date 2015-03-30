@@ -27,11 +27,15 @@
   src: local('Exo 2 Semi Bold'), local('Exo2-SemiBold'), url('fonts/exo_600.woff') format('woff');
 }
 
+html {
+    height: 100%;
+}
+
 body {
     font-family: 'Exo 2', sans-serif;
     font-weight: 300;
     min-width: 1000px;
-    min-height: 600px;
+    height: 100%;
 }
 
 header {
