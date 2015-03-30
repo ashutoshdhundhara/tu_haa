@@ -272,9 +272,10 @@ class HAA_Header
      */
     private function _getBodyHeader()
     {
+        $home_page = (isset($_SESSION['is_admin']) && $_SESSION['is_admin']) ? 'jadmin.php' : 'index.php';
         $retval = '';
         $retval .= '<header class="green_grad"><table><tr>'
-            . '<td class="td_small"><a href="index.php">'
+            . '<td class="td_small"><a href="' . $home_page . '">'
             . '<img height="80" width="100" src="img/jlogo.png" alt="Hostel-J Logo"/>'
             . '</a></td>'
             . '<td class="td_big"><h1>Hostel-J, Thapar University</h1></td>'
@@ -298,7 +299,7 @@ class HAA_Header
     private function _getLoginDetails()
     {
         $retval = '';
-        if (isset($_SESSION['login_id']) || isset($_SESSION['admin_id'])) {
+        if (isset($_SESSION['login_id'])) {
             $retval .= '<div class="login_details">'
                 . 'Login ID : '
                 . '<strong> '

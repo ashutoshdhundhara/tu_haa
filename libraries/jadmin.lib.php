@@ -160,4 +160,43 @@ function HAA_getHtmlSearchResidents()
 
     return $html_output;
 }
+
+function HAA_getHtmlExportLists()
+{
+    $html_output = '<h3>Export lists</h3>'
+        . '<div>'
+        . '<center>'
+        . '<a href="jadmin.php?submit_type=export_lists&list=students" target="_blank"><button>Student list</button></a>'
+        . '&nbsp;&nbsp;&nbsp;&nbsp;'
+        . '<a href="jadmin.php?submit_type=export_lists&list=rooms" target="_blank"><button>Rooms list</button></a>'
+        . '</center>'
+        . '</div>';
+
+    return $html_output;
+}
+
+/**
+ * Exports a given table to .csv file.
+ * 
+ * @param string $table_name Name of the table to export
+ */
+function HAA_exportCSV($table_name)
+{
+    $file_name = $table_name . '.csv';
+    $content = HAA_getTableData($table_name);
+    
+    // Send file download headers.
+    header("Content-type: text/csv");
+    header("Content-Disposition: attachment; filename=" . $file_name);
+    header("Pragma: no-cache");
+    header("Expires: 0");
+    
+    $columns = implode('", "', $content['columns']);
+    echo '"' . $columns . '"' . "\n";
+    while ($row = $content["data"]->fetch(PDO::FETCH_NUM)) {
+        echo '"' . implode('", "', $row) . '"' . "\n";
+    }
+    
+    exit;
+}
 ?>

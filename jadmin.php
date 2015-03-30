@@ -122,6 +122,15 @@ if (isset($_REQUEST['submit_type'])) {
         break;
     case 'resident_search':
         break;
+    case 'export_lists':
+        if (isset($_REQUEST['list'])) {
+            if ($_REQUEST['list'] == 'students') {
+                HAA_exportCSV(tblStudent);
+            } elseif ($_REQUEST['list'] == 'rooms') {
+                HAA_exportCSV(tblRoom);
+            }
+        }
+        break;
     default:
         break;
     }
@@ -137,6 +146,7 @@ $html_output .= '<div class="admin_page gray_grad box">'
 $html_output .= HAA_getHtmlShowMap();
 $html_output .= HAA_getHtmlResidentDetails();
 $html_output .= HAA_getHtmlSearchResidents();
+$html_output .= HAA_getHtmlExportLists();
 
 $html_output .= '</div></div>';
 

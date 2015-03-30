@@ -369,11 +369,12 @@ function HAA_redirectTo($location)
 {
     // List of valid pages.
     $page_whitelist = array(
-        'map.php'
-        , 'register.php'
-        , 'allot.php'
-        , 'group.php'
-        , 'index.php'
+        'map.php', 
+        'register.php',
+        'allot.php',
+        'group.php',
+        'index.php',
+        'jadmin.php'
     );
     // Get page name.
     $page = explode('?', $location);
@@ -529,5 +530,31 @@ function HAA_insertComplaintRecord($params)
         return false;
 
     return true;
+}
+
+/**
+ * Returns complete table data along with column names.
+ * 
+ * @param type $table_name Name of the table
+ * 
+ * @return array Containing column names and table data
+ */
+function HAA_getTableData($table_name)
+{
+    $column_query = 'SELECT `column_name` FROM `information_schema`.`columns` '
+            . 'WHERE `table_name` = :table_name';
+    $result = $GLOBALS['dbi']->executeQuery(
+            $column_query,
+            array(':table_name' => $table_name)
+    );
+    $columns = $result->fetchAll(PDO::FETCH_COLUMN);
+    $column_names = implode(', ', $columns);
+    $select_query = 'SELECT ' . $column_names . ' FROM `' . dbName . '`.`' . $table_name . '`';
+    $data = $GLOBALS['dbi']->executeQuery($select_query, array());
+    
+    return array(
+        'columns' => $columns,
+        'data' => $data
+    );
 }
 ?>
