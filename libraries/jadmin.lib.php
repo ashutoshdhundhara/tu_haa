@@ -63,23 +63,24 @@ function HAA_getHtmlResidentDetails()
 {
     $html_output = '<h3>Resident(s) Details</h3>'
         . '<div>'
-        . '<form action="" method="POST" id="resident_details">'
+        . '<form action="jadmin.php" method="POST" id="resident_details">'
+        . '<input type="hidden" name="ajax_request" value="true">'
         . '<input type="hidden" name="submit_type" value="resident_details">'
         . '<table>'
         . '<tr>'
         . '<td>'
-        . '<label for="input_room_no">Room No. : </label>'
+        . '<label for="input_find_room_no">Room No. : </label>'
         . '</td>'
         . '<td>'
-        . '<input type="text" id="input_room_no" name="room_no" class="room_no">'
+        . '<input type="text" id="input_find_room_no" name="room_no" class="room_no">'
         . '</td>'
         . '</tr>'
         . '<tr>'
         . '<td>'
-        . '<label for="input_cluster">Cluster : </label>'
+        . '<label for="input_find_cluster">Cluster : </label>'
         . '</td>'
         . '<td>'
-        . '<input type="text" id="input_cluster" name="cluster" class="cluster">'
+        . '<input type="text" id="input_find_cluster" name="cluster" class="cluster">'
         . '</td>'
         . '</tr>'
         . '<tr>'
@@ -98,7 +99,8 @@ function HAA_getHtmlSearchResidents()
 {
     $html_output = '<h3>Search Resident(s)</h3>'
         . '<div>'
-        . '<form action="" method="POST" id="resident_search">'
+        . '<form action="jadmin.php" method="POST" id="resident_search">'
+        . '<input type="hidden" name="ajax_request" value="true">'
         . '<input type="hidden" name="submit_type" value="resident_search">'
         . '<table>'
         . '<tr>'
@@ -111,10 +113,10 @@ function HAA_getHtmlSearchResidents()
         . '</tr>'
         . '<tr>'
         . '<td>'
-        . '<label for="input_roll_no">Roll No. : </label>'
+        . '<label for="input_search_roll_no">Roll No. : </label>'
         . '</td>'
         . '<td>'
-        . '<input type="text" id="input_roll_no" name="roll_no" class="roll_no">'
+        . '<input type="text" id="input_search_roll_no" name="roll_no" class="roll_no">'
         . '</td>'
         . '</tr>'
         . '<tr>'
@@ -161,6 +163,187 @@ function HAA_getHtmlSearchResidents()
     return $html_output;
 }
 
+function HAA_getHtmlFillRoom()
+{
+    $html_output = '<h3>Fill Room</h3>'
+        . '<div>'
+        . '<form action="jadmin.php" method="POST" id="fill_room">'
+        . '<input type="hidden" name="ajax_request" value="true">'
+        . '<input type="hidden" name="submit_type" value="fill_room">'
+        . '<table>'
+        . '<tr>'
+        . '<td>'
+        . '<label for="input_fill_room_no">Room No : </label>'
+        . '</td>'
+        . '<td>'
+        . '<input type="text" id="input_fill_room_no" name="room_no" class="room_no">'
+        . '</td>'
+        . '</tr>'
+        . '<tr>'
+        . '<td>'
+        . '<label for="input_fill_roll_no">Roll No : </label>'
+        . '</td>'
+        . '<td>'
+        . '<input type="text" id="input_fill_roll_no" name="roll_no" class="roll_no">'
+        . '</td>'
+        . '</tr>'
+        . '<tr>'
+        . '<td colspan="2">'
+        . '<center><input type="submit" name="submit" value="Fill"></center>'
+        . '</td>'
+        . '</tr>'
+        . '</table>'
+        . '</form>'
+        . '</div>';
+
+    return $html_output;
+}
+
+function HAA_getHtmlVacateRoom()
+{
+    $html_output = '<h3>Vacate Room(s)</h3>'
+        . '<div>'
+        . '<form action="jadmin.php" method="POST" id="vacate_room">'
+        . '<input type="hidden" name="ajax_request" value="true">'
+        . '<input type="hidden" name="submit_type" value="vacate_room">'
+        . '<table>'
+        . '<tr>'
+        . '<td>'
+        . '<label for="input_vacate_room_no">Room No : </label>'
+        . '</td>'
+        . '<td>'
+        . '<input type="text" id="input_vacate_room_no" name="room_no" class="room_no">'
+        . '</td>'
+        . '</tr>'
+        . '<tr>'
+        . '<td>'
+        . '<input type="checkbox" id="input_vacate_all" name="vacate_all">'
+        . '<label for="input_vacate_all" class="red">Vacate All</label>'
+        . '</td>'
+        . '<td>'
+        . '<label for="input_exclusion_list">Exclude : </label>'
+        . '<input disabled="disabled" type="file" class="required" id="input_exclusion_list" name="exclusion_list" accept="text/*"'
+        . ' title="Provide a list of comma seprated Room numbers which are not to be vacated.">'
+        . '</td>'
+        . '</tr>'
+        . '<tr>'
+        . '<td colspan="2">'
+        . '<center><input type="submit" name="submit" value="Vacate"></center>'
+        . '</td>'
+        . '</tr>'
+        . '</table>'
+        . '</form>'
+        . '</div>';
+
+    return $html_output;
+}
+
+function HAA_getHtmlReserveRoom()
+{
+    $html_output = '<h3>Reserve Room(s)</h3>'
+        . '<div>'
+        . '<form action="jadmin.php" method="POST" id="reserve_room">'
+        . '<input type="hidden" name="ajax_request" value="true">'
+        . '<input type="hidden" name="submit_type" value="reserve_room">'
+        . '<table>'
+        . '<tr>'
+        . '<td>'
+        . '<label for="input_room_no">Room No : </label>'
+        . '</td>'
+        . '<td>'
+        . '<input type="text" id="input_room_no" name="room_no" class="room_no">'
+        . '</td>'
+        . '</tr>'
+        . '<tr>'
+        . '<td>'
+        . '<label for="input_reserve_cluster">Cluster : </label>'
+        . '</td>'
+        . '<td>'
+        . '<input type="text" id="input_reserve_cluster" name="cluster" class="cluster">'
+        . '</td>'
+        . '</tr>'
+        . '<tr>'
+        . '<td>'
+        . '<label for="input_reserve_list">Rooms List : </label>'
+        . '</td>'
+        . '<td>'
+        . '<input type="file" class="required" id="input_reserve_list" name="reserve_list" accept="text/*"'
+        . ' title="Provide a list of comma seprated Room numbers which are to be reserved.">'
+        . '</td>'
+        . '</tr>'
+        . '<tr>'
+        . '<td colspan="2">'
+        . '<center><input type="submit" name="submit" value="Reserve"></center>'
+        . '</td>'
+        . '</tr>'
+        . '</table>'
+        . '</form>'
+        . '</div>';
+
+    return $html_output;
+}
+
+function HAA_getHtmlAllotmentStatus()
+{
+    $allotment_status = HAA_getAllotmentProcessStatus();
+    $process_enabled = ($allotment_status['process_status'] == 'ENABLED') ? true : false;
+    $show_message = $allotment_status['show_message'];
+    $checked = ' checked="checked" ';
+    
+    $html_output = '<h3>Allotment Staus</h3>'
+        . '<div>'
+        . '<form action="jadmin.php" method="POST" id="reserve_room">'
+        . '<input type="hidden" name="ajax_request" value="true">'
+        . '<input type="hidden" name="submit_type" value="allotment_status">'
+        . '<table>'
+        . '<tr>'
+        . '<td>'
+        . 'Allotment Status : '
+        . '</td>'
+        . '<td class="radio">'
+        . '<label for="input_allotment_enabled">Enabled</label>'
+        . '<input type="radio" id="input_allotment_enabled" name="process_status"'
+        . ($process_enabled ? $checked : '') . ' value="ENABLED">'
+        . '<label for="input_allotment_disabled">Disabled</label>'
+        . '<input type="radio" id="input_allotment_disabled" name="process_status"'
+        . (!$process_enabled ? $checked : '') . ' value="DISABLED">'
+        . '</td>'
+        . '</tr>'
+        . '<tr>'
+        . '<td>'
+        . 'Global Message : '
+        . '</td>'
+        . '<td class="radio">'
+        . '<label for="input_message_show">Show</label>'
+        . '<input type="radio" id="input_message_show" name="show_message" value="SHOW"'
+        . ($show_message ? $checked : '') . '>'
+        . '<label for="input_message_hide">Hide</label>'
+        . '<input type="radio" id="input_message_hide" name="show_message" value="HIDE"'
+        . (!$show_message ? $checked : '') . '>'
+        . '</td>'
+        . '</tr>'
+        . '<tr>'
+        . '<td style="vertical-align: middle;">'
+        . 'Message : '
+        . '</td>'
+        . '<td>'
+        . '<textarea name="message" style="margin: 0px; width: 250px; height: 67px;">'
+        . $allotment_status['message']
+        . '</textarea>'
+        . '</td>'
+        . '</tr>'
+        . '<tr>'
+        . '<td colspan="2">'
+        . '<center><input type="submit" name="submit" value="Update"></center>'
+        . '</td>'
+        . '</tr>'
+        . '</table>'
+        . '</form>'
+        . '</div>';
+
+    return $html_output;
+}
+
 function HAA_getHtmlExportLists()
 {
     $html_output = '<h3>Export lists</h3>'
@@ -182,7 +365,7 @@ function HAA_getHtmlExportLists()
  */
 function HAA_exportCSV($table_name)
 {
-    $file_name = $table_name . '.csv';
+    $file_name = $table_name . '_' . date('d_m_Y', time()) . '.csv';
     $content = HAA_getTableData($table_name);
     
     // Send file download headers.

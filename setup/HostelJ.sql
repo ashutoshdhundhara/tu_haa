@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `complaint_details` (
 CREATE TABLE IF NOT EXISTS `allotment_status` (
   `process_status` enum('ENABLED','DISABLED') NOT NULL COMMENT 'Status of allotment process.',
   `message` varchar(200) NOT NULL COMMENT 'Message to be displayed if allotment disabled.',
-  `show_message` enum('0','1') NOT NULL COMMENT 'Whether to to show global message or not.',
+  `show_message` enum('SHOW','HIDE') NOT NULL COMMENT 'Whether to to show global message or not.',
   `login_status` enum('ENABLED','DISABLED') NOT NULL DEFAULT 'DISABLED',
   `login_message` varchar(500) NOT NULL,
   PRIMARY KEY (`process_status`)

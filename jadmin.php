@@ -19,11 +19,80 @@ $header = $response->getHeader();
 $header->disableGlobalMessage();
 $header->addFile('jquery/jquery-uniform.js', 'js');
 $header->addFile('jquery/jquery.maskedinput.min.js', 'js');
+$header->addFile('jquery/jquery-ui-timepicker-addon.js', 'js');
 $header->addFile('jadmin.js', 'js');
+$header->addFile('minified/jquery-ui-timepicker-addon.css', 'css');
 $header->addFile('jadmin.css', 'css');
 $header->setTitle('Admin');
 $html_output = '';
 
+// Admin form submitted.
+if (isset($_REQUEST['submit_type'])) {
+    if (HAA_checkLoginStatus(true)) {
+        switch ($_REQUEST['submit_type']) {
+        case 'resident_details':
+            break;
+        case 'resident_search':
+            break;
+        case 'allotment_status':
+            $process_status = (isset($_REQUEST['process_status']) 
+                && in_array($_REQUEST['process_status'], array('ENABLED', 'DISABLED'))
+            ) ? $_REQUEST['process_status'] : 'DISABLED';
+
+            $show_message = (isset($_REQUEST['show_message']) 
+                && in_array($_REQUEST['show_message'], array('SHOW', 'HIDE'))
+            ) ? $_REQUEST['show_message'] : 'HIDE';
+
+            $message = (isset($_REQUEST['message'])) ? $_REQUEST['message'] : '';
+            $allot_status = array(
+                'process_status' => $process_status,
+                'show_message' => $show_message,
+                'message' => $message
+            );
+            $result = HAA_updateAllotmentStatus($allot_status);
+
+            if ($result) {
+                $response->addJSON('message', 
+                    '<div class="success">'
+                    . '<h1 style="margin-top: 5em;">Successfully updated settings.</h1>'
+                    . '</div>'
+                );
+                $response->addJSON('save', true);
+            } else {
+                $response->addJSON(
+                        'message',
+                        HAA_generateErrorMessage(array('An error occurred.'))
+                );
+                $response->addJSON('save', false);
+            }
+            break;
+        case 'export_lists':
+            if (isset($_REQUEST['list'])) {
+                if ($_REQUEST['list'] == 'students') {
+                    HAA_exportCSV(tblStudent);
+                } elseif ($_REQUEST['list'] == 'rooms') {
+                    HAA_exportCSV(tblRoom);
+                }
+            }
+            break;
+        default:
+            break;
+        }
+    } else {
+        $response->addJSON(
+                'message',
+                HAA_generateErrorMessage(
+                    array('Your session has expired. Please login again.')
+                )
+        );
+        $response->addJSON('save', true);
+        $response->addJSON('redirect_url', 'jadmin.php');
+    }
+
+    $response->addJSON('redirect_url', '');
+    $response->response();
+    exit;
+}
 
 // Request for login.
 if (isset($_POST['haa_username'])
@@ -115,30 +184,6 @@ if (! HAA_checkLoginStatus(true)) {
     exit;
 }
 
-// Admin form submitted.
-if (isset($_REQUEST['submit_type'])) {
-    switch ($_REQUEST['submit_type']) {
-    case 'resident_details':
-        break;
-    case 'resident_search':
-        break;
-    case 'export_lists':
-        if (isset($_REQUEST['list'])) {
-            if ($_REQUEST['list'] == 'students') {
-                HAA_exportCSV(tblStudent);
-            } elseif ($_REQUEST['list'] == 'rooms') {
-                HAA_exportCSV(tblRoom);
-            }
-        }
-        break;
-    default:
-        break;
-    }
-
-    $response->response();
-    exit;
-}
-
 $html_output .= '<div class="admin_page gray_grad box">'
     . '<h2>Hostel Administration</h2>'
     . '<div class="admin_content">';
@@ -146,6 +191,10 @@ $html_output .= '<div class="admin_page gray_grad box">'
 $html_output .= HAA_getHtmlShowMap();
 $html_output .= HAA_getHtmlResidentDetails();
 $html_output .= HAA_getHtmlSearchResidents();
+$html_output .= HAA_getHtmlFillRoom();
+$html_output .= HAA_getHtmlVacateRoom();
+$html_output .= HAA_getHtmlReserveRoom();
+$html_output .= HAA_getHtmlAllotmentStatus();
 $html_output .= HAA_getHtmlExportLists();
 
 $html_output .= '</div></div>';
