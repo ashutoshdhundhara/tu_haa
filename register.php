@@ -20,6 +20,7 @@ if (isset($_REQUEST['agreement'])) {
 
     if ($save) {
         $response->addJSON('message', $GLOBALS['message']);
+        $response->addJSON('redirect_url', 'index.php');
         $response->addJSON('save', true);
     } else {
         $response->addJSON('save', false);

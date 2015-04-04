@@ -280,8 +280,8 @@ function HAA_submitForm($form)
             var buttonOptions = {};
             // 'OK' button action.
             buttonOptions['OK'] = function () {
-                if (response.save) {
-                    window.location.replace('index.php');
+                if (response.save && response.redirect_url.length) {
+                    window.location.replace(response.redirect_url);
                 } else {
                     document.body.style.overflow = "visible";
                     $(this).dialog('close');
@@ -312,8 +312,8 @@ function HAA_submitForm($form)
                             .focus();
                     },
                     close: function () {
-                        if (response.save) {
-                            window.location.replace('index.php');
+                        if (response.save && response.redirect_url.length) {
+                            window.location.replace(response.redirect_url);
                         }
                         document.body.style.overflow = "visible";
                         $(this).remove();

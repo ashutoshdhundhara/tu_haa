@@ -19,6 +19,7 @@ if (isset($_POST['create_group'])) {
         $response->addJSON('save', false);
     } else {
         $response->addJSON('message', $GLOBALS['message']);
+        $response->addJSON('redirect_url', 'index.php');
         $response->addJSON('save', true);
     }
     $response->response();
