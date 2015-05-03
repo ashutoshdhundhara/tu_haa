@@ -34,6 +34,10 @@ if (isset($_REQUEST['submit_type'])) {
             break;
         case 'resident_search':
             break;
+        case 'reserve_room':
+        case 'unreserve_room':
+            HAA_handleReserveRoomRequest();
+            break;
         case 'allotment_status':
             HAA_handleChangeAllotmentStatus();
             break;
@@ -63,7 +67,7 @@ if (isset($_REQUEST['submit_type'])) {
 }
 
 // Request for login.
-if (isset($_POST['haa_username'])
+if (isset($_POST['haa_username']) 
     && isset($_POST['haa_password'])
 ) {
 

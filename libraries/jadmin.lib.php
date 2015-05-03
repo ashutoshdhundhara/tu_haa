@@ -45,7 +45,7 @@ function HAA_getHtmlPrintForm()
 }
 
 /**
- * 
+ *
  */
 function HAA_getHtmlShowMap()
 {
@@ -273,9 +273,9 @@ function HAA_getHtmlReserveRoom()
         . '</tr>'
         . '<tr>'
         . '<td colspan="2">'
-        . '<center><input type="submit" name="submit" value="Reserve">'
+        . '<center><input type="submit" name="submit" value="Reserve" id="reserve_room_btn">'
         . '&nbsp;&nbsp;&nbsp;&nbsp;'
-        . '<input type="submit" name="submit" value="Unreserve"></center>'
+        . '<input type="submit" name="submit" value="Unreserve" id="unreserve_room_btn"></center>'
         . '</td>'
         . '</tr>'
         . '</table>'
@@ -291,7 +291,7 @@ function HAA_getHtmlAllotmentStatus()
     $process_enabled = ($allotment_status['process_status'] == 'ENABLED') ? true : false;
     $show_message = $allotment_status['show_message'];
     $checked = ' checked="checked" ';
-    
+
     $html_output = '<h3>Allotment Staus</h3>'
         . '<div>'
         . '<form action="jadmin.php" method="POST" id="allotment_status">'
@@ -362,37 +362,58 @@ function HAA_getHtmlExportLists()
 
 /**
  * Exports a given table to .csv file.
- * 
+ *
  * @param string $table_name Name of the table to export
  */
 function HAA_exportCSV($table_name)
 {
     $file_name = $table_name . '_' . date('d_m_Y', time()) . '.csv';
     $content = HAA_getTableData($table_name);
-    
+
     // Send file download headers.
     header("Content-type: text/csv");
     header("Content-Disposition: attachment; filename=" . $file_name);
     header("Pragma: no-cache");
     header("Expires: 0");
-    
+
     $columns = implode('", "', $content['columns']);
     echo '"' . $columns . '"' . "\n";
     while ($row = $content["data"]->fetch(PDO::FETCH_NUM)) {
         echo '"' . implode('", "', $row) . '"' . "\n";
     }
-    
+
     exit;
+}
+
+function HAA_reserveUnreserveRooms($room_no, $cluster, $status)
+{
+    $rooms = implode("', '", $room_no);
+    $clusters = implode("', '", $cluster);
+
+    $rooms_query = 'UPDATE `' . tblRoom . '` '
+        . 'SET `room_status` = :status '
+        . "WHERE UPPER(CONCAT(wing, cluster, '-', floor, room_no)) IN ('" . $rooms . "') ";
+
+    $clusters_query = 'UPDATE `' . tblRoom . '` '
+        . 'SET `room_status` = :status '
+        . "WHERE UPPER(CONCAT(wing, cluster, '-', floor)) IN ('" . $clusters . "') ";
+
+    $result = $GLOBALS['dbi']->executeQuery($rooms_query, array(':status' => $status));
+    if ($result) {
+        $result = $GLOBALS['dbi']->executeQuery($clusters_query, array(':status' => $status));
+    }
+
+    return $result;
 }
 
 function HAA_handleChangeAllotmentStatus()
 {
     global $response;
-    $process_status = (isset($_REQUEST['process_status']) 
+    $process_status = (isset($_REQUEST['process_status'])
         && in_array($_REQUEST['process_status'], array('ENABLED', 'DISABLED'))
     ) ? $_REQUEST['process_status'] : 'DISABLED';
 
-    $show_message = (isset($_REQUEST['show_message']) 
+    $show_message = (isset($_REQUEST['show_message'])
         && in_array($_REQUEST['show_message'], array('SHOW', 'HIDE'))
     ) ? $_REQUEST['show_message'] : 'HIDE';
 
@@ -405,7 +426,7 @@ function HAA_handleChangeAllotmentStatus()
     $result = HAA_updateAllotmentStatus($allot_status);
 
     if ($result) {
-        $response->addJSON('message', 
+        $response->addJSON('message',
             '<div class="success">'
             . '<h1 style="margin-top: 5em;">Successfully updated settings.</h1>'
             . '</div>'
@@ -430,7 +451,7 @@ function HAA_handleVacateRoomRequest()
      * In `student_details`:
      * 1. Remove the record with the given room no.
      */
-    global $respone;
+    global $response;
 }
 
 function HAA_handleExportRequest()
@@ -441,6 +462,68 @@ function HAA_handleExportRequest()
         } elseif ($_REQUEST['list'] == 'rooms') {
             HAA_exportCSV(tblRoom);
         }
+    }
+}
+
+function HAA_handleReserveRoomRequest()
+{
+    global $response;
+
+    $room_status = array(
+        'reserve_room' => 'BLOCKED',
+        'unreserve_room' => 'AVAILABLE'
+    );
+
+    $status = $room_status[$_REQUEST['submit_type']];
+
+    $rooms = array();
+    $clusters = array();
+
+    if (
+        isset($_REQUEST['room_no'])
+        && HAA_validateValue($_REQUEST['room_no'], 'room_no'))
+    {
+        $rooms[] = $_REQUEST['room_no'];
+    }
+
+    if (
+        isset($_REQUEST['cluster'])
+        && HAA_validateValue($_REQUEST['cluster'], 'cluster_no'))
+    {
+        $clusters[] = $_REQUEST['cluster'];
+    }
+
+    if (isset($_FILES['reserve_list'])) {
+        $file_content = file_get_contents($_FILES['reserve_list']['tmp_name']);
+        $parsed_data = HAA_extractRoomsAndClusters($file_content);
+
+        $rooms = array_merge($rooms, $parsed_data['rooms']);
+        $clusters = array_merge($clusters, $parsed_data['clusters']);
+    }
+
+    $result = HAA_reserveUnreserveRooms(
+        $rooms,
+        $clusters,
+        $room_status[$_REQUEST['submit_type']]
+    );
+    
+    if ($result) {
+        $response->addJSON('message',
+            '<div class="success">'
+            . '<h1 style="margin-top: 1em;">Successfully updated following:</h1>'
+            . '<ul>'
+            . '<li>Room(s) : ' . implode(', ', $rooms) . '</li>'
+            . '<li>Cluster(s) : ' . implode(', ', $clusters) . '</li>'
+            . '</ul>'
+            . '</div>'
+        );
+        $response->addJSON('save', true);
+    } else {
+        $response->addJSON(
+                'message',
+                HAA_generateErrorMessage(array('An error occurred.'))
+        );
+        $response->addJSON('save', false);
     }
 }
 ?>

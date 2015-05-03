@@ -54,6 +54,9 @@ function HAA_validateValue($value, $type)
         case 'room_no':
             $regEx = '/^[wWeE][a-fA-F][\-][1-8][0][1-9]$|^[wWeE][a-fA-F][\-][1-8][1][10]$/';
             break;
+        case 'cluster_no':
+            $regEx = '/^[wWeE][a-fA-F][\-][1-8]$/';
+            break;
         case 'unique_id':
             $regEx = '/^[A-Za-z0-9]{6}$/';
             break;
@@ -369,7 +372,7 @@ function HAA_redirectTo($location)
 {
     // List of valid pages.
     $page_whitelist = array(
-        'map.php', 
+        'map.php',
         'register.php',
         'allot.php',
         'group.php',
@@ -534,9 +537,9 @@ function HAA_insertComplaintRecord($params)
 
 /**
  * Returns complete table data along with column names.
- * 
+ *
  * @param type $table_name Name of the table
- * 
+ *
  * @return array Containing column names and table data
  */
 function HAA_getTableData($table_name)
@@ -551,7 +554,7 @@ function HAA_getTableData($table_name)
     $column_names = implode(', ', $columns);
     $select_query = 'SELECT ' . $column_names . ' FROM `' . dbName . '`.`' . $table_name . '`';
     $data = $GLOBALS['dbi']->executeQuery($select_query, array());
-    
+
     return array(
         'columns' => $columns,
         'data' => $data
@@ -561,19 +564,26 @@ function HAA_getTableData($table_name)
 function HAA_extractRoomsAndClusters($file_content)
 {
     $objects = explode(',', $file_content);
-    $file_data = array(
-        'rooms' => array(),
-        'clusters' => array()
-    );
-    foreach ($objects as $key => $object) {
-        $object = trim($object);
-        if (HAA_validateValue($object, 'room_no')) {
-            $file_data['rooms'][] = $object;
-        } elseif (HAA_validateValue($object, 'cluster')) {
-            $file_data['clusters'][] = $object;
-        }
-    }
+    $file_data = array();
     
+    $matched_rooms;
+    $matched_clusters;
+    
+    preg_match_all(
+        '/[wWeE][a-fA-F][\-][1-8][0][1-9]|[wWeE][a-fA-F][\-][1-8][1][10]/',
+        $file_content,
+        $matched_rooms
+    );
+    
+    preg_match_all(
+        '/[wWeE][a-fA-F][\-][1-8]/',
+        $file_content,
+        $matched_clusters
+    );
+    
+    $file_data['rooms'] = $matched_rooms[0];
+    $file_data['clusters'] = $matched_clusters[0];
+
     return $file_data;
 }
 ?>

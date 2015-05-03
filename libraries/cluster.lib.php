@@ -42,9 +42,20 @@ function HAA_getHtmlClusterMap($wing, $floor, $cluster, $selectable = true)
         $select_class = ($selectable) ? 'selectable' : '';
         if (! in_array($block, $skip_blocks)) {
             $row = $cluster_data->fetch();
-            $class = ($row['room_status'] == 'AVAILABLE')
-                ? 'room_available'
-                : 'room_not_available';
+            switch ($row['room_status']) {
+                case 'AVAILABLE':
+                    $class = 'room_available';
+                    break;
+                case 'NOT_AVAILABLE':
+                    $class = 'room_not_available';
+                    break;
+                case 'BLOCKED':
+                    $class = 'room_reserved';
+                    break;
+                default:
+                    break;
+            }
+            
             $room_no = $row['wing']
                 . $row['cluster']
                 . '-'
@@ -76,6 +87,7 @@ function HAA_getHtmlClusterMap($wing, $floor, $cluster, $selectable = true)
         . '<li><span></span>Vacant</li>'
         . '<li><span class="green_grad"></span>Selected</li>'
         . '<li><span style="background-color: #999999;"></span>Occupied</li>'
+        . '<li><span style="background-color: #E17009;"></span>Reserved</li>'
         . '</ul>';
     $retval = $north . '<table class="cluster_map"><tr>' . $retval . '</tr></table>'
         . $guide;

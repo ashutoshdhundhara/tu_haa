@@ -34,4 +34,12 @@ $(document).ready(function () {
     $("input[name='process_status'], input[name='show_message']").change(function (event) {
         $("#allotment_status").submit();
     });
+    
+    $("#reserve_room_btn").mousedown(function (event) {
+        $('#reserve_room input[name="submit_type"]').val("reserve_room");
+    });
+    
+    $("#unreserve_room_btn").mousedown(function (event) {
+        $('#reserve_room input[name="submit_type"]').val("unreserve_room");
+    });
 });

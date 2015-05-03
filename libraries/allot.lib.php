@@ -61,7 +61,7 @@ function HAA_bookRooms($room_numbers, $group_id)
     $select_query = 'SELECT CONCAT(wing, cluster, "-", floor, room_no) AS `full_room_no` '
         . 'FROM ' . tblRoom . ' '
         . 'WHERE CONCAT(wing, cluster, "-", floor, room_no) '
-        . 'IN ("' .$room_list . '") '
+        . 'IN ("' . $room_list . '") '
         . 'AND `room_status` = :room_status '
         . 'FOR UPDATE';
     // SQL query to update room status.

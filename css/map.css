@@ -73,7 +73,7 @@
     vertical-align: middle;
 }
 
-.room_available, .room_not_available, .room_selected {
+.room_available, .room_not_available, .room_selected, .room_reserved {
     border: 1px solid black;
 }
 
@@ -85,7 +85,11 @@
     background-color: #999999;
 }
 
-.room_blocked, .room_not_available {
+.room_reserved {
+    background-color: #E17009;
+}
+
+.room_not_available, .room_reserved {
     cursor: not-allowed;
 }
 
@@ -100,7 +104,7 @@
 .guide li {
     display: inline-block;
     line-height: 1em;
-    width: 10em;
+    width: 8em;
 }
 
 .guide span {
