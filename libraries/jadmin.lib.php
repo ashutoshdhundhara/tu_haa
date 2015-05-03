@@ -268,7 +268,7 @@ function HAA_getHtmlReserveRoom()
         . '</td>'
         . '<td>'
         . '<input type="file" class="required" id="input_reserve_list" name="reserve_list" accept="text/*"'
-        . ' title="Provide a list of comma seprated Room numbers which are to be reserved.">'
+        . ' title="Provide a list of comma seprated Room numbers or Cluster numbers which are to be reserved.">'
         . '</td>'
         . '</tr>'
         . '<tr>'
