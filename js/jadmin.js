@@ -30,4 +30,8 @@ $(document).ready(function () {
             $('#uniform-input_exclusion_list').addClass("disabled");
         }
     });
+    
+    $("input[name='process_status'], input[name='show_message']").change(function (event) {
+        $("#allotment_status").submit();
+    });
 });

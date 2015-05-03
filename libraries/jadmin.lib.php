@@ -294,7 +294,7 @@ function HAA_getHtmlAllotmentStatus()
     
     $html_output = '<h3>Allotment Staus</h3>'
         . '<div>'
-        . '<form action="jadmin.php" method="POST" id="reserve_room">'
+        . '<form action="jadmin.php" method="POST" id="allotment_status">'
         . '<input type="hidden" name="ajax_request" value="true">'
         . '<input type="hidden" name="submit_type" value="allotment_status">'
         . '<table>'
