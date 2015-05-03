@@ -35,45 +35,13 @@ if (isset($_REQUEST['submit_type'])) {
         case 'resident_search':
             break;
         case 'allotment_status':
-            $process_status = (isset($_REQUEST['process_status']) 
-                && in_array($_REQUEST['process_status'], array('ENABLED', 'DISABLED'))
-            ) ? $_REQUEST['process_status'] : 'DISABLED';
-
-            $show_message = (isset($_REQUEST['show_message']) 
-                && in_array($_REQUEST['show_message'], array('SHOW', 'HIDE'))
-            ) ? $_REQUEST['show_message'] : 'HIDE';
-
-            $message = (isset($_REQUEST['message'])) ? $_REQUEST['message'] : '';
-            $allot_status = array(
-                'process_status' => $process_status,
-                'show_message' => $show_message,
-                'message' => $message
-            );
-            $result = HAA_updateAllotmentStatus($allot_status);
-
-            if ($result) {
-                $response->addJSON('message', 
-                    '<div class="success">'
-                    . '<h1 style="margin-top: 5em;">Successfully updated settings.</h1>'
-                    . '</div>'
-                );
-                $response->addJSON('save', true);
-            } else {
-                $response->addJSON(
-                        'message',
-                        HAA_generateErrorMessage(array('An error occurred.'))
-                );
-                $response->addJSON('save', false);
-            }
+            HAA_handleChangeAllotmentStatus();
+            break;
+        case 'vacate_room':
+            HAA_handleVacateRoomRequest();
             break;
         case 'export_lists':
-            if (isset($_REQUEST['list'])) {
-                if ($_REQUEST['list'] == 'students') {
-                    HAA_exportCSV(tblStudent);
-                } elseif ($_REQUEST['list'] == 'rooms') {
-                    HAA_exportCSV(tblRoom);
-                }
-            }
+            HAA_handleExportRequest();
             break;
         default:
             break;
@@ -189,10 +157,10 @@ $html_output .= '<div class="admin_page gray_grad box">'
     . '<div class="admin_content">';
 
 $html_output .= HAA_getHtmlShowMap();
-$html_output .= HAA_getHtmlResidentDetails();
-$html_output .= HAA_getHtmlSearchResidents();
-$html_output .= HAA_getHtmlFillRoom();
-$html_output .= HAA_getHtmlVacateRoom();
+//$html_output .= HAA_getHtmlResidentDetails();
+//$html_output .= HAA_getHtmlSearchResidents();
+//$html_output .= HAA_getHtmlFillRoom();
+//$html_output .= HAA_getHtmlVacateRoom();
 $html_output .= HAA_getHtmlReserveRoom();
 $html_output .= HAA_getHtmlAllotmentStatus();
 $html_output .= HAA_getHtmlExportLists();

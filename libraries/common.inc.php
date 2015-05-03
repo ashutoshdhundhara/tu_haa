@@ -43,11 +43,6 @@ require_once 'libraries/DatabaseInterface.class.php';
  * Library for all authentication and authorization tasks.
  */
 require_once 'libraries/security.lib.php';
-/**
- * To check if JS/CSS is minified or not.
- */
-include_once 'js/minified/is_js_minified.php';
-include_once 'css/minified/is_css_minified.php';
 
 /**
  * Set default timezone.

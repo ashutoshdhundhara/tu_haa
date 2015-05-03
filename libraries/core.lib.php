@@ -557,4 +557,23 @@ function HAA_getTableData($table_name)
         'data' => $data
     );
 }
+
+function HAA_extractRoomsAndClusters($file_content)
+{
+    $objects = explode(',', $file_content);
+    $file_data = array(
+        'rooms' => array(),
+        'clusters' => array()
+    );
+    foreach ($objects as $key => $object) {
+        $object = trim($object);
+        if (HAA_validateValue($object, 'room_no')) {
+            $file_data['rooms'][] = $object;
+        } elseif (HAA_validateValue($object, 'cluster')) {
+            $file_data['clusters'][] = $object;
+        }
+    }
+    
+    return $file_data;
+}
 ?>

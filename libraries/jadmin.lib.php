@@ -273,7 +273,9 @@ function HAA_getHtmlReserveRoom()
         . '</tr>'
         . '<tr>'
         . '<td colspan="2">'
-        . '<center><input type="submit" name="submit" value="Reserve"></center>'
+        . '<center><input type="submit" name="submit" value="Reserve">'
+        . '&nbsp;&nbsp;&nbsp;&nbsp;'
+        . '<input type="submit" name="submit" value="Unreserve"></center>'
         . '</td>'
         . '</tr>'
         . '</table>'
@@ -381,5 +383,64 @@ function HAA_exportCSV($table_name)
     }
     
     exit;
+}
+
+function HAA_handleChangeAllotmentStatus()
+{
+    global $response;
+    $process_status = (isset($_REQUEST['process_status']) 
+        && in_array($_REQUEST['process_status'], array('ENABLED', 'DISABLED'))
+    ) ? $_REQUEST['process_status'] : 'DISABLED';
+
+    $show_message = (isset($_REQUEST['show_message']) 
+        && in_array($_REQUEST['show_message'], array('SHOW', 'HIDE'))
+    ) ? $_REQUEST['show_message'] : 'HIDE';
+
+    $message = (isset($_REQUEST['message'])) ? $_REQUEST['message'] : '';
+    $allot_status = array(
+        'process_status' => $process_status,
+        'show_message' => $show_message,
+        'message' => $message
+    );
+    $result = HAA_updateAllotmentStatus($allot_status);
+
+    if ($result) {
+        $response->addJSON('message', 
+            '<div class="success">'
+            . '<h1 style="margin-top: 5em;">Successfully updated settings.</h1>'
+            . '</div>'
+        );
+        $response->addJSON('save', true);
+    } else {
+        $response->addJSON(
+                'message',
+                HAA_generateErrorMessage(array('An error occurred.'))
+        );
+        $response->addJSON('save', false);
+    }
+}
+
+function HAA_handleVacateRoomRequest()
+{
+    /**
+     * To vacate a Room:
+     * In `rooms_info`:
+     * 1. Change its `room_status` to 'AVAILABLE'.
+     * 2. Change its `group_id` to NULL.
+     * In `student_details`:
+     * 1. Remove the record with the given room no.
+     */
+    global $respone;
+}
+
+function HAA_handleExportRequest()
+{
+    if (isset($_REQUEST['list'])) {
+        if ($_REQUEST['list'] == 'students') {
+            HAA_exportCSV(tblStudent);
+        } elseif ($_REQUEST['list'] == 'rooms') {
+            HAA_exportCSV(tblRoom);
+        }
+    }
 }
 ?>
