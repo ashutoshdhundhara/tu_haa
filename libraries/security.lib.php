@@ -304,26 +304,31 @@ function HAA_getLoginStatusMessage()
 
 /**
  * Updates allotment status inside database.
- * 
+ *
  * @param type $allotment_status Array containing column values
- * 
+ *
  * @return bool
  */
 function HAA_updateAllotmentStatus($allotment_status)
 {
     // SQL query.
     $update_query = 'UPDATE `' . tblAllotmentStatus . '` '
-            . 'SET `process_status` = :process_status, `message` = :message, '
-            . '`show_message` = :show_message';
+            . 'SET `process_status` = :process_status, '
+            . '`message` = :message, '
+            . '`show_message` = :show_message, '
+            . '`login_status` = :login_status, '
+            . '`registrations` = :registrations';
     $result = $GLOBALS['dbi']->executeQuery(
             $update_query,
             array(
                 ':process_status' => $allotment_status['process_status'],
                 ':message' => $allotment_status['message'],
-                ':show_message' => $allotment_status['show_message']
+                ':show_message' => $allotment_status['show_message'],
+                ':registrations' => $allotment_status['registrations'],
+                ':login_status' => $allotment_status['login_status']
             )
     );
-    
+
     return $result;
 }
 ?>

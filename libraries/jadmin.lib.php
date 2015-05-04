@@ -287,9 +287,11 @@ function HAA_getHtmlReserveRoom()
 
 function HAA_getHtmlAllotmentStatus()
 {
-    $allotment_status = HAA_getAllotmentProcessStatus();
+    $allotment_status = $GLOBALS['allotment_process_status'];
     $process_enabled = ($allotment_status['process_status'] == 'ENABLED') ? true : false;
-    $show_message = $allotment_status['show_message'];
+    $show_message = ($allotment_status['show_message'] == 'SHOW') ? true : false;
+    $registrations = ($allotment_status['registrations'] == 'ENABLED') ? true : false;
+    $logins = ($allotment_status['login_status'] == 'ENABLED') ? true : false;
     $checked = ' checked="checked" ';
 
     $html_output = '<h3>Allotment Staus</h3>'
@@ -322,6 +324,32 @@ function HAA_getHtmlAllotmentStatus()
         . '<label for="input_message_hide">Hide</label>'
         . '<input type="radio" id="input_message_hide" name="show_message" value="HIDE"'
         . (!$show_message ? $checked : '') . '>'
+        . '</td>'
+        . '</tr>'
+        . '<tr>'
+        . '<td>'
+        . 'Registrations : '
+        . '</td>'
+        . '<td class="radio">'
+        . '<label for="input_registrations_enabled">Enabled</label>'
+        . '<input type="radio" id="input_registrations_enabled" name="registrations" value="ENABLED"'
+        . ($registrations ? $checked : '') . '>'
+        . '<label for="input_registrations_disabled">Disabled</label>'
+        . '<input type="radio" id="input_registrations_disabled" name="registrations" value="DISABLED"'
+        . (!$registrations ? $checked : '') . '>'
+        . '</td>'
+        . '</tr>'
+        . '<tr>'
+        . '<td>'
+        . 'Logins : '
+        . '</td>'
+        . '<td class="radio">'
+        . '<label for="input_logins_enabled">Enabled</label>'
+        . '<input type="radio" id="input_logins_enabled" name="login_status" value="ENABLED"'
+        . ($logins ? $checked : '') . '>'
+        . '<label for="input_logins_disabled">Disabled</label>'
+        . '<input type="radio" id="input_logins_disabled" name="login_status" value="DISABLED"'
+        . (!$logins ? $checked : '') . '>'
         . '</td>'
         . '</tr>'
         . '<tr>'
@@ -417,11 +445,21 @@ function HAA_handleChangeAllotmentStatus()
         && in_array($_REQUEST['show_message'], array('SHOW', 'HIDE'))
     ) ? $_REQUEST['show_message'] : 'HIDE';
 
+    $registrations = (isset($_REQUEST['registrations'])
+        && in_array($_REQUEST['registrations'], array('ENABLED', 'DISABLED'))
+    ) ? $_REQUEST['registrations'] : 'DISABLED';
+
+    $login_status = (isset($_REQUEST['login_status'])
+        && in_array($_REQUEST['login_status'], array('ENABLED', 'DISABLED'))
+    ) ? $_REQUEST['login_status'] : 'DISABLED';
+
     $message = (isset($_REQUEST['message'])) ? $_REQUEST['message'] : '';
     $allot_status = array(
         'process_status' => $process_status,
         'show_message' => $show_message,
-        'message' => $message
+        'message' => $message,
+        'registrations' => $registrations,
+        'login_status' => $login_status
     );
     $result = HAA_updateAllotmentStatus($allot_status);
 
@@ -506,7 +544,7 @@ function HAA_handleReserveRoomRequest()
         $clusters,
         $room_status[$_REQUEST['submit_type']]
     );
-    
+
     if ($result) {
         $response->addJSON('message',
             '<div class="success">'

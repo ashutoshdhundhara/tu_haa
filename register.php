@@ -15,6 +15,19 @@ require_once 'libraries/swiftmailer/lib/swift_required.php';
 if (isset($_REQUEST['agreement'])) {
     $response = HAA_Response::getInstance();
 
+    // Check allotment process status.
+    if ($GLOBALS['allotment_process_status']['registrations'] != 'ENABLED') {
+        HAA_gotError(
+            'Registrations are disabled.'
+        );
+        $response->addJSON('save', false);
+        $response->addJSON(
+            'message', HAA_generateErrorMessage($GLOBALS['error'])
+        );
+        $response->response();
+        exit;
+    }
+
     // Parse and save form data.
     $save = HAA_saveStudentRecord($_REQUEST);
 

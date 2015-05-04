@@ -14,6 +14,15 @@ if (! defined('TU_HAA')) {
  */
 function HAA_getHtmlRegisterForm()
 {
+    $registration_disabled = '';
+    if ($GLOBALS['allotment_process_status']['registrations'] == 'DISABLED') {
+        $registration_disabled = '<tr>'
+            . '<td colspan="2" class="red" style="text-align: center;">'
+            . 'Registrations are DISABLED.'
+            . '</td>'
+            . '</tr>';
+    }
+
     $retval = '<form method="POST" action="register.php"'
         . ' enctype="multipart/form-data"'
         . ' class="register_form gray_grad box">'
@@ -21,6 +30,7 @@ function HAA_getHtmlRegisterForm()
         . '<input type="hidden" name="MAX_FILE_SIZE" value="2097152">'
         . '<table>'
         . '<caption>Registration Form</caption>'
+        . $registration_disabled
         . '<tr>'
         . '<td><label for="input_unique_id">PassKey<sup class="req">*</sup> :</label></td>'
         . '<td><input type="text" class="required" id="input_unique_id" name="unique_id"'

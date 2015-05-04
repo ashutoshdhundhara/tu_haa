@@ -20,7 +20,7 @@ $(document).ready(function () {
         event.preventDefault();
         HAA_submitForm($(this));
     });
-    
+
     $('#input_vacate_all').change(function () {
         if ($(this).is(':checked')) {
             $('#input_exclusion_list').removeAttr("disabled");
@@ -30,15 +30,16 @@ $(document).ready(function () {
             $('#uniform-input_exclusion_list').addClass("disabled");
         }
     });
-    
-    $("input[name='process_status'], input[name='show_message']").change(function (event) {
+
+    $("input[name='process_status'], input[name='show_message'], input[name='registrations'], input[name='login_status']")
+    .change(function (event) {
         $("#allotment_status").submit();
     });
-    
+
     $("#reserve_room_btn").mousedown(function (event) {
         $('#reserve_room input[name="submit_type"]').val("reserve_room");
     });
-    
+
     $("#unreserve_room_btn").mousedown(function (event) {
         $('#reserve_room input[name="submit_type"]').val("unreserve_room");
     });

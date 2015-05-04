@@ -130,6 +130,7 @@ CREATE TABLE IF NOT EXISTS `allotment_status` (
   `show_message` enum('SHOW','HIDE') NOT NULL COMMENT 'Whether to to show global message or not.',
   `login_status` enum('ENABLED','DISABLED') NOT NULL DEFAULT 'DISABLED',
   `login_message` varchar(500) NOT NULL,
+  `registrations` enum('ENABLED','DISABLED') DEFAULT 'ENABLED',
   PRIMARY KEY (`process_status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains status about allotment process.';
 
