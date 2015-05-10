@@ -86,7 +86,7 @@
 }
 
 .room_reserved {
-    background-color: #E17009;
+    background-color: #FFCC99;
 }
 
 .room_not_available, .room_reserved {
@@ -102,6 +102,7 @@
 }
 
 .guide li {
+    font-size: 0.9em;
     display: inline-block;
     line-height: 1em;
     width: 8em;

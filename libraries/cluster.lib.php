@@ -21,7 +21,7 @@ function HAA_getHtmlClusterMap($wing, $floor, $cluster, $selectable = true)
     $retval = '';
     $cluster_data = HAA_getClusterData($wing, $floor, $cluster);
 
-    if ($cluster_data == false || $cluster_data->rowCount() < 11) {
+    if ($cluster_data == false) {
         HAA_gotError(
             'Failed to generate Cluster map.'
         );
@@ -31,12 +31,19 @@ function HAA_getHtmlClusterMap($wing, $floor, $cluster, $selectable = true)
     $skip_blocks = array(
         5,
         7,
-        8,
-        9,
         10,
         11,
         17
     );
+    
+    $shared_rooms = array(
+        12,
+        13
+    );
+    
+    if ($cluster_data->rowCount() == 11) {
+        array_push($skip_blocks, array(8, 9));
+    }
 
     for ($block=1;$block<=18;$block++) {
         $select_class = ($selectable) ? 'selectable' : '';
@@ -56,6 +63,11 @@ function HAA_getHtmlClusterMap($wing, $floor, $cluster, $selectable = true)
                     break;
             }
             
+            $shared = '';
+            if (in_array($row['room_no'], $shared_rooms)) {
+                $shared = '<br><span style="font-weight: bold; font-size: 0.9em;">(Shared)</span>';
+            }
+
             $room_no = $row['wing']
                 . $row['cluster']
                 . '-'
@@ -63,7 +75,7 @@ function HAA_getHtmlClusterMap($wing, $floor, $cluster, $selectable = true)
                 . $row['room_no'];
             $cell = '<td class="' . $class . ' ' . $select_class . '" '
                 . 'data-room="' . $room_no . '">'
-                . $room_no . '</td>';
+                . $room_no . $shared . '</td>';
         } else {
             $cell = '<td class="empty_block"></td>';
         }
@@ -86,8 +98,8 @@ function HAA_getHtmlClusterMap($wing, $floor, $cluster, $selectable = true)
     $guide = '<ul class="guide">'
         . '<li><span></span>Vacant</li>'
         . '<li><span class="green_grad"></span>Selected</li>'
-        . '<li><span style="background-color: #999999;"></span>Occupied</li>'
-        . '<li><span style="background-color: #E17009;"></span>Reserved</li>'
+        . '<li><span class="room_not_available"></span>Occupied</li>'
+        . '<li><span class="room_reserved"></span>Reserved</li>'
         . '</ul>';
     $retval = $north . '<table class="cluster_map"><tr>' . $retval . '</tr></table>'
         . $guide;
@@ -118,15 +130,24 @@ function HAA_getClusterData($wing, $floor, $cluster)
         . 'WHERE wing = :wing '
         . 'AND floor = :floor '
         . 'AND cluster = :cluster '
-        . 'AND room_no <= 6 '
+        . 'AND room_no < 6 '
         . 'ORDER BY room_no ASC '
-        . 'LIMIT 6 )'
+        . 'LIMIT 5 ) '
+        . 'UNION ALL '
+        . '( SELECT * FROM ' . tblRoom . ' '
+        . 'WHERE wing = :wing '
+        . 'AND floor = :floor '
+        . 'AND cluster = :cluster '
+        . 'AND room_no IN (6, 12, 13) '
+        . 'ORDER BY room_no DESC '
+        . 'LIMIT 3 ) '
         . 'UNION ALL '
         . '( SELECT * FROM ' . tblRoom . ' '
         . 'WHERE wing = :wing '
         . 'AND floor = :floor '
         . 'AND cluster = :cluster '
         . 'AND room_no > 6 '
+        . 'AND room_no < 12 '
         . 'ORDER BY room_no DESC '
         . 'LIMIT 5 )';
     // Query parameters.

@@ -42,7 +42,21 @@ function HAA_populateTblRoom()
     // Floors.
     $floors = array('1', '2', '3', '4', '5', '6', '7', '8');
     // Rooms.
-    $room_nos = array('01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11');
+    $room_nos = array(
+        '01',
+        '02',
+        '03',
+        '04',
+        '05',
+        '06',
+        '07',
+        '08',
+        '09',
+        '10',
+        '11',
+        '12',
+        '13'
+    );
     // Clusters to skip.
     $skip_clusters = array(
         'EC-1',

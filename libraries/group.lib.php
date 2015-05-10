@@ -46,7 +46,7 @@ function HAA_getHtmlSelectGroupSize()
     $retval = '<select id="input_size" name="group_size" class="required"'
         . ' title="Please select the number of members in your Group">'
         . '<option>...</option>';
-    for ($i=2;$i<=11;$i++) {
+    for ($i=2;$i<=13;$i++) {
         $retval .= '<option>' . $i . '</option>';
     }
     $retval .= '</select>';
@@ -103,7 +103,7 @@ function HAA_parseFormData($form_data)
     }
 
     // Check if the group size is valid.
-    if ($size<2 || $size>11) {
+    if ($size<2 || $size>13) {
         HAA_gotError(
             'Invalid number of members.'
         );
