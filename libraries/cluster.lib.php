@@ -42,7 +42,8 @@ function HAA_getHtmlClusterMap($wing, $floor, $cluster, $selectable = true)
     );
     
     if ($cluster_data->rowCount() == 11) {
-        array_push($skip_blocks, array(8, 9));
+        $skip_blocks[] = 8;
+        $skip_blocks[] = 9;
     }
 
     for ($block=1;$block<=18;$block++) {
@@ -138,9 +139,15 @@ function HAA_getClusterData($wing, $floor, $cluster)
         . 'WHERE wing = :wing '
         . 'AND floor = :floor '
         . 'AND cluster = :cluster '
-        . 'AND room_no IN (6, 12, 13) '
+        . 'AND room_no IN (12, 13) '
         . 'ORDER BY room_no DESC '
-        . 'LIMIT 3 ) '
+        . 'LIMIT 2 ) '
+        . 'UNION ALL '
+        . '( SELECT * FROM ' . tblRoom . ' '
+        . 'WHERE wing = :wing '
+        . 'AND floor = :floor '
+        . 'AND cluster = :cluster '
+        . 'AND room_no = 6 ) '
         . 'UNION ALL '
         . '( SELECT * FROM ' . tblRoom . ' '
         . 'WHERE wing = :wing '
