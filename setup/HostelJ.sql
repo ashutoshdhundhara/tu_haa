@@ -178,12 +178,12 @@ INSERT INTO `developers` (`index`, `full_name`, `email`, `mobile`, `role`, `othe
 -- Dumping data for table `allotment_status`
 --
 
-INSERT INTO `HostelJ`.`allotment_status` (`process_status`, `message`, `show_message`, `login_status`, `login_message`, `registrations`) VALUES 
-('DISABLED', '', 'HIDE', 'DISABLED', '', 'DISABLED')
+INSERT INTO `HostelJ`.`allotment_status` (`process_status`, `message`, `show_message`, `login_status`, `login_message`, `registrations`) VALUES
+('DISABLED', '', 'HIDE', 'DISABLED', '', 'DISABLED');
 
 --
 -- Dumping data for table `admin_id`
 --
 
 INSERT INTO `admin_id` (`admin_id`, `password`) VALUES
-('jadmin', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86');
+('jadmin', '43670386a148138420ca6b112d65a4b87904b117d4d2618f2a8967b856753b98bce747dd8799f6d4c1a500ea1c63407ff93d90f2c53f555347963fc22242871b');
