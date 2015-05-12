@@ -169,7 +169,6 @@ CREATE TABLE IF NOT EXISTS `feedback` (
 --
 
 INSERT INTO `developers` (`index`, `full_name`, `email`, `mobile`, `role`, `other_details`, `photo`) VALUES
---(0, 'Dr. Parteek Bhatia', 'parteek.bhatia@thapar.edu', '09876175046', 'Warden/Mentor', 'https://sites.google.com/site/parteekbhatia/', 'pb.jpg'),
 (1, 'Abhinav Acharya', 'abhinavach28@gmail.com', '08437167060', 'Software Developer', 'https://www.facebook.com/Abhinavach28', 'aa.jpg'),
 (2, 'Ashutosh Dhundhara', 'ashutoshdhundhara@yahoo.com', '09779749075', 'Software Developer', 'https://facebook.com/ashutosh.dhundhara', 'ad.png'),
 (3, 'Ayush Jain', 'ayushjain1992@gmail.com', '09855329177', 'Software Developer', 'https://www.facebook.com/ayush.jain.2312', 'aj.jpg'),
