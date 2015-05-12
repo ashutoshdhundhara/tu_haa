@@ -169,18 +169,18 @@ CREATE TABLE IF NOT EXISTS `feedback` (
 --
 
 INSERT INTO `developers` (`index`, `full_name`, `email`, `mobile`, `role`, `other_details`, `photo`) VALUES
-(1, 'Dr. Parteek Bhatia', 'parteek.bhatia@thapar.edu', '09876175046', 'Warden/Mentor', 'https://sites.google.com/site/parteekbhatia/', 'pb.jpg'),
-(2, 'Abhinav Acharya', 'abhinavach28@gmail.com', '08437167060', 'Software Developer', 'https://www.facebook.com/Abhinavach28', 'aa.jpg'),
-(3, 'Ashutosh Dhundhara', 'ashutoshdhundhara@yahoo.com', '09779749075', 'Software Developer', 'https://facebook.com/ashutosh.dhundhara', 'ad.png'),
-(4, 'Ayush Jain', 'ayushjain1992@gmail.com', '09855329177', 'Software Developer', 'https://www.facebook.com/ayush.jain.2312', 'aj.jpg'),
-(5, 'Vidhant Maini', 'vidhant_14@hotmail.com', '08191083236', 'Software Developer', 'https://www.facebook.com/vidhant.maini', 'vm.jpg');
+--(0, 'Dr. Parteek Bhatia', 'parteek.bhatia@thapar.edu', '09876175046', 'Warden/Mentor', 'https://sites.google.com/site/parteekbhatia/', 'pb.jpg'),
+(1, 'Abhinav Acharya', 'abhinavach28@gmail.com', '08437167060', 'Software Developer', 'https://www.facebook.com/Abhinavach28', 'aa.jpg'),
+(2, 'Ashutosh Dhundhara', 'ashutoshdhundhara@yahoo.com', '09779749075', 'Software Developer', 'https://facebook.com/ashutosh.dhundhara', 'ad.png'),
+(3, 'Ayush Jain', 'ayushjain1992@gmail.com', '09855329177', 'Software Developer', 'https://www.facebook.com/ayush.jain.2312', 'aj.jpg'),
+(4, 'Vidhant Maini', 'vidhant_14@hotmail.com', '08191083236', 'Software Developer', 'https://www.facebook.com/vidhant.maini', 'vm.jpg');
 
 --
 -- Dumping data for table `allotment_status`
 --
 
-INSERT INTO `allotment_status` (`process_status`, `message`, `show_message`, `login_status`, `login_message`) VALUES
-('ENABLED', '', '0', 'ENABLED', '');
+INSERT INTO `HostelJ`.`allotment_status` (`process_status`, `message`, `show_message`, `login_status`, `login_message`, `registrations`) VALUES 
+('DISABLED', '', 'HIDE', 'DISABLED', '', 'DISABLED')
 
 --
 -- Dumping data for table `admin_id`
