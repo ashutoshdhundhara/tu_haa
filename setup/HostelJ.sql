@@ -100,6 +100,7 @@ CREATE TABLE IF NOT EXISTS `student_details` (
   `landline` varchar(25) DEFAULT NULL,
   `photo` varchar(100) NOT NULL,
   `room_no` char(6) DEFAULT NULL,
+  `registration_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`roll_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains Student''s personal details';
 

@@ -87,6 +87,15 @@ function HAA_populateTblRoom()
                     continue;
                 }
                 foreach ($room_nos as $key => $room_no) {
+                    if ($room_no > 11) {
+                        if (
+                            in_array($cluster, array('A', 'F'))
+                            || ($wing == 'E' && $floor == 1)
+                        ) {
+                            continue;
+                        }
+                    }
+                    
                     array_push($query_params,
                         "('" . $wing . "', '" . $floor . "', '" . $cluster . "', '"
                             . $room_no . "', 'AVAILABLE', 'NULL')"
