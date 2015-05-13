@@ -33,10 +33,10 @@ if (isset($_GET['captcha_error']) && $_GET['captcha_error'] == true) {
 }
 
 // If to show login error message.
-if (isset($_GET['login_error']) && $_GET['login_error'] == true) {
+if (isset($_SESSION['login_error'])) {
     $login_error = '<tr>'
         . '<td colspan="2" class="red">'
-        . 'Invalid Login ID or Password.'
+        . $_SESSION['login_error']
         . '</td>'
         . '</tr>';
 }

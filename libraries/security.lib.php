@@ -62,6 +62,11 @@ function HAA_secureLogin($login_id, $password, $is_admin = false)
         $sql_query = 'SELECT * FROM ' . tblGroupId . ' '
             . 'WHERE `group_id` = :login_id AND `password` = :password '
             . 'LIMIT 1';
+
+        // SQL query to update allotment_status.
+        $update_last_login_query = 'UPDATE ' . tblGroupId . ' '
+            . 'SET `last_login` = :last_login '
+            . 'WHERE `group_id` = :group_id';
     }
 
     $query_params = array(
@@ -75,15 +80,31 @@ function HAA_secureLogin($login_id, $password, $is_admin = false)
         // login_id and password are correct.
         // Get the fetched row.
         $group_details = $result->fetch();
+        // Check for login limit.
+        if (time() - (int) $group_details['last_login'] < 900) {
+            $_SESSION['login_limit'] = true;
+            $_SESSION['login_error'] = 'Last login at: '
+                . date('F j, Y, g:i:s a', (int) $group_details['last_login'])
+                . '. '
+                . 'Try in 15 mins.';
+            return false;
+        }
+        $_SESSION['last_login'] = time();
         // Get the user-agent string of the user.
         $user_browser = $_SERVER['HTTP_USER_AGENT'];
         // Get allotment process status.
         $allotment_status = HAA_getAllotmentProcessStatus();
         // Set session variables.
         $_SESSION['login_id'] = $login_id;
+        $_SESSION['login_limit'] = false;
         $_SESSION['login_string'] = hash('sha512', $password . $user_browser);
         if (! $is_admin) {
             $_SESSION['group_size'] = $group_details['group_size'];
+            $params = array(':last_login' => (string) time(), ':group_id' => $login_id);
+            $result = $GLOBALS['dbi']->executeQuery(
+                $update_last_login_query,
+                array(':last_login' => (string) time(), ':group_id' => $login_id)
+            );
             HAA_updateGroupAllotmentStatus();
         } else {
             $_SESSION['is_admin'] = true;
@@ -104,6 +125,7 @@ function HAA_secureLogin($login_id, $password, $is_admin = false)
         } else {
             $_SESSION['login_attempts'] = 1;
         }
+        $_SESSION['login_error'] = 'Invalid Username/Password.';
         return false;
     }
 }
@@ -115,8 +137,14 @@ function HAA_secureLogin($login_id, $password, $is_admin = false)
  */
 function HAA_checkLoginStatus($is_admin = false)
 {
+    unset($_SESSION['login_error']);
     // Check if all session variables are set.
     if (isset($_SESSION['login_id'], $_SESSION['login_string'])) {
+        if ((time() - (int) $_SESSION['last_login'] > 900)) {
+            HAA_logout();
+            $_SESSION['login_error'] = 'Your session expired. Login again.';
+            return false;
+        }
         // Fetch session variables for verification.
         $login_id = $_SESSION['login_id'];
         $login_string = $_SESSION['login_string'];
@@ -153,10 +181,12 @@ function HAA_checkLoginStatus($is_admin = false)
                 return true;
             } else {
                 // Not logged in.
+                $_SESSION['login_error'] = 'Invalid Username/Password.';
                 return false;
             }
         } else {
             // Not logged in.
+            $_SESSION['login_error'] = 'Invalid Username/Password.';
             return false;
         }
     } else {
@@ -330,5 +360,45 @@ function HAA_updateAllotmentStatus($allotment_status)
     );
 
     return $result;
+}
+
+function HAA_logout()
+{
+    global $is_admin;
+    
+    if (!$is_admin) {
+        // SQL query to update allotment_status.
+        $update_last_login_query = 'UPDATE ' . tblGroupId . ' '
+            . 'SET `last_login` = :last_login '
+            . 'WHERE `group_id` = :group_id';
+        $params = array(
+            ':last_login' => (string) (time() - 3600),
+            ':group_id' => $_SESSION['login_id']
+        );
+        $result = $GLOBALS['dbi']->executeQuery(
+            $update_last_login_query,
+            $params
+        );
+    }
+
+    // Unset all session variables.
+    $_SESSION = array();
+
+    // Get session parameters.
+    $params = session_get_cookie_params();
+
+    // Delete the actual cookie.
+    setcookie(
+        session_name(),
+        '',
+        time() - 42000,
+        $params["path"],
+        $params["domain"],
+        $params["secure"],
+        $params["httponly"]
+    );
+
+    // Destroy session
+    session_destroy();
 }
 ?>

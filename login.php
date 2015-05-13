@@ -22,7 +22,8 @@ if (isset($_SESSION['show_captcha'])) {
     );
     // If entered captcha is invalid.
     if (! $captcha_verify->is_valid) {
-        HAA_redirectTo('index.php?captcha_error=true');
+        $_SESSION['login_error'] = 'Entered captcha is invalid.';
+        HAA_redirectTo('index.php');
     }
 }
 
@@ -38,7 +39,7 @@ if (
     if (HAA_secureLogin($group_id, $password)) {
         HAA_pageCheck();
     } else {
-        HAA_redirectTo('index.php?login_error=true');
+        HAA_redirectTo('index.php');
     }
 } else {
     HAA_redirectTo('index.php');

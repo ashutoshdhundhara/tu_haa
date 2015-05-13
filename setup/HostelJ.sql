@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `admin_id` (
 CREATE TABLE IF NOT EXISTS `eligible_students` (
   `roll_no` varchar(12) NOT NULL,
   `full_name` varchar(50) NOT NULL,
+  `branch` varchar(5) NOT NULL,
   `unique_id` varchar(10) NOT NULL,
   PRIMARY KEY (`roll_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains list of students eligible for Hostel-J.';
@@ -54,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `group_id` (
   `password` char(128) NOT NULL,
   `group_size` varchar(2) NOT NULL,
   `allotment_status` enum('SELECT','ALLOT','COMPLETE') NOT NULL DEFAULT 'SELECT',
+  `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Contains credentials of Groups formed.';
 
