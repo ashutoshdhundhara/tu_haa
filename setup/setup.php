@@ -53,9 +53,7 @@ function HAA_populateTblRoom()
         '08',
         '09',
         '10',
-        '11',
-        '12',
-        '13'
+        '11'
     );
     // Clusters to skip.
     $skip_clusters = array(
@@ -86,16 +84,7 @@ function HAA_populateTblRoom()
                     $skip_clusters)) {
                     continue;
                 }
-                foreach ($room_nos as $key => $room_no) {
-                    if ($room_no > 11) {
-                        if (
-                            in_array($cluster, array('A', 'F'))
-                            || ($wing == 'E' && $floor == 1)
-                        ) {
-                            continue;
-                        }
-                    }
-                    
+                foreach ($room_nos as $key => $room_no) {                    
                     array_push($query_params,
                         "('" . $wing . "', '" . $floor . "', '" . $cluster . "', '"
                             . $room_no . "', 'AVAILABLE', 'NULL')"
@@ -104,10 +93,13 @@ function HAA_populateTblRoom()
             }
         }
     }
+	
     // SQL query.
     $sql_query = 'INSERT IGNORE INTO `' . tblRoom . '` '
         . '(`wing`, `floor`, `cluster`, `room_no`, `room_status`, `group_id`) '
         . 'VALUES ' . implode(', ', $query_params);
+	
+	echo $sql_query;
     // Execute the query.
     $result = $GLOBALS['dbi']->executeQuery($sql_query, array());
 
